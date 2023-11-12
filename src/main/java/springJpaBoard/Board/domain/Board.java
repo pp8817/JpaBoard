@@ -37,4 +37,13 @@ public class Board {
         member.getBoardList().add(this);
     }
 
+    /*
+    게시글 수정, Dirty Checking 발생(업데이트 쿼리가 자동으로 나감)
+    Setter를 사용하지 않기 위해 수정 메서드를 만듦
+     */
+    public void editBoard(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
 }
