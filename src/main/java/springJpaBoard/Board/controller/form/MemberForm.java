@@ -3,6 +3,7 @@ package springJpaBoard.Board.controller.form;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.MemberStatus;
 
 import javax.validation.constraints.NotBlank;
@@ -23,7 +24,7 @@ public class MemberForm {
     @Size(min = 2, max = 10, message = "회원 이름은 2~10자 사이입니다.")
     private String name;
 
-    private String gender;
+    private GenderStatus gender;
 
     private MemberStatus memberStatus;
 

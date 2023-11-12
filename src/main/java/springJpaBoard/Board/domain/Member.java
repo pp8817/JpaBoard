@@ -20,7 +20,7 @@ public class Member {
 
     private String name;
 
-    private String gender;
+    private GenderStatus gender;
 
     private MemberStatus memberStatus;
 
