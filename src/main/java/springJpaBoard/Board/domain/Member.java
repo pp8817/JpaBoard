@@ -21,6 +21,8 @@ public class Member {
 
     private String gender;
 
+    private MemberStatus memberStatus;
+
     @OneToMany(mappedBy = "member")
     private List<Board> boardList = new ArrayList<>();
 
