@@ -2,6 +2,7 @@ package springJpaBoard.Board.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import springJpaBoard.Board.repository.dto.UpdateMemberDto;
 
 
 import javax.persistence.*;
@@ -30,5 +31,13 @@ public class Member {
     @OneToMany(mappedBy = "member") //양방향 연관관계 지정
     private List<Board> boardList = new ArrayList<>();
 
+    /*
+    회원 수정, Dirty Checking 발생(업데이트 쿼리가 자동으로 나감)
+    Setter를 사용하지 않기 위해 수정 메서드를 만듦
+     */
+    public void editMember(UpdateMemberDto memberDto) {
+        this.name = memberDto.getName();
+        this.address = memberDto.getAddress();
+    }
 
 }

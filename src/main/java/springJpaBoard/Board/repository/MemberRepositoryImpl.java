@@ -50,12 +50,12 @@ public class MemberRepositoryImpl implements MemberRepository{
                 .getResultList();
     }
 
-    /**
-     * 회원 수정, 추후 service에 작성, Transactional
-     */
-    @Override
-    public void update(Long memberId, UpdateBoardDto updateMember) {
-    }
+//    /**
+//     * 회원 수정, 추후 service에 작성, Transactional
+//     */
+//    @Override
+//    public void update(Long memberId, UpdateBoardDto updateMember) {
+//    }
 
     /**
      * 회원 삭제

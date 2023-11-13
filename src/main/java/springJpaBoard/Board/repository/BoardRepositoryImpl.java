@@ -47,19 +47,19 @@ public class BoardRepositoryImpl implements BoardRepository {
         return boardList;
     }
 
-    /**
-     * 게시글 수정
-     * 게시글 수정은 제목, 내용만 가능
-     * 추후 service로 이동, Transactional
-     */
-    @Override
-    public void update(Long boardId, UpdateBoardDto boardDto) {
-        Board board = em.find(Board.class, boardId);
-        /*
-        Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현
-         */
-        board.editBoard(boardDto.getTitle(), boardDto.getContent());
-    }
+//    /**
+//     * 게시글 수정
+//     * 게시글 수정은 제목, 내용만 가능
+//     * 추후 service로 이동, Transactional
+//     */
+//    @Override
+//    public void update(Long boardId, UpdateBoardDto boardDto) {
+//        Board board = em.find(Board.class, boardId);
+//        /*
+//        Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현
+//         */
+//        board.editBoard(boardDto.getTitle(), boardDto.getContent());
+//    }
 
     @Override
     public void delete(Long boardId) {

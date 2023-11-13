@@ -19,8 +19,8 @@ public interface MemberRepository {
     //이름으로 회원 조회
     List<Member> findByName(String name);
 
-    // 회원 수정
-    void update(Long memberId, UpdateBoardDto updateMember);
+//    // 회원 수정
+//    void update(Long memberId, UpdateBoardDto updateMember);
 
     // 회원 삭제
     void delete(Long memberId);

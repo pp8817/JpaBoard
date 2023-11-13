@@ -17,7 +17,7 @@ public interface BoardRepository {
     List<Board> findAll();
 
     // 게시물 수정
-    void update(Long boardId, UpdateBoardDto updateBoard);
+//    void update(Long boardId, UpdateBoardDto updateBoard);
 
     // 게시뮬 삭제
     void delete(Long boardId);
