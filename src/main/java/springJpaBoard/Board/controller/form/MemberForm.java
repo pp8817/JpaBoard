@@ -1,16 +1,12 @@
 package springJpaBoard.Board.controller.form;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 import springJpaBoard.Board.domain.GenderStatus;
-import springJpaBoard.Board.domain.MemberStatus;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
-@Setter
 public class MemberForm {
     private Long id;
 

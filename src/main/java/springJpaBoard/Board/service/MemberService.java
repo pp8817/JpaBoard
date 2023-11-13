@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.MemberRepositoryImpl;
-import springJpaBoard.Board.repository.dto.UpdateMemberDto;
+import springJpaBoard.Board.service.dto.UpdateMemberDto;
 
 import java.util.List;
 
@@ -55,8 +55,8 @@ public class MemberService {
      * 회원 정보 수정
      */
     @Transactional(readOnly = false)
-    public void update(Long memberId, UpdateMemberDto memberDto) {
-        Member findMember = memberRepository.findOne(memberId);
+    public void update(UpdateMemberDto memberDto) {
+        Member findMember = memberRepository.findOne(memberDto.getId());
         /*
         Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현
          */

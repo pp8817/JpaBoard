@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.controller.form.MemberForm;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.repository.dto.UpdateMemberDto;
+import springJpaBoard.Board.service.dto.UpdateMemberDto;
 import springJpaBoard.Board.service.MemberService;
 
 import javax.validation.Valid;
@@ -80,11 +80,13 @@ public class MemberController {
     }
 
     @PostMapping("{memberId}/edit")
-    public String updatemember(@ModelAttribute("form") MemberForm form) {
+    public String updateMember(@ModelAttribute("form") MemberForm form) {
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
 
-        UpdateMemberDto memberDto = new UpdateMemberDto(form.getName(), form.getGender(), address);
-        return "redirect:/members";
+        UpdateMemberDto memberDto = new UpdateMemberDto(form.getId(), form.getName(), form.getGender(), address);
+        memberService.update(memberDto);
+
+        return "redirect:/members"; //회원 수정 후 회원 목록으로 이동
     }
 
     /**

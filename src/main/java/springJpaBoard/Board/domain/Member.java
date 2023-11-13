@@ -2,7 +2,7 @@ package springJpaBoard.Board.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import springJpaBoard.Board.repository.dto.UpdateMemberDto;
+import springJpaBoard.Board.service.dto.UpdateMemberDto;
 
 
 import javax.persistence.*;
@@ -11,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 public class Member {
 
     @GeneratedValue
@@ -23,7 +22,7 @@ public class Member {
 
     private GenderStatus gender;
 
-    private MemberStatus memberStatus;
+//    private MemberStatus memberStatus;
 
     @Embedded
     private Address address;

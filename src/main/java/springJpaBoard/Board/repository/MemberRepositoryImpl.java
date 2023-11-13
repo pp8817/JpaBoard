@@ -3,7 +3,6 @@ package springJpaBoard.Board.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.repository.dto.UpdateBoardDto;
 
 import javax.persistence.EntityManager;
 import java.util.List;

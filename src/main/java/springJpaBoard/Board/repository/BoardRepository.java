@@ -1,7 +1,6 @@
 package springJpaBoard.Board.repository;
 
 import springJpaBoard.Board.domain.Board;
-import springJpaBoard.Board.repository.dto.UpdateBoardDto;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.repository.BoardRepositoryImpl;
-import springJpaBoard.Board.repository.dto.UpdateBoardDto;
+import springJpaBoard.Board.service.dto.UpdateBoardDto;
 
 import java.util.List;
 
@@ -42,13 +42,14 @@ public class BoardService {
     /**
      * 게시글 수정
      */
-    public void update(Long id, UpdateBoardDto boardDto) {
-        Board findBoard = boardRepository.findOne(id);
+    @Transactional
+    public void update(UpdateBoardDto boardDto) {
+        Board findBoard = boardRepository.findOne(boardDto.getId());
 
         /*
         Dirty Checking 발생
          */
-        findBoard.editBoard(boardDto.getTitle(), boardDto.getContent());
+        findBoard.editBoard(boardDto);
     }
 
     /**

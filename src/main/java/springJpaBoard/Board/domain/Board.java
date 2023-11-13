@@ -2,6 +2,7 @@ package springJpaBoard.Board.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import springJpaBoard.Board.service.dto.UpdateBoardDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,8 +10,7 @@ import java.time.LocalDateTime;
 import static javax.persistence.FetchType.*;
 
 @Entity
-@Getter //추후에 Getter 모두 없앨 예정
-@Setter
+@Getter
 public class Board {
     @Id
     @GeneratedValue
@@ -29,21 +29,27 @@ public class Board {
 
     private LocalDateTime boardDateTime;
 
-    /*
-    연관관계 편의 메서드 - 위치는 핵심적으로 컨트롤하는 곳에 작성
-     */
-    public void setMember(Member member) {
-        this.member = member;
-        member.getBoardList().add(this);
+    public void createBoard(String title, String content, String writer) {
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
     }
 
     /*
     게시글 수정, Dirty Checking 발생(업데이트 쿼리가 자동으로 나감)
     Setter를 사용하지 않기 위해 수정 메서드를 만듦
      */
-    public void editBoard(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public void editBoard(UpdateBoardDto boardDto) {
+        this.title = boardDto.getTitle();
+        this.content = boardDto.getContent();
+    }
+
+    /*
+    연관관계 편의 메서드 - 위치는 핵심적으로 컨트롤하는 곳에 작성
+     */
+    public void setMember(Member member) {
+        this.member = member;
+        member.getBoardList().add(this);
     }
 
 }
