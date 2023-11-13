@@ -8,10 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.controller.form.MemberForm;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.service.dto.UpdateMemberDto;
 import springJpaBoard.Board.service.MemberService;
+import springJpaBoard.Board.service.dto.UpdateMemberDto;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -34,21 +33,25 @@ public class MemberController {
     }
 
     @PostMapping("/new")
-    public String create(@Valid @ModelAttribute MemberForm form, BindingResult result) {
+    public String create(@ModelAttribute MemberForm form, BindingResult result) {
+        /*
+        현재 문제: front에서 값을 받아서 form으로 전달해줘야하는데 form에 값이 안넘어 오는중
+         */
 
         /*
         오류 발생시(@Valid 에서 발생)
          */
-        if (result.hasErrors()) {
-            return "members/createMemberForm";
-        }
-
-        Member member = new Member();
+//        if (result.hasErrors()) {
+//            System.out.println("error!");
+//            return "members/createMemberForm";
+//        }
 
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
+
+        Member member = new Member();
         member.createMember(form.getName(), form.getGender(), address);
 
-        memberService.join(member);
+        memberService.join(member); //PK 생성
 
         return "redirect:/";
     }
