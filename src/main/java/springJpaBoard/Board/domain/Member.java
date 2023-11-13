@@ -1,9 +1,7 @@
 package springJpaBoard.Board.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 import springJpaBoard.Board.service.dto.UpdateMemberDto;
-
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -42,6 +40,7 @@ public class Member {
      */
     public void editMember(UpdateMemberDto memberDto) {
         this.name = memberDto.getName();
+        this.gender = memberDto.getGender();
         this.address = memberDto.getAddress();
     }
 

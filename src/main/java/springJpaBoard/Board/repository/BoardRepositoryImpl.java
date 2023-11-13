@@ -26,8 +26,7 @@ public class BoardRepositoryImpl implements BoardRepository {
      */
     @Override
     public Board findOne(Long boardId) {
-        em.find(Board.class, boardId);
-        return null;
+        return em.find(Board.class, boardId);
     }
 
     /**

@@ -1,19 +1,14 @@
 package springJpaBoard.Board.repository;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.Member;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 //@ExtendWith(SpringExtension.class)
 @SpringBootTest //junit4의 @RunWith(SpringRunner.class)이 속해있음
@@ -24,13 +19,11 @@ class MemberRepositoryImplTest {
     MemberRepositoryImpl memberRepository;
 
     @Test
-    @Transactional
-    @Rollback(false)
     public void testMember() throws Exception {
         //given
         Member member = new Member();
-        member.setName("memberA");
-        member.setGender(GenderStatus.Man);
+        Address address = new Address("1", "1","1");
+        member.createMember("memberA", GenderStatus.Man, address);
 
         //when
         memberRepository.save(member);
