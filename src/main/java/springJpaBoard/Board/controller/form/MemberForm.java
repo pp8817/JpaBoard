@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 public class MemberForm {
+    private Long id;
 
     /**
      * name 의 NotEmpty 조건이 모든 request, response 에 필요하지 않음에도 불필요하게 사용될 수 있으며,
@@ -26,9 +27,18 @@ public class MemberForm {
 
     private GenderStatus gender;
 
-    private MemberStatus memberStatus;
+//    private MemberStatus memberStatus;
 
     private String city;
     private String street;
     private String zipcode;
+
+    public void createForm(Long id, String name, GenderStatus gender, String city, String street, String zipcode) {
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.city = city;
+        this.street = street;
+        this.zipcode = zipcode;
+    }
 }
