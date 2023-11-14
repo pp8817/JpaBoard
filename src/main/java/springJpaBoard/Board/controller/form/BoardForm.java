@@ -2,14 +2,13 @@ package springJpaBoard.Board.controller.form;
 
 import lombok.Getter;
 import lombok.Setter;
-import springJpaBoard.Board.domain.Member;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 @Getter
+@Setter
 /**
  * 추후 변수로 Member를 추가할 예정 - 로그인 기능과 멤버를 구현했을때
  * 로그인 기능을 구현한 뒤에는 writer가 사라지고 연관관계에 있는 member의 name으로 대체

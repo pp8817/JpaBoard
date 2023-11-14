@@ -11,11 +11,12 @@ import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.MemberService;
 import springJpaBoard.Board.service.dto.UpdateMemberDto;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/members")
+@RequestMapping("members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -33,7 +34,9 @@ public class MemberController {
     }
 
     @PostMapping("/new")
-    public String create(@ModelAttribute MemberForm form, BindingResult result) {
+    public String create(@Valid @ModelAttribute MemberForm memberForm, BindingResult result) {
+        System.out.println("form.getId() = " + memberForm.getId());
+
         /*
         현재 문제: front에서 값을 받아서 form으로 전달해줘야하는데 form에 값이 안넘어 오는중
          */
@@ -41,15 +44,15 @@ public class MemberController {
         /*
         오류 발생시(@Valid 에서 발생)
          */
-//        if (result.hasErrors()) {
-//            System.out.println("error!");
-//            return "members/createMemberForm";
-//        }
+        if (result.hasErrors()) {
+            System.out.println("error!");
+            return "members/createMemberForm";
+        }
 
-        Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
+        Address address = new Address(memberForm.getCity(), memberForm.getStreet(), memberForm.getZipcode());
 
         Member member = new Member();
-        member.createMember(form.getName(), form.getGender(), address);
+        member.createMember(memberForm.getName(), memberForm.getGender(), address);
 
         memberService.join(member); //PK 생성
 

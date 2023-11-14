@@ -1,9 +1,13 @@
 package springJpaBoard.Board.controller.form;
 
 import lombok.Getter;
-import springJpaBoard.Board.domain.GenderStatus;
+import lombok.Setter;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Getter
+@Setter
 public class MemberForm {
     private Long id;
 
@@ -14,11 +18,11 @@ public class MemberForm {
 
      "@NotBlank" 는 null 과 "" 과 " " 모두 허용하지 않는다.
      */
-//    @NotEmpty(message = "회원 이름은 필수입니다.")
-//    @Size(min = 2, max = 10, message = "회원 이름은 2~10자 사이입니다.")
+    @NotEmpty(message = "회원 이름은 필수입니다.")
+    @Size(min = 1, max = 10, message = "회원 이름은 1~10자 사이입니다.")
     private String name;
 
-    private GenderStatus gender;
+    private String gender;
 
 //    private MemberStatus memberStatus;
 
@@ -26,7 +30,7 @@ public class MemberForm {
     private String street;
     private String zipcode;
 
-    public void createForm(Long id, String name, GenderStatus gender, String city, String street, String zipcode) {
+    public void createForm(Long id, String name, String gender, String city, String street, String zipcode) {
         this.id = id;
         this.name = name;
         this.gender = gender;

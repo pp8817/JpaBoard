@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Address;
-import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.MemberRepositoryImpl;
 import springJpaBoard.Board.service.dto.UpdateMemberDto;
@@ -25,13 +24,14 @@ class MemberServiceTest {
         //given
         Member member = new Member();
         Address address = new Address("1", "1","1");
-        member.createMember("memberA", GenderStatus.Man, address);
+        member.createMember("memberA", "Man", address);
 
         //when
         Long savedId = memberService.join(member);
 
         //then
         Assertions.assertEquals(member, memberRepository.findOne(savedId));
+        Assertions.assertEquals(member.getName(), "memberA");
     }
 
     @Test
@@ -39,10 +39,10 @@ class MemberServiceTest {
         //given
         Member member1 = new Member();
         Address address = new Address("1", "1","1");
-        member1.createMember("memberA", GenderStatus.Man, address);
+        member1.createMember("memberA", "Man", address);
 
         Member member2 = new Member();
-        member2.createMember("memberA", GenderStatus.Man, address);
+        member2.createMember("memberA", "Man", address);
 
         //when
         memberService.join(member1);
@@ -57,13 +57,13 @@ class MemberServiceTest {
         //given
         Member member = new Member();
         Address address = new Address("1", "1","1");
-        member.createMember("memberA", GenderStatus.Man, address);
+        member.createMember("memberA", "Man", address);
 
         Long savedId = memberService.join(member);
 
         //when
         Address address1 = new Address("2", "2", "2");
-        UpdateMemberDto memberDto = new UpdateMemberDto(savedId, "memberB", GenderStatus.WOMAN, address1);
+        UpdateMemberDto memberDto = new UpdateMemberDto(savedId, "memberB", "Woman", address1);
 
 
         memberService.update(memberDto);

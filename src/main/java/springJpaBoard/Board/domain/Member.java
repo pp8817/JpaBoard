@@ -18,7 +18,7 @@ public class Member {
 
     private String name;
 
-    private GenderStatus gender;
+    private String gender;
 
 //    private MemberStatus memberStatus;
 
@@ -28,7 +28,7 @@ public class Member {
     @OneToMany(mappedBy = "member") //양방향 연관관계 지정
     private List<Board> boardList = new ArrayList<>();
 
-    public void createMember(String name, GenderStatus gender, Address address) {
+    public void createMember(String name, String gender, Address address) {
         this.name = name;
         this.gender = gender;
         this.address = address;
