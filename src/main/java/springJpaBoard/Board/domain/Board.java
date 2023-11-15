@@ -28,6 +28,8 @@ public class Board {
 
     private LocalDateTime boardDateTime;
 
+    private LocalDateTime modifyDateTime;
+
     public void createBoard(String title, String content, String writer, LocalDateTime localDateTime) {
         this.title = title;
         this.content = content;
@@ -42,6 +44,7 @@ public class Board {
     public void editBoard(UpdateBoardDto boardDto) {
         this.title = boardDto.getTitle();
         this.content = boardDto.getContent();
+        this.modifyDateTime = boardDto.getModifyDateTime();
     }
 
     /*

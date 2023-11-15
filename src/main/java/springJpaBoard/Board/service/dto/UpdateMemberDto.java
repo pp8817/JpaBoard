@@ -14,6 +14,7 @@ public class UpdateMemberDto {
 
     private Address address;
 
+
     public UpdateMemberDto(Long id, String name, String gender, Address address) {
         this.id = id;
         this.name = name;

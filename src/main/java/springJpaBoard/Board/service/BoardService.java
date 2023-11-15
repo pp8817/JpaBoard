@@ -54,7 +54,6 @@ public class BoardService {
     @Transactional
     public void update(UpdateBoardDto boardDto) {
         Board findBoard = boardRepository.findOne(boardDto.getId());
-
         /*
         Dirty Checking 발생
          */

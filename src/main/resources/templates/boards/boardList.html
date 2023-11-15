@@ -37,9 +37,11 @@
             <tr th:each="board : ${boards}">
                 <td th:text="${board.id}"></td>
                 <td th:text="${board.member.name}">/td>
-                <td th:text="${board.title}"></td>
+                <td>
+                    <a th:href="@{/boards/{id}/detail(id=${board.id})}" th:text="${board.title}"></a>
+                </td>
                 <td th:text="${board.writer}"></td>
-                <td th:text="${#temporals.format(board.getBoardDateTime(), 'YY년 MM월 dd')}"></td>
+                <td th:text="${#temporals.format(board.getBoardDateTime(), 'YY년 MM월 dd일')}"></td>
 <!--                <td>-->
 <!--                    <a th:if="${item.status.name() == 'ORDER'}" href="#"-->
 <!--                       th:href="'javascript:cancel('+${item.id}+')'"-->

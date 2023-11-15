@@ -71,6 +71,7 @@ public class BoardController {
     public String detail(@PathVariable Long boardId, Model model) {
         Board board = boardService.findOne(boardId);
         model.addAttribute("board", board);
+        System.out.println("board.getContent() = " + board.getContent());
         return "boards/boardDetail";
     }
 
@@ -90,7 +91,7 @@ public class BoardController {
 
     @PostMapping("/{boardId}/edit")
     public String updateBoard(@ModelAttribute("form") BoardForm form) {
-        UpdateBoardDto boardDto = new UpdateBoardDto(form.getId(), form.getTitle(), form.getContent());
+        UpdateBoardDto boardDto = new UpdateBoardDto(form.getId(), form.getTitle(), form.getContent(), LocalDateTime.now());
 
         boardService.update(boardDto);
 
