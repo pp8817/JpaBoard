@@ -7,10 +7,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.controller.form.BoardForm;
 import springJpaBoard.Board.domain.Board;
+import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.service.MemberService;
 import springJpaBoard.Board.service.dto.UpdateBoardDto;
 import springJpaBoard.Board.service.BoardService;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -19,6 +22,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final MemberService memberService;
 
     /**
      * 게시글 작성
@@ -28,33 +32,46 @@ public class BoardController {
         /**
          * 빈 껍데기인 MemberFrom 객체를 model에 담아서 가져가는 이유는 Validation의 기능을 사용하기 위해서이다.
          */
-        model.addAttribute("form", new BoardForm());
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members);
+        model.addAttribute("boardForm", new BoardForm());
         return "boards/writeBoardForm";
     }
 
     @PostMapping("/write")
-    public String write(@Valid @ModelAttribute BoardForm boardForm, BindingResult result) {
+    public String write(@Valid @ModelAttribute BoardForm boardForm, @RequestParam("memberId") Long memberId, BindingResult result) {
+
 
         /*
         오류 발생시(@Valid 에서 발생)
          */
         if (result.hasErrors()) {
-            return "members/createMemberForm";
+            return "boards/writeBoardForm";
         }
         Board board = new Board();
-        board.createBoard(boardForm.getTitle(), board.getContent(), board.getWriter());
-        boardService.write(board);
+        board.createBoard(boardForm.getTitle(), boardForm.getContent(), boardForm.getWriter(), LocalDateTime.now());
+        boardService.write(board, memberId);
         return "redirect:/";
     }
 
     /**
      * 게시글 목록
      */
-    @PostMapping
+    @GetMapping
     public String list(Model model) {
         List<Board> boards = boardService.findBoards();
         model.addAttribute("boards", boards);
         return "boards/boardList";
+    }
+
+    /**
+     * 게시글 상세 페이지
+     */
+    @GetMapping("/{boardId}/detail")
+    public String detail(@PathVariable Long boardId, Model model) {
+        Board board = boardService.findOne(boardId);
+        model.addAttribute("board", board);
+        return "boards/boardDetail";
     }
 
     /**

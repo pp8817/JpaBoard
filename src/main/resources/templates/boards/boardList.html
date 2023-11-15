@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+<!--        <div>-->
+<!--            <form th:object="${boards}" class="form-inline">-->
+<!--                <div class="form-group mb-2">-->
+<!--                    <input type="text" th:field="*{memberName}" class="form-control" placeholder="회원명"/>-->
+<!--                </div>-->
+<!--                <div class="form-group mx-sm-1 mb-2">-->
+<!--                    <select th:field="*{orderStatus}" class="form-control">-->
+<!--                        <option value="">주문상태</option>-->
+<!--                        <option th:each="status : ${T(jpabook.jpashop.domain.OrderStatus).values()}"-->
+<!--                                th:value="${status}"-->
+<!--                                th:text="${status}">option-->
+<!--                        </option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--                <button type="submit" class="btn btn-primary mb-2">검색</button>-->
+<!--            </form>-->
+<!--        </div>-->
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>회원 ID</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성 시간</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board : ${boards}">
+                <td th:text="${board.id}"></td>
+                <td th:text="${board.member.name}">/td>
+                <td th:text="${board.title}"></td>
+                <td th:text="${board.writer}"></td>
+                <td th:text="${#temporals.format(board.getBoardDateTime(), 'YY년 MM월 dd')}"></td>
+<!--                <td>-->
+<!--                    <a th:if="${item.status.name() == 'ORDER'}" href="#"-->
+<!--                       th:href="'javascript:cancel('+${item.id}+')'"-->
+<!--                       class="btn btn-danger">CANCEL</a>-->
+<!--                </td>-->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+
+</body>
+<script>
+    function cancel(id) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/orders/" + id + "/cancel");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</html>

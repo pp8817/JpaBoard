@@ -38,6 +38,10 @@ public class MemberRepositoryImpl implements MemberRepository{
                 .getResultList();
     }
 
+//    public List<Member> findAll2() {
+//    }
+
+
     /**
      * 이름으로 회원 조회
      * Parameter Binding 사용

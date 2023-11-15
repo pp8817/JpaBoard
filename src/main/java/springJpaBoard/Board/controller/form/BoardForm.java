@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -17,16 +16,16 @@ public class BoardForm {
 
     private Long id;
 
+    @NotBlank(message = "작성자는 필수입니다.")
+    @Size(min = 1, max = 15, message = "1~15자 사이만 가능합니다.")
+    private String writer;
+
     @NotBlank(message = "제목은 필수입니다.")
     @Size(min = 1, max = 50, message = "제목의 길이는 1~50자 사이입니다.")
     private String title;
 
-    @NotEmpty(message = "게시물의 내용을 작성 해주세요.")
+//    @NotEmpty(message = "게시물의 내용을 작성 해주세요.")
     private String content;
-
-    @NotBlank(message = "작성자는 필수입니다.")
-    @Size(min = 1, max = 15, message = "1~15자 사이만 가능합니다.")
-    private String writer;
 
     public void createForm(Long id, String title, String content, String writer) {
         this.title = title;

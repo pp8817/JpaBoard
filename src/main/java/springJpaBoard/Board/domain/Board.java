@@ -1,13 +1,12 @@
 package springJpaBoard.Board.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 import springJpaBoard.Board.service.dto.UpdateBoardDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static javax.persistence.FetchType.*;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -29,10 +28,11 @@ public class Board {
 
     private LocalDateTime boardDateTime;
 
-    public void createBoard(String title, String content, String writer) {
+    public void createBoard(String title, String content, String writer, LocalDateTime localDateTime) {
         this.title = title;
         this.content = content;
         this.writer = writer;
+        this.boardDateTime = localDateTime;
     }
 
     /*
