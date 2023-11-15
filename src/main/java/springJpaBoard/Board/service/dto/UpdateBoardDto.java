@@ -1,10 +1,12 @@
 package springJpaBoard.Board.service.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 public class UpdateBoardDto {
 
     private Long id;

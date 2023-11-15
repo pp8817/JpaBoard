@@ -82,16 +82,17 @@ public class BoardController {
     public String updateBoardForm(@PathVariable("boardId") Long boardId, Model model) {
         Board board = boardService.findOne(boardId);
 
-        BoardForm form = new BoardForm();
-        form.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
+        BoardForm boardForm = new BoardForm();
+        boardForm.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
 
-        model.addAttribute("form", form);
+        model.addAttribute("boardForm", boardForm);
         return "/boards/updateBoardForm";
     }
 
     @PostMapping("/{boardId}/edit")
-    public String updateBoard(@ModelAttribute("form") BoardForm form) {
-        UpdateBoardDto boardDto = new UpdateBoardDto(form.getId(), form.getTitle(), form.getContent(), LocalDateTime.now());
+    public String updateBoard(@Valid @ModelAttribute BoardForm boardForm, @PathVariable Long boardId) {
+        System.out.println("boardForm.getWriter() = " + boardForm.getWriter());
+        UpdateBoardDto boardDto = new UpdateBoardDto(boardId, boardForm.getTitle(), boardForm.getContent(), LocalDateTime.now());
 
         boardService.update(boardDto);
 
