@@ -16,13 +16,13 @@ public class BoardForm {
 
     private Long id;
 
-    @NotBlank(message = "작성자는 필수입니다.")
-    @Size(min = 1, max = 15, message = "1~15자 사이만 가능합니다.")
-    private String writer;
-
-    @NotBlank(message = "제목은 필수입니다.")
-    @Size(min = 1, max = 50, message = "제목의 길이는 1~50자 사이입니다.")
+    @NotBlank(message = "제목은 필수입니다.", groups = {SaveCheck.class, UpdateCheck.class})
+    @Size(min = 1, max = 50, message = "제목의 길이는 1~50자 사이입니다.", groups = {SaveCheck.class, UpdateCheck.class})
     private String title;
+
+    @NotBlank(message = "작성자는 필수입니다.", groups = {SaveCheck.class})
+    @Size(min = 1, max = 15, message = "1~15자 사이만 가능합니다.", groups = {SaveCheck.class})
+    private String writer;
 
 //    @NotEmpty(message = "게시물의 내용을 작성 해주세요.")
     private String content;

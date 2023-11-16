@@ -4,15 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.controller.form.BoardForm;
+import springJpaBoard.Board.controller.form.SaveCheck;
+import springJpaBoard.Board.controller.form.UpdateCheck;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
 import springJpaBoard.Board.service.dto.UpdateBoardDto;
-import springJpaBoard.Board.service.BoardService;
 
-import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class BoardController {
     }
 
     @PostMapping("/write")
-    public String write(@Valid @ModelAttribute BoardForm boardForm, @RequestParam("memberId") Long memberId, BindingResult result) {
+    public String write(@Validated(SaveCheck.class) @ModelAttribute BoardForm boardForm, @RequestParam("memberId") Long memberId, BindingResult result) {
 
 
         /*
@@ -90,8 +92,7 @@ public class BoardController {
     }
 
     @PostMapping("/{boardId}/edit")
-    public String updateBoard(@Valid @ModelAttribute BoardForm boardForm, @PathVariable Long boardId) {
-        System.out.println("boardForm.getWriter() = " + boardForm.getWriter());
+    public String updateBoard(@Validated(UpdateCheck.class) @ModelAttribute BoardForm boardForm, @PathVariable Long boardId) {
         UpdateBoardDto boardDto = new UpdateBoardDto(boardId, boardForm.getTitle(), boardForm.getContent(), LocalDateTime.now());
 
         boardService.update(boardDto);
