@@ -121,11 +121,12 @@ public class BoardController {
     /**
      * 게시글 삭제
      */
-//    @GetMapping("/{boardId}/delete")
-//    public String deleteBoard(@PathVariable Long boardId){
-//
-//    }
+    @GetMapping("/{boardId}/delete")
+    public String deleteBoard(@PathVariable Long boardId){
+        boardService.delete(boardId);
 
+        return "redirect:/boards";
+    }
 
     /**
      * BoardDto는 Controller에서만 사용하기 때문에 static class로 작성해줬다.

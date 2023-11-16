@@ -80,7 +80,9 @@ public class BoardService {
 
     /**
      * 게시글 삭제
+     * @Transactional: 특정 실행 단위에서 오류 발생시 전체 실행 내용을 롤백해주는 기능
      */
+    @Transactional
     public void delete(Long boardId) {
         boardRepository.delete(boardId);
     }

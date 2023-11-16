@@ -69,4 +69,25 @@ class BoardServiceTest {
         assertEquals(findBoard.getTitle(), boardDto.getTitle());
         assertEquals(findBoard.getContent(), boardDto.getContent());
     }
+
+    @Test
+    public void 게시글_삭제() throws Exception {
+        //given
+        Board board = new Board();
+        board.createBoard("JPA", "content", "Park", LocalDateTime.now());
+
+        Member member = new Member();
+        Address address = new Address("부산", "광안리", "123123");
+        member.createMember("mwadaw", "여성", address);
+        em.persist(member);
+
+        Long savedId = boardService.write(board, member.getId());
+
+        //when
+        boardService.delete(board.getId());
+        Board b = boardService.findOne(board.getId());
+        System.out.println("b = " + b);
+
+        //then
+    }
 }
