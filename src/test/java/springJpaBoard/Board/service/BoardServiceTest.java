@@ -83,11 +83,13 @@ class BoardServiceTest {
 
         Long savedId = boardService.write(board, member.getId());
 
-        //when
-        boardService.delete(board.getId());
-        Board b = boardService.findOne(board.getId());
-        System.out.println("b = " + b);
+        Long boardId = board.getId();
 
+        //when
+        boardService.delete(boardId);
+
+        Board findBoard = boardService.findOne(boardId);
         //then
+        assertEquals(findBoard, null);
     }
 }

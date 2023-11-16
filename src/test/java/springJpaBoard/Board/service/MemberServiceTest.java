@@ -24,14 +24,14 @@ class MemberServiceTest {
         //given
         Member member = new Member();
         Address address = new Address("1", "1","1");
-        member.createMember("memberA", "Man", address);
+        member.createMember("member", "Man", address);
 
         //when
         Long savedId = memberService.join(member);
 
         //then
         Assertions.assertEquals(member, memberRepository.findOne(savedId));
-        Assertions.assertEquals(member.getName(), "memberA");
+        Assertions.assertEquals(member.getName(), "member");
     }
 
     @Test
@@ -39,10 +39,10 @@ class MemberServiceTest {
         //given
         Member member1 = new Member();
         Address address = new Address("1", "1","1");
-        member1.createMember("memberA", "Man", address);
+        member1.createMember("member", "Man", address);
 
         Member member2 = new Member();
-        member2.createMember("memberA", "Man", address);
+        member2.createMember("member", "Man", address);
 
         //when
         memberService.join(member1);
@@ -57,13 +57,13 @@ class MemberServiceTest {
         //given
         Member member = new Member();
         Address address = new Address("1", "1","1");
-        member.createMember("memberA", "Man", address);
+        member.createMember("member1", "Man", address);
 
         Long savedId = memberService.join(member);
 
         //when
         Address address1 = new Address("2", "2", "2");
-        UpdateMemberDto memberDto = new UpdateMemberDto(savedId, "memberB", "Woman", address1);
+        UpdateMemberDto memberDto = new UpdateMemberDto(savedId, "member2", "Woman", address1);
 
 
         memberService.update(memberDto);
