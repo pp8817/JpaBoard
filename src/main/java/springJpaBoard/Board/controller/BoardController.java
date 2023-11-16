@@ -90,7 +90,7 @@ public class BoardController {
      */
     @GetMapping("/{boardId}/detail")
     public String detail(@PathVariable Long boardId, Model model) {
-        Board board = boardService.findOne(boardId);
+        BoardDetailDto board = new BoardDetailDto(boardService.findOne(boardId));
         model.addAttribute("board", board);
         return "boards/boardDetail";
     }
@@ -150,6 +150,31 @@ public class BoardController {
             this.boardDateTime = board.getBoardDateTime();
         }
     }
+
+    @Data
+    static class BoardDetailDto{
+        private Long id;
+
+        private String title;
+
+        private String content;
+
+        private String writer;
+
+        private LocalDateTime boardDateTime;
+
+        private LocalDateTime modifyDateTime;
+
+        public BoardDetailDto(Board board) {
+            this.id = board.getId();
+            this.title = board.getTitle();
+            this.content = board.getContent();
+            this.writer = board.getWriter();
+            this.boardDateTime = board.getBoardDateTime();
+            this.modifyDateTime = board.getModifyDateTime();
+        }
+    }
+
 
 
 

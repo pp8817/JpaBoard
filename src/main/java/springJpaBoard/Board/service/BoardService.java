@@ -36,18 +36,24 @@ public class BoardService {
     }
 
     /**
-     * 게시글 목록 조회
+     * 게시글 목록 조회(엔티티 그대로 반환), controller에서 DTO로 변환 필요
      */
     public List<Board> findBoards() {
         return boardRepository.findAll();
     }
 
+    /**
+     * 게시글 목록 조회(페이징 + 컬렉션 엔티티 조회), 마찬가지로 controller에서 DTO로 변환 필요
+     * or 별도의 QueryRepository를 만들어서 JPA에서 DTO 직접 조회
+     *  - JPA에서 직접 DTO를 조회하면서 원하는 데이터만 셀렉트, 최적화 가능
+     */
     public List<Board> findBoardsMember(int offset, int limit) {
         return boardRepository.findAllWithBoardMember(offset, limit);
     }
 
     /**
-     * 검색
+     * 게시글 목록 조회(검색) - 검색 기능이 포함된 게시글 목록 조회
+     * controller에서 DTO로 변환 필요
      */
     public List<Board> findBoardSearch(BoardSearch boardSearch) {
         return boardRepository.findAll2(boardSearch);
@@ -75,5 +81,7 @@ public class BoardService {
     /**
      * 게시글 삭제
      */
-//    public
+    public void delete(Long boardId) {
+        boardRepository.delete(boardId);
+    }
 }

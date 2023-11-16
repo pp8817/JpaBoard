@@ -98,6 +98,9 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
 
+    /**
+     * 게시글 삭제
+     */
     @Override
     public void delete(Long boardId) {
         Board board = em.find(Board.class, boardId);
