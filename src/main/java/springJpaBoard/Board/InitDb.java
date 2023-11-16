@@ -23,6 +23,7 @@ public class InitDb {
     public void init() {
         initService.dbInit1();
         initService.dbInit2();
+        initService.dbInit3();
     }
 
     @Component
@@ -39,11 +40,11 @@ public class InitDb {
 
             Member member = new Member();
             Address address = new Address("서울", "강남", "1283");
-            member.createMember("memberA", "Man", address);
+            member.createMember("memberA", "남성", address);
             em.persist(member);
 
             Board board = new Board();
-            board.createBoard("spring", "wadad", "Park", LocalDateTime.now());
+            board.createBoard("spring", "springboot", "Park", LocalDateTime.now());
             boardService.write(board, member.getId());
         }
 
@@ -51,11 +52,23 @@ public class InitDb {
 
             Member member = new Member();
             Address address = new Address("부산", "광안리", "123123");
-            member.createMember("memberB", "Woman", address);
+            member.createMember("memberB", "여성", address);
             em.persist(member);
 
             Board board = new Board();
-            board.createBoard("JPA", "pppaapp", "sangmin", LocalDateTime.now());
+            board.createBoard("JPA", "springDataJpa", "sangmin", LocalDateTime.now());
+            boardService.write(board, member.getId());
+        }
+
+        public void dbInit3() {
+
+            Member member = new Member();
+            Address address = new Address("강원도", "강릉", "5423");
+            member.createMember("memberC", "나머지", address);
+            em.persist(member);
+
+            Board board = new Board();
+            board.createBoard("객체지향", "객체지향의 사실과 오해", "김영한", LocalDateTime.now());
             boardService.write(board, member.getId());
         }
 

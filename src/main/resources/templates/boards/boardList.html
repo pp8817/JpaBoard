@@ -5,23 +5,37 @@
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <div>
-<!--        <div>-->
-<!--            <form th:object="${boards}" class="form-inline">-->
-<!--                <div class="form-group mb-2">-->
-<!--                    <input type="text" th:field="*{memberName}" class="form-control" placeholder="회원명"/>-->
-<!--                </div>-->
-<!--                <div class="form-group mx-sm-1 mb-2">-->
-<!--                    <select th:field="*{orderStatus}" class="form-control">-->
-<!--                        <option value="">주문상태</option>-->
-<!--                        <option th:each="status : ${T(jpabook.jpashop.domain.OrderStatus).values()}"-->
-<!--                                th:value="${status}"-->
+        <div>
+            <form th:object="${boardSearch}" class="form-inline">
+                <div class="form-group mb-2">
+                    <input type="text" th:field="*{boardTitle}" class="form-control" placeholder="게시글 제목"/>
+                </div>
+                <div class="form-group mx-sm-1 mb-2">
+                    <select th:field="*{memberGender}" class="form-control">
+                        <option value="">성별</option>
+                        <option
+                                th:value="남성"
+                                th:text="남성">option
+                        </option>
+
+                        <option
+                                th:value="여성"
+                                th:text="여성">option
+                        </option>
+
+                        <option
+                                th:value="나머지"
+                                th:text="나머지">option
+                        </option>
+<!--                        <option th:each="gender : ${T(springJpaBoard.Board.domain.Member.gender).values()}"-->
+<!--                                th:value="${gender}"-->
 <!--                                th:text="${status}">option-->
 <!--                        </option>-->
-<!--                    </select>-->
-<!--                </div>-->
-<!--                <button type="submit" class="btn btn-primary mb-2">검색</button>-->
-<!--            </form>-->
-<!--        </div>-->
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">검색</button>
+            </form>
+        </div>
         <table class="table table-striped">
             <thead>
             <tr>

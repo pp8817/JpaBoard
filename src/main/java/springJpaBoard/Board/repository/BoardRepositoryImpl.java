@@ -1,8 +1,13 @@
 package springJpaBoard.Board.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 import springJpaBoard.Board.domain.Board;
+import springJpaBoard.Board.domain.QBoard;
+import springJpaBoard.Board.domain.QMember;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -60,6 +65,38 @@ public class BoardRepositoryImpl implements BoardRepository {
                 .setMaxResults(limit)
                 .getResultList();
     }
+
+    /**
+     * 검색 기능 포함
+     */
+    public List<Board> findAll2(BoardSearch boardSearch) {
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        QBoard board = QBoard.board;
+        QMember member = QMember.member;
+
+        return query.select(board)
+                .from(board)
+                .join(board.member, member)
+                .where(genderEq(boardSearch.getMemberGender()),
+                        titleLike(boardSearch.getBoardTitle()))
+                .limit(1000)
+                .fetch();
+    }
+
+    private BooleanExpression genderEq(String gender) {
+        if (!StringUtils.hasText(gender)) {
+            return null;
+        }
+        return QMember.member.gender.like(gender);
+    }
+
+    private BooleanExpression titleLike(String titleCond) {
+        if (!StringUtils.hasText(titleCond)) {
+            return null;
+        }
+        return QBoard.board.title.like(titleCond);
+    }
+
 
     @Override
     public void delete(Long boardId) {

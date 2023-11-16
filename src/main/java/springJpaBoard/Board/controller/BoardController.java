@@ -12,6 +12,7 @@ import springJpaBoard.Board.controller.form.SaveCheck;
 import springJpaBoard.Board.controller.form.UpdateCheck;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.repository.BoardSearch;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
 import springJpaBoard.Board.service.dto.UpdateBoardDto;
@@ -60,15 +61,27 @@ public class BoardController {
     /**
      * 게시글 목록
      */
+//    @GetMapping
+//    public String list(@RequestParam(value =  "offset", defaultValue = "0") int offset,
+//                       @RequestParam(value = "limit", defaultValue = "100") int limit, Model model) {
+//        List<Board> board = boardService.findBoardsMember(offset, limit);
+//        List<BoardDto> boards = board.stream()
+//                .map(b -> new BoardDto(b))
+//                .collect(Collectors.toList());
+//        model.addAttribute("boards", boards);
+//
+//        return "boards/boardList";
+//    }
     @GetMapping
-    public String list(@RequestParam(value =  "offset", defaultValue = "0") int offset,
-                       @RequestParam(value = "limit", defaultValue = "100") int limit, Model model) {
-        List<Board> board = boardService.findBoardsMember(offset, limit);
-        List<BoardDto> boards = board.stream()
+    public String boardList(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model) {
+        List<Board> boardList = boardService.findBoardSearch(boardSearch);
+
+        List<BoardDto> boards = boardList.stream()
                 .map(b -> new BoardDto(b))
                 .collect(Collectors.toList());
-        model.addAttribute("boards", boards);
 
+        model.addAttribute("boards", boards);
+        
         return "boards/boardList";
     }
 
@@ -79,7 +92,6 @@ public class BoardController {
     public String detail(@PathVariable Long boardId, Model model) {
         Board board = boardService.findOne(boardId);
         model.addAttribute("board", board);
-        System.out.println("board.getContent() = " + board.getContent());
         return "boards/boardDetail";
     }
 

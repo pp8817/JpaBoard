@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.BoardRepositoryImpl;
+import springJpaBoard.Board.repository.BoardSearch;
 import springJpaBoard.Board.repository.MemberRepositoryImpl;
 import springJpaBoard.Board.service.dto.UpdateBoardDto;
 
@@ -46,6 +47,13 @@ public class BoardService {
     }
 
     /**
+     * 검색
+     */
+    public List<Board> findBoardSearch(BoardSearch boardSearch) {
+        return boardRepository.findAll2(boardSearch);
+    }
+
+    /**
      * 게시글 단건 조회
      */
     public Board findOne(Long boardId) {
@@ -68,5 +76,4 @@ public class BoardService {
      * 게시글 삭제
      */
 //    public
-
 }
