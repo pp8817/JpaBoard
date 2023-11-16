@@ -41,6 +41,10 @@ public class BoardService {
         return boardRepository.findAll();
     }
 
+    public List<Board> findBoardsMember(int offset, int limit) {
+        return boardRepository.findAllWithBoardMember(offset, limit);
+    }
+
     /**
      * 게시글 단건 조회
      */
@@ -63,5 +67,6 @@ public class BoardService {
     /**
      * 게시글 삭제
      */
+//    public
 
 }

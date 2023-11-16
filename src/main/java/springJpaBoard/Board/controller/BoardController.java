@@ -1,5 +1,6 @@
 package springJpaBoard.Board.controller;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import springJpaBoard.Board.service.dto.UpdateBoardDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -43,7 +45,6 @@ public class BoardController {
     @PostMapping("/write")
     public String write(@Validated(SaveCheck.class) @ModelAttribute BoardForm boardForm, @RequestParam("memberId") Long memberId, BindingResult result) {
 
-
         /*
         오류 발생시(@Valid 에서 발생)
          */
@@ -60,9 +61,14 @@ public class BoardController {
      * 게시글 목록
      */
     @GetMapping
-    public String list(Model model) {
-        List<Board> boards = boardService.findBoards();
+    public String list(@RequestParam(value =  "offset", defaultValue = "0") int offset,
+                       @RequestParam(value = "limit", defaultValue = "100") int limit, Model model) {
+        List<Board> board = boardService.findBoardsMember(offset, limit);
+        List<BoardDto> boards = board.stream()
+                .map(b -> new BoardDto(b))
+                .collect(Collectors.toList());
         model.addAttribute("boards", boards);
+
         return "boards/boardList";
     }
 
@@ -99,4 +105,50 @@ public class BoardController {
 
         return "redirect:/boards"; //게시글 수정 후 게시글 목록으로 이동
     }
+
+    /**
+     * 게시글 삭제
+     */
+//    @GetMapping("/{boardId}/delete")
+//    public String deleteBoard(@PathVariable Long boardId){
+//
+//    }
+
+
+    /**
+     * BoardDto는 Controller에서만 사용하기 때문에 static class로 작성해줬다.
+     */
+    @Data
+    static class BoardDto {
+        private Long id;
+
+        private String name;
+
+        private String title;
+
+        private String writer;
+
+        private LocalDateTime boardDateTime;
+
+        public BoardDto(Board board) {
+            this.id = board.getId();
+            this.name = board.getMember().getName();
+            this.title = board.getTitle();
+            this.writer = board.getWriter();
+            this.boardDateTime = board.getBoardDateTime();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

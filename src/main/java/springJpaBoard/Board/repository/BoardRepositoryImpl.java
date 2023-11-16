@@ -40,26 +40,31 @@ public class BoardRepositoryImpl implements BoardRepository {
     public List<Board> findAll() {
         List<Board> boardList = em.createQuery("select b from Board b", Board.class)
                 .getResultList();
+
         return boardList;
     }
 
-//    /**
-//     * 게시글 수정
-//     * 게시글 수정은 제목, 내용만 가능
-//     * 추후 service로 이동, Transactional
-//     */
-//    @Override
-//    public void update(Long boardId, UpdateBoardDto boardDto) {
-//        Board board = em.find(Board.class, boardId);
-//        /*
-//        Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현
-//         */
-//        board.editBoard(boardDto.getTitle(), boardDto.getContent());
-//    }
+    /**
+     * 페이징 + 컬렉션 엔티티 조회
+     *
+     * ToOne 관계인 Member는 Fetch join을 한다.
+     * ToOne 관계는 row수를 증가시키지 않으므로 페이징 쿼리에 영향을 주지 않는다.
+     * 컬렉션은 지연 로딩으로 조회한다.
+     *
+     * 지연 로딩 성능 최적화를 위해 hibernate.default_batch_fetch_size 적용
+     */
+    public List<Board> findAllWithBoardMember(int offset, int limit) {
+        return em.createQuery("select b from Board b " +
+                "join fetch b.member m ", Board.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
 
     @Override
     public void delete(Long boardId) {
-
+        Board board = em.find(Board.class, boardId);
+        em.remove(board);
     }
 
     @Override
