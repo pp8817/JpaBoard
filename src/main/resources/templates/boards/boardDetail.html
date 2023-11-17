@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게시글 상세</title>
+    <title th:text="#{page.board.detail}">게시글 상세</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -77,15 +77,15 @@
 <!--    <div th:replace="fragments/bodyHeader :: bodyHeader"/>-->
 
     <div class="btn-group">
-        <a class="btn btn-delete" th:href="@{/boards/{id}/delete(id=${board.id})}">게시글 삭제</a>
-        <a class="btn btn-edit" th:href="@{/boards/{id}/edit(id=${board.id})}">게시글 수정</a>
-        <a class="btn" th:href="@{/boards}">목록으로 돌아가기</a>
+        <a class="btn btn-delete" th:text="#{button.board.delete}" th:href="@{/boards/{id}/delete(id=${board.id})}">게시글 삭제</a>
+        <a class="btn btn-edit" th:text="#{button.board.edit}" th:href="@{/boards/{id}/edit(id=${board.id})}">게시글 수정</a>
+        <a class="btn" th:text="#{button.board.list}" th:href="@{/boards}">목록으로 돌아가기</a>
     </div>
 
     <div class="board">
         <h2 class="title" th:text="${board.title}">게시글 제목</h2>
 
-        <p class="author" th:text="작성자 +': ' + ${board.writer}" >작성자: 작성자 이름</p>
+        <p class="author" th:text="#{label.board.writer} +': ' + ${board.writer}" >작성자: 작성자 이름</p>
 
         <div class="time"> <!-- 변경된 부분 -->
             <span th:text="${#temporals.format(board.getBoardDateTime(), 'yyyy.MM.dd / HH:mm:ss')}"></span>

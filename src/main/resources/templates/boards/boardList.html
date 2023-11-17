@@ -12,20 +12,20 @@
                 </div>
                 <div class="form-group mx-sm-1 mb-2">
                     <select th:field="*{memberGender}" class="form-control">
-                        <option value="">성별</option>
+                        <option value="" th:text="#{label.member.gender}">성별</option>
                         <option
                                 th:value="남성"
-                                th:text="남성">option
+                                th:text="#{option.gender.man}">option
                         </option>
 
                         <option
                                 th:value="여성"
-                                th:text="여성">option
+                                th:text="#{option.gender.woman}">option
                         </option>
 
                         <option
                                 th:value="나머지"
-                                th:text="나머지">option
+                                th:text="#{option.gender.ex}">option
                         </option>
 <!--                        <option th:each="gender : ${T(springJpaBoard.Board.domain.Member.gender).values()}"-->
 <!--                                th:value="${gender}"-->
@@ -33,17 +33,17 @@
 <!--                        </option>-->
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary mb-2">검색</button>
+                <button type="submit" th:text="#{button.search}" class="btn btn-primary mb-2">검색</button>
             </form>
         </div>
         <table class="table table-striped">
             <thead>
             <tr>
                 <th>#</th>
-                <th>회원 ID</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성 시간</th>
+                <th th:text="#{label.board.member}">회원 ID</th>
+                <th th:text="#{label.board.title}">제목</th>
+                <th th:text="#{label.board.writer}">작성자</th>
+                <th th:text="#{label.board.createTime}">작성 시간</th>
                 <th></th>
             </tr>
             </thead>
