@@ -1,5 +1,6 @@
 package springJpaBoard.Board.controller;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,11 +9,14 @@ import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.controller.form.MemberForm;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.repository.MemberSearch;
 import springJpaBoard.Board.service.MemberService;
 import springJpaBoard.Board.service.dto.UpdateMemberDto;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Controller
 @RequiredArgsConstructor
@@ -60,12 +64,23 @@ public class MemberController {
     /**
      * 회원 목록
      */
+//    @GetMapping
+//    public String list(Model model) {
+//        List<Member> members = memberService.findMembers();
+//        model.addAttribute("members", members);
+//
+//        return "members/memberList";
+//    }
     @GetMapping
-    public String list(Model model) {
-        List<Member> members = memberService.findMembers();
-        model.addAttribute("members", members);
+    public String memberList(@ModelAttribute("memberSearch") MemberSearch memberSearch, Model model) {
+        List<Member> members = memberService.findSearchMembers(memberSearch);
+        List<MemberDto> memberDtos = members.stream()
+                .map(m -> new MemberDto(m))
+                .collect(toList());
+        model.addAttribute("members", memberDtos);
 
         return "members/memberList";
+
     }
 
     /**
@@ -96,4 +111,26 @@ public class MemberController {
     /**
      * 회원 삭제
      */
+    @GetMapping("{memberId}/delete")
+    public String deleteMember(@PathVariable Long memberId) {
+        memberService.delete(memberId);
+
+        return "redirect:/members";
+    }
+
+    @Data
+    static class MemberDto {
+        private Long id;
+        private String name;
+        private String gender;
+        private Address address;
+
+        public MemberDto(Member member) {
+            this.id = member.getId();
+            this.name = member.getName();
+            this.gender = member.getGender();
+            this.address = member.getAddress();
+        }
+    }
+
 }

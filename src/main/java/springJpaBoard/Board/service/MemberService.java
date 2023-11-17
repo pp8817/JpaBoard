@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.MemberRepositoryImpl;
+import springJpaBoard.Board.repository.MemberSearch;
 import springJpaBoard.Board.service.dto.UpdateMemberDto;
 
 import java.util.List;
@@ -45,6 +46,14 @@ public class MemberService {
     }
 
     /**
+     * 회원 전체 조회(검색) - 검색 기능이 포함된 회원 목록 조회
+     * controller에서 DTO로 변환 필요
+     */
+    public List<Member> findSearchMembers(MemberSearch memberSearch) {
+        return memberRepository.findAll2(memberSearch);
+    }
+
+    /**
      * 회원 단건 조회
      */
     public Member findOne(Long id) {
@@ -66,5 +75,9 @@ public class MemberService {
     /**
      * 회원 삭제
      */
+    @Transactional
+    public void delete(Long memberId) {
+        memberRepository.delete(memberId);
+    }
 
 }

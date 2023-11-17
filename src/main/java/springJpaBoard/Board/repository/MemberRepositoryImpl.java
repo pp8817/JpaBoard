@@ -1,8 +1,12 @@
 package springJpaBoard.Board.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.domain.QMember;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -38,8 +42,34 @@ public class MemberRepositoryImpl implements MemberRepository{
                 .getResultList();
     }
 
-//    public List<Member> findAll2() {
-//    }
+    /**
+     * 검색 기능이 포함된 회원 조회
+     */
+    public List<Member> findAll2(MemberSearch memberSearch) {
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        QMember member = QMember.member;
+
+        return query.select(member)
+                .from(member)
+                .where(nameLike(memberSearch.getMemberName()),
+                        genderEq(memberSearch.getMemberGender()))
+                .limit(1000)
+                .fetch();
+    }
+
+    private BooleanExpression nameLike(String nameCond) {
+        if (!StringUtils.hasText(nameCond)) {
+            return null;
+        }
+        return QMember.member.name.like(nameCond);
+    }
+
+    private BooleanExpression genderEq(String gender) {
+        if (!StringUtils.hasText(gender)) {
+            return null;
+        }
+        return QMember.member.gender.like(gender);
+    }
 
 
     /**
@@ -65,6 +95,6 @@ public class MemberRepositoryImpl implements MemberRepository{
      */
     @Override
     public void delete(Long memberId) {
-
+        em.remove(em.find(Member.class, memberId));
     }
 }
