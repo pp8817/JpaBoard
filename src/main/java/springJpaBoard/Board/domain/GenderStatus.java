@@ -1,5 +1,5 @@
-//package springJpaBoard.Board.domain;
-//
-//public enum GenderStatus {
-//    Man, WOMAN, NEUTRALITY
-//}
+package springJpaBoard.Board.domain;
+
+public enum GenderStatus {
+    Man, WOMAN, NEUTRALITY
+}
