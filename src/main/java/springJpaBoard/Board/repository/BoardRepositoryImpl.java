@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import springJpaBoard.Board.domain.Board;
+import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.QBoard;
 import springJpaBoard.Board.domain.QMember;
 
@@ -77,17 +78,17 @@ public class BoardRepositoryImpl implements BoardRepository {
         return query.select(board)
                 .from(board)
                 .join(board.member, member)
-                .where(genderEq(boardSearch.getMemberGender()),
+                .where(statusEq(boardSearch.getMemberGender()),
                         titleLike(boardSearch.getBoardTitle()))
                 .limit(1000)
                 .fetch();
     }
 
-    private BooleanExpression genderEq(String gender) {
-        if (!StringUtils.hasText(gender)) {
+    private BooleanExpression statusEq(GenderStatus genderStatus) {
+        if (genderStatus == null) {
             return null;
         }
-        return QMember.member.gender.like(gender);
+        return QMember.member.gender.eq(genderStatus);
     }
 
     private BooleanExpression titleLike(String titleCond) {

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Address;
+import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.Member;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +23,7 @@ class MemberRepositoryImplTest {
         //given
         Member member = new Member();
         Address address = new Address("1", "1","1");
-        member.createMember("memberA", "Man", address);
+        member.createMember("memberA", GenderStatus.남성, address);
 
         //when
         memberRepository.save(member);

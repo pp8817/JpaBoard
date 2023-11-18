@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Board;
+import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
@@ -40,7 +41,7 @@ public class InitDb {
 
             Member member = new Member();
             Address address = new Address("서울", "강남", "1283");
-            member.createMember("memberA", "남성", address);
+            member.createMember("memberA", GenderStatus.남성, address);
             em.persist(member);
 
             Board board = new Board();
@@ -52,7 +53,7 @@ public class InitDb {
 
             Member member = new Member();
             Address address = new Address("부산", "광안리", "123123");
-            member.createMember("memberB", "여성", address);
+            member.createMember("memberB", GenderStatus.여성, address);
             em.persist(member);
 
             Board board = new Board();
@@ -64,7 +65,7 @@ public class InitDb {
 
             Member member = new Member();
             Address address = new Address("강원도", "강릉", "5423");
-            member.createMember("memberC", "나머지", address);
+            member.createMember("memberC", GenderStatus.중성, address);
             em.persist(member);
 
             Board board = new Board();

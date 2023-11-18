@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.controller.form.MemberForm;
 import springJpaBoard.Board.domain.Address;
+import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.MemberSearch;
 import springJpaBoard.Board.service.MemberService;
@@ -122,7 +123,7 @@ public class MemberController {
     static class MemberDto {
         private Long id;
         private String name;
-        private String gender;
+        private GenderStatus gender;
         private Address address;
 
         public MemberDto(Member member) {

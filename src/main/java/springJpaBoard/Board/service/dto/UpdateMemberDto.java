@@ -2,6 +2,7 @@ package springJpaBoard.Board.service.dto;
 
 import lombok.Getter;
 import springJpaBoard.Board.domain.Address;
+import springJpaBoard.Board.domain.GenderStatus;
 
 @Getter
 public class UpdateMemberDto {
@@ -10,12 +11,12 @@ public class UpdateMemberDto {
 
     private String name;
 
-    private String gender;
+    private GenderStatus gender;
 
     private Address address;
 
 
-    public UpdateMemberDto(Long id, String name, String gender, Address address) {
+    public UpdateMemberDto(Long id, String name, GenderStatus gender, Address address) {
         this.id = id;
         this.name = name;
         this.gender = gender;

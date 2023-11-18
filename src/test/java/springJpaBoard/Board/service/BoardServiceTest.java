@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Board;
+import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.BoardRepositoryImpl;
 import springJpaBoard.Board.service.dto.UpdateBoardDto;
@@ -35,7 +36,7 @@ class BoardServiceTest {
 
         Member member = new Member();
         Address address = new Address("부산", "광안리", "123123");
-        member.createMember("fff", "여성", address);
+        member.createMember("fff", GenderStatus.여성, address);
         em.persist(member);
 
         //when
@@ -53,7 +54,7 @@ class BoardServiceTest {
 
         Member member = new Member();
         Address address = new Address("부산", "광안리", "123123");
-        member.createMember("mwadaw", "여성", address);
+        member.createMember("mwadaw", GenderStatus.여성, address);
         em.persist(member);
 
         Long savedId = boardService.write(board, member.getId());
@@ -78,7 +79,7 @@ class BoardServiceTest {
 
         Member member = new Member();
         Address address = new Address("부산", "광안리", "123123");
-        member.createMember("mwadaw", "여성", address);
+        member.createMember("mwadaw", GenderStatus.여성, address);
         em.persist(member);
 
         Long savedId = boardService.write(board, member.getId());

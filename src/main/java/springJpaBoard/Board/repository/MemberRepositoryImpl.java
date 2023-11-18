@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.QMember;
 
@@ -52,7 +53,7 @@ public class MemberRepositoryImpl implements MemberRepository{
         return query.select(member)
                 .from(member)
                 .where(nameLike(memberSearch.getMemberName()),
-                        genderEq(memberSearch.getMemberGender()))
+                        statusEq(memberSearch.getMemberGender()))
                 .limit(1000)
                 .fetch();
     }
@@ -64,11 +65,11 @@ public class MemberRepositoryImpl implements MemberRepository{
         return QMember.member.name.like(nameCond);
     }
 
-    private BooleanExpression genderEq(String gender) {
-        if (!StringUtils.hasText(gender)) {
+    private BooleanExpression statusEq(GenderStatus genderStatus) {
+        if (genderStatus == null) {
             return null;
         }
-        return QMember.member.gender.like(gender);
+        return QMember.member.gender.eq(genderStatus);
     }
 
 

@@ -13,24 +13,25 @@
                 <div class="form-group mx-sm-1 mb-2">
                     <select th:field="*{memberGender}" class="form-control">
                         <option value="" th:text="#{label.member.gender}">성별</option>
-                        <option
-                                th:value="남성"
-                                th:text="#{option.gender.man}">option
-                        </option>
-
-                        <option
-                                th:value="여성"
-                                th:text="#{option.gender.woman}">option
-                        </option>
-
-                        <option
-                                th:value="나머지"
-                                th:text="#{option.gender.ex}">option
-                        </option>
-<!--                        <option th:each="gender : ${T(springJpaBoard.Board.domain.Member.gender).values()}"-->
-<!--                                th:value="${gender}"-->
-<!--                                th:text="${status}">option-->
+<!--                        <option-->
+<!--                                th:value="남성"-->
+<!--                                th:text="#{option.gender.man}">option-->
 <!--                        </option>-->
+
+<!--                        <option-->
+<!--                                th:value="여성"-->
+<!--                                th:text="#{option.gender.woman}">option-->
+<!--                        </option>-->
+
+<!--                        <option-->
+<!--                                th:value="나머지"-->
+<!--                                th:text="#{option.gender.ex}">option-->
+<!--                        </option>-->
+                        <option th:each="gender : ${T(springJpaBoard.Board.domain.GenderStatus).values()}"
+                                th:value="${gender}"
+                                th:text="${gender}">option
+                        </option>
+
                     </select>
                 </div>
                 <button type="submit" th:text="#{button.search}" class="btn btn-primary mb-2">검색</button>
