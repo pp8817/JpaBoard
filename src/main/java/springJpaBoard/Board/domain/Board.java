@@ -5,6 +5,8 @@ import springJpaBoard.Board.service.dto.UpdateBoardDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -19,6 +21,9 @@ public class Board {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id") //FK
     private Member member; //연관관계의 주인
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE) //게시글이 삭제되면 댓글도 모두 삭제
+    private List<Comment> commentList = new ArrayList<>();
 
     private String title;
 
