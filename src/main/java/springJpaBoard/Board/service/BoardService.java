@@ -3,6 +3,7 @@ package springJpaBoard.Board.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springJpaBoard.Board.controller.form.CommentDto;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.BoardRepositoryImpl;

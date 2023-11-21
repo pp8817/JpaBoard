@@ -1,6 +1,8 @@
 package springJpaBoard.Board.domain;
 
 import lombok.Getter;
+import lombok.ToString;
+import springJpaBoard.Board.controller.form.CommentDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,6 +11,7 @@ import static javax.persistence.FetchType.*;
 
 @Entity
 @Getter
+@ToString
 /**
  * 기능: 댓글을 달 회원을 선택하고 댓글을 달 수 있다.
  이름을 검증해서 글쓰이와 동일한 회원이 댓글을 다는 경우 이름은 '글쓴이',
@@ -26,19 +29,19 @@ public class Comment {
     @Id
     @GeneratedValue
     @Column(name = "comment_id")
-    private Long Id;
-
-    private int idx; // 글 번호
+    private Long id;
 
     private String writer; // 작성자
+
+    private Long bno;
 
     private String content;  //댓글 내용
 
     private LocalDateTime createDateTime;  //작성 시간
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "member_id")
+//    private Member member;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id")
@@ -50,5 +53,11 @@ public class Comment {
     public void setBoard(Board board) {
         this.board = board;
         board.getCommentList().add(this);
+    }
+
+    public void createComment(CommentDto commentDto) {
+        this.writer = commentDto.getWriter();
+        this.content = commentDto.getContent();
+        this.createDateTime = LocalDateTime.now();
     }
 }

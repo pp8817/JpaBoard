@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+import springJpaBoard.Board.controller.form.CommentDto;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.QBoard;

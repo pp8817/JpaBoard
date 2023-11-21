@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<!--<head th:replace="fragments/header :: header"/>-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="#{page.board.detail}">게시글 상세</title>
+    <!-- Bootstrap CSS 추가 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,25 +20,28 @@
             min-height: 100vh;
             background-color: #f5f5f5;
         }
+
         .container {
             text-align: center;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
             position: relative;
-            max-width: 720px; /* 변경된 너비 */
+            /*max-width: 720px;*/
             width: 100%;
-            height: 480px; /* 변경된 높이 */
-            overflow: auto; /* 스크롤을 표시하기 위한 설정 */
+            /*height: 480px;*/
+            overflow: auto;
             padding: 40px;
         }
+
         .btn-group {
             position: absolute;
-            top: 10px; /* 간격 조정 */
+            top: 10px;
             right: 20px;
         }
+
         .btn {
-            padding: 5px 10px; /* 변경된 padding 값 */
+            padding: 5px 10px;
             background-color: #007bff;
             color: white;
             border: none;
@@ -43,51 +50,101 @@
             text-decoration: none;
             margin-left: 10px;
         }
+
         .btn-delete {
             background-color: #dc3545;
         }
+
         .btn-edit {
             background-color: #ffc107;
         }
 
-        .time {
-            float: left; /* 시간을 왼쪽으로 띄움 */
-            clear: both; /* 시간 위에 다른 요소가 없도록 */
-            margin-right: 10px; /* 시간과 내용 사이 간격 추가 */
-            position: absolute;
-            top: 10px; /* 간격 조정 */
-        }
-
         .title {
             text-align: center;
+            font-size: 24px; /* 텍스트 크기 조절 */
+            margin-bottom: 20px; /* 아래 여백 추가 */
         }
 
         .author {
-            border-bottom: 2px solid #ccc; /* 구분선 스타일 추가 */
-            padding-bottom: 10px; /* 구분선과 내용 간격 조정 */
-            margin-bottom: 20px; /* 제목 아래 여백 추가 */
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 16px; /* 텍스트 크기 조절 */
         }
 
+        .time {
+            float: left;
+            clear: both;
+            margin-right: 10px;
+            position: absolute;
+            top: 10px;
+            font-size: 14px; /* 텍스트 크기 조절 */
+        }
+
+        .content {
+            font-size: 18px; /* 텍스트 크기 조절 */
+            margin-bottom: 20px; /* 아래 여백 추가 */
+        }
+
+        .comment-card {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            margin-top: 10px;
+            width: 50%; /* 현재의 절반 크기로 조절 */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .comment-body {
+            padding: 15px;
+        }
+
+        .comment-info {
+            color: #6c757d;
+            font-size: 0.8rem;
+        }
+
+        .comment-form {
+            margin-top: 20px;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .comment-form button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
     </style>
 </head>
+
 <body>
 
-
 <div class="container">
-<!--    <div th:replace="fragments/bodyHeader :: bodyHeader"/>-->
-
     <div class="btn-group">
-        <a class="btn btn-delete" th:text="#{button.board.delete}" th:href="@{/boards/{id}/delete(id=${board.id})}">게시글 삭제</a>
-        <a class="btn btn-edit" th:text="#{button.board.edit}" th:href="@{/boards/{id}/edit(id=${board.id})}">게시글 수정</a>
+        <a class="btn btn-delete" th:text="#{button.board.delete}"
+           th:href="@{/boards/{id}/delete(id=${board.id})}">게시글 삭제</a>
+        <a class="btn btn-edit" th:text="#{button.board.edit}" th:href="@{/boards/{id}/edit(id=${board.id})}">게시글
+            수정</a>
         <a class="btn" th:text="#{button.board.list}" th:href="@{/boards}">목록으로 돌아가기</a>
     </div>
 
     <div class="board">
         <h2 class="title" th:text="${board.title}">게시글 제목</h2>
 
-        <p class="author" th:text="#{label.board.writer} +': ' + ${board.writer}" >작성자: 작성자 이름</p>
+        <p class="author" th:text="#{label.board.writer} +': ' + ${board.writer}">작성자: 작성자 이름</p>
 
-        <div class="time"> <!-- 변경된 부분 -->
+        <div class="time">
             <span th:text="${#temporals.format(board.getBoardDateTime(), 'yyyy.MM.dd / HH:mm:ss')}"></span>
             <br>
             <span th:if="${board.getModifyDateTime()}"
@@ -95,44 +152,50 @@
         </div>
 
         <p class="content" th:text="${board.content}">내용: 게시글 내용...</p>
-        <!--        <a th:href="@{${post.filepath}}">첨부파일 기능 구현중..</a>-->
-<!--        <span th:if="${post.filepath != null}">-->
-<!--            <img th:src="@{'/images/' + ${post.filepath}}" width="300" height="300"/><br>-->
-<!--            &lt;!&ndash;   파일 다운로드   &ndash;&gt;-->
-<!--            사진 다운로드: <a th:href="|/attach/${post.id}|" th:text="${post.getFilename()}"/>-->
-<!--        </span>-->
 
     </div>
-<!--    <div th:replace="fragments/footer :: footer"/>-->
+
+    <!-- Comments Form -->
+    <div class="card my-4">
+        <h5 class="card-header">Leave a Comment:</h5>
+        <div class="card-body comment-form">
+            <form name="comment-form" th:action="@{'/board/' + ${board.id} + '/comment'}" method="post"
+                  th:object="${commentDto}">
+                <div class="form-group">
+                    <input type="text" th:field="*{writer}" class="form-control" placeholder="작성자">
+                    <textarea th:field="*{content}" class="form-control" placeholder="댓글을 작성하세요"
+                              rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" th:text="#{button.submit}">Submit</button>
+            </form>
+        </div>
+        <h4 class="mt-4">댓글</h4>
+
+        <!-- 댓글을 반복하고 정보를 표시 -->
+        <div th:each="comment : ${board.comments}" class="comment-card">
+            <div class="comment-body">
+                <p th:text="${comment.content}" class="card-text"></p>
+                <div class="comment-info mt-2">
+                    <span th:text="${comment.writer}"></span>
+                    <span class="ml-2 text-muted" th:text="${comment.getTime()}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+
+<!-- Bootstrap JS 및 Popper.js 추가 -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
 </body>
 </html>
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
-<!--    <title>게시글 상세 페이지</title>-->
-<!--</head>-->
-<!--<body>-->
-
-<!--<div class="container mt-4">-->
-<!--    <h1 class="mb-4">게시글 상세 페이지</h1>-->
-
-<!--    <div class="card">-->
-<!--        <div class="card-body">-->
-<!--            <h5 class="card-title">제목: 게시글 제목</h5>-->
-<!--            <h6 class="card-subtitle mb-2 text-muted">작성자: 작성자 이름</h6>-->
-<!--            <p class="card-text">내용: 게시글 내용이 여기에 들어갑니다.</p>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--</div>-->
-
-<!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
-<!--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>-->
-<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
-<!--</body>-->
-<!--</html>-->
