@@ -32,7 +32,6 @@ public class CommentController {
          * html에서 board의 comment의 정보들을 꺼내서 나타내주면 됨
          */
         comment.setBoard(board);
-
         commentService.save(comment);
 
         return "redirect:/boards/" + id + "/detail";
