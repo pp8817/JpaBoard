@@ -10,6 +10,7 @@
       <select name="memberId" id="member" class="form-control">
         <option value="" th:text="#{option.selectMember}">회원 선택</option>
         <option th:each="member : ${members}"
+                th:field="${boardForm.member}"
                 th:value="${member.id}"
                 th:text="${member.name}" />
       </select>

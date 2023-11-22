@@ -55,6 +55,7 @@
                 <td th:text="${board.name}">/td>
                 <td>
                     <a th:href="@{/boards/{id}/detail(id=${board.id})}" th:text="${board.title}"></a>
+                    <span th:text="'[' + ${board.commentCount} + ']'"></span>
                 </td>
                 <td th:text="${board.writer}"></td>
                 <td th:text="${#temporals.format(board.getBoardDateTime(), 'YY년 MM월 dd일')}"></td>

@@ -2,7 +2,7 @@ package springJpaBoard.Board.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +26,7 @@ public class CommentController {
      * 댓글 작성
      */
     @PostMapping("/board/{id}/comment")
-    public String saveComment(@Valid @ModelAttribute CommentResponseDto commentForm, Errors result, @PathVariable Long id) {
+    public String saveComment(@Valid @ModelAttribute CommentResponseDto commentForm, BindingResult result, @PathVariable Long id) {
 
         if (result.hasErrors()) {
             System.out.println("유효성 검증 실패:");

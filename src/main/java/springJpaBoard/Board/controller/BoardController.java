@@ -8,9 +8,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.controller.requestdto.BoardForm;
-import springJpaBoard.Board.controller.responsedto.CommentResponseDto;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
 import springJpaBoard.Board.controller.requestdto.UpdateCheck;
+import springJpaBoard.Board.controller.responsedto.CommentResponseDto;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.BoardSearch;
@@ -39,19 +39,25 @@ public class BoardController {
         /**
          * 빈 껍데기인 MemberFrom 객체를 model에 담아서 가져가는 이유는 Validation의 기능을 사용하기 위해서이다.
          */
-        List<Member> members = memberService.findMembers();
+        List<Member> memberList = memberService.findMembers();
+
+        List<MemberResponseDto> members = memberList.stream()
+                .map(m -> new MemberResponseDto(m))
+                .collect(toList());
+
         model.addAttribute("members", members);
         model.addAttribute("boardForm", new BoardForm());
         return "boards/writeBoardForm";
     }
 
     @PostMapping("/write")
-    public String write(@Validated(SaveCheck.class) @ModelAttribute BoardForm boardForm, @RequestParam("memberId") Long memberId, BindingResult result) {
+    public String write(@Validated(SaveCheck.class) @ModelAttribute BoardForm boardForm, BindingResult result, @RequestParam("memberId") Long memberId) {
 
         /*
         오류 발생시(@Valid 에서 발생)
          */
         if (result.hasErrors()) {
+            System.out.println("result = " + result.getAllErrors());
             return "boards/writeBoardForm";
         }
         Board board = new Board();
@@ -154,6 +160,8 @@ public class BoardController {
 
         private LocalDateTime boardDateTime;
 
+        private int commentCount;
+
         public BoardDto(Board board) {
             this.id = board.getId();
             this.name = board.getMember().getName();
@@ -161,6 +169,7 @@ public class BoardController {
             this.writer = board.getWriter();
             this.view = board.getView();
             this.boardDateTime = board.getBoardDateTime();
+            this.commentCount = board.getCommentList().size();
         }
     }
 
@@ -197,17 +206,16 @@ public class BoardController {
 
     }
 
+    @Data
+    static class MemberResponseDto {
+        private Long id;
+        private String name;
 
-
-
-
-
-
-
-
-
-
-
+        public MemberResponseDto(Member member) {
+            this.id = member.getId();
+            this.name = member.getName();
+        }
+    }
 
 
 }
