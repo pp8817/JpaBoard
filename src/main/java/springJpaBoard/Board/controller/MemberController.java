@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import springJpaBoard.Board.controller.form.MemberForm;
+import springJpaBoard.Board.controller.requestdto.MemberForm;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.Member;
@@ -40,10 +40,6 @@ public class MemberController {
 
     @PostMapping("/new")
     public String create(@Valid @ModelAttribute MemberForm memberForm, BindingResult result) {
-
-        /*
-        현재 문제: front에서 값을 받아서 form으로 전달해줘야하는데 form에 값이 안넘어 오는중
-         */
 
         /*
         오류 발생시(@Valid 에서 발생)

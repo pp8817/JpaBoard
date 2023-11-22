@@ -33,6 +33,8 @@ public class Board {
 
     private String writer;
 
+    private int view;
+
     private LocalDateTime boardDateTime;
 
     private LocalDateTime modifyDateTime;

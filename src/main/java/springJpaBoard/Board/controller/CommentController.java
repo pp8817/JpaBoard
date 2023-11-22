@@ -2,14 +2,18 @@ package springJpaBoard.Board.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import springJpaBoard.Board.controller.form.CommentDto;
+import springJpaBoard.Board.controller.responsedto.CommentResponseDto;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.CommentService;
+
+import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,16 +25,22 @@ public class CommentController {
     /**
      * 댓글 작성
      */
-    @PostMapping("/board/{id}/comment")
-    public String saveComment(@PathVariable Long id, @ModelAttribute CommentDto commentDto) {
+    @PostMapping("/comment/{id}")
+    public String saveComment(@Valid @ModelAttribute CommentResponseDto commentForm, @PathVariable Long id, BindingResult result) {
+        System.out.println("######################");
+
+        if (result.hasErrors()) {
+            System.out.println("유효성 검증 실패:");
+            for (FieldError error : result.getFieldErrors()) {
+                System.out.println("Field: " + error.getField() + ", Code: " + error.getCode() + ", Message: " + error.getDefaultMessage());
+            }
+            return "boards/boardDetail";
+        }
+
         Board board = boardService.findOne(id);
         Comment comment = new Comment();
-        comment.createComment(commentDto);
+        comment.createComment(commentForm);
 
-        /**
-         * 연관관계를 설정하면서 각 board에 comment들이 저장됨.
-         * html에서 board의 comment의 정보들을 꺼내서 나타내주면 됨
-         */
         comment.setBoard(board);
         commentService.save(comment);
 

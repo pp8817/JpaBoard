@@ -3,9 +3,9 @@ package springJpaBoard.Board.repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-import springJpaBoard.Board.controller.form.CommentDto;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.QBoard;
@@ -114,4 +114,8 @@ public class BoardRepositoryImpl implements BoardRepository {
         return 0;
     }
 
+    @Modifying
+    public void updateView(Long id) {
+        em.createQuery("UPDATE Board b SET b.view = b.view + 1 WHERE b.id = :id");
+    }
 }

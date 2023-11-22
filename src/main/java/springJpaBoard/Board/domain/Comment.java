@@ -2,7 +2,7 @@ package springJpaBoard.Board.domain;
 
 import lombok.Getter;
 import lombok.ToString;
-import springJpaBoard.Board.controller.form.CommentDto;
+import springJpaBoard.Board.controller.responsedto.CommentResponseDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -33,15 +33,9 @@ public class Comment {
 
     private String writer; // 작성자
 
-    private Long bno;
-
     private String content;  //댓글 내용
 
     private LocalDateTime createDateTime;  //작성 시간
-
-//    @ManyToOne(fetch = LAZY)
-//    @JoinColumn(name = "member_id")
-//    private Member member;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id")
@@ -55,7 +49,7 @@ public class Comment {
         board.getCommentList().add(this);
     }
 
-    public void createComment(CommentDto commentDto) {
+    public void createComment(CommentResponseDto commentDto) {
         this.writer = commentDto.getWriter();
         this.content = commentDto.getContent();
         this.createDateTime = LocalDateTime.now();

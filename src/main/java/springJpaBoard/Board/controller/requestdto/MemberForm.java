@@ -1,4 +1,4 @@
-package springJpaBoard.Board.controller.form;
+package springJpaBoard.Board.controller.requestdto;
 
 import lombok.Getter;
 import lombok.Setter;

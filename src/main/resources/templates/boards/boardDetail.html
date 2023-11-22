@@ -159,12 +159,23 @@
     <div class="card my-4">
         <h5 class="card-header">Leave a Comment:</h5>
         <div class="card-body comment-form">
-            <form name="comment-form" th:action="@{'/board/' + ${board.id} + '/comment'}" method="post"
-                  th:object="${commentDto}">
+            <form name="comment-form" th:action="@{'/comment/' + ${board.id}}" method="post"
+                  th:object="${commentForm}">
                 <div class="form-group">
-                    <input type="text" th:field="*{writer}" class="form-control" placeholder="작성자">
-                    <textarea th:field="*{content}" class="form-control" placeholder="댓글을 작성하세요"
-                              rows="3"></textarea>
+<!--                    <input type="hidden" id = "bno" value>-->
+<!--                    <label th:for="writer" th:text="작성자">작성자</label>-->
+                    <input type="text" th:field="*{writer}" class="form-control" placeholder="작성자"
+                           th:class="${#fields.hasErrors('writer')}? 'form-control fieldError' : 'form-control'">
+                    <p th:if="${#fields.hasErrors('writer')}"
+                       th:errors="*{writer}">Incorrect date</p>
+                </div>
+
+                <div class="form-group">
+<!--                    <label th:for="content" th:text="내용">내용</label>-->
+                    <textarea th:field="*{content}" class="form-control" placeholder="댓글을 작성하세요" rows="3"
+                              th:class="${#fields.hasErrors('content')}? 'form-control fieldError' : 'form-control'"></textarea>
+                    <p th:if="${#fields.hasErrors('content')}"
+                       th:errors="*{content}">Incorrect date</p>
                 </div>
                 <button type="submit" class="btn btn-primary" th:text="#{button.submit}">Submit</button>
             </form>
@@ -172,12 +183,12 @@
         <h4 class="mt-4">댓글</h4>
 
         <!-- 댓글을 반복하고 정보를 표시 -->
-        <div th:each="comment : ${board.comments}" class="comment-card">
+        <div th:each="comment : ${comments}" class="comment-card">
             <div class="comment-body">
                 <p th:text="${comment.content}" class="card-text"></p>
                 <div class="comment-info mt-2">
                     <span th:text="${comment.writer}"></span>
-                    <span class="ml-2 text-muted" th:text="${comment.getTime()}"></span>
+                    <span class="ml-2 text-muted" th:text="${comment.getLocalDateTime()}"></span>
                 </div>
             </div>
         </div>

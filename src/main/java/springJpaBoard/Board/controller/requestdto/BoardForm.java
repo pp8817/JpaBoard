@@ -1,4 +1,4 @@
-package springJpaBoard.Board.controller.form;
+package springJpaBoard.Board.controller.requestdto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +26,7 @@ public class BoardForm {
 
 //    @NotEmpty(message = "게시물의 내용을 작성 해주세요.")
     private String content;
+
 
     public void createForm(Long id, String title, String content, String writer) {
         this.id = id;

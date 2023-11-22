@@ -1,19 +1,17 @@
 package springJpaBoard.Board.controller;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springJpaBoard.Board.controller.form.BoardForm;
-import springJpaBoard.Board.controller.form.CommentDto;
-import springJpaBoard.Board.controller.form.SaveCheck;
-import springJpaBoard.Board.controller.form.UpdateCheck;
+import springJpaBoard.Board.controller.requestdto.BoardForm;
+import springJpaBoard.Board.controller.responsedto.CommentResponseDto;
+import springJpaBoard.Board.controller.requestdto.SaveCheck;
+import springJpaBoard.Board.controller.requestdto.UpdateCheck;
 import springJpaBoard.Board.domain.Board;
-import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.BoardSearch;
 import springJpaBoard.Board.service.BoardService;
@@ -91,14 +89,17 @@ public class BoardController {
 
     /**
      * 게시글 상세 페이지
-     *
-     * 게시글을 내보낼때
      */
     @GetMapping("/{boardId}/detail")
     public String detail(@PathVariable Long boardId, Model model) {
         BoardDetailDto board = new BoardDetailDto(boardService.findOne(boardId));
+        boardService.updateView(boardId); // views ++
+
+        List<CommentResponseDto> comments = board.getComments();
+
         model.addAttribute("board", board);
-        model.addAttribute("commentDto", new CommentDto());
+        model.addAttribute("commentForm", new CommentResponseDto());
+        model.addAttribute("comments", comments);
 
         return "boards/boardDetail";
     }
@@ -174,7 +175,7 @@ public class BoardController {
 
         private LocalDateTime modifyDateTime;
 
-        private List<CommentVO> Comments;
+        private List<CommentResponseDto> Comments;
 
         public BoardDetailDto(Board board) {
             this.id = board.getId();
@@ -184,20 +185,8 @@ public class BoardController {
             this.boardDateTime = board.getBoardDateTime();
             this.modifyDateTime = board.getModifyDateTime();
             this.Comments = board.getCommentList().stream()
-                    .map(comment -> new CommentVO(comment))
+                    .map(comment -> new CommentResponseDto(comment))
                     .collect(toList());
-        }
-        @Getter
-        static class CommentVO {
-            private String writer;
-            private String content;
-            private LocalDateTime time;
-
-            public CommentVO(Comment comment) {
-                this.writer = comment.getWriter();
-                this.content = comment.getContent();
-                this.time = comment.getCreateDateTime();
-            }
         }
 
     }
