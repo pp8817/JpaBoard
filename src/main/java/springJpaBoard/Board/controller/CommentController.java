@@ -2,7 +2,7 @@ package springJpaBoard.Board.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,16 +25,15 @@ public class CommentController {
     /**
      * 댓글 작성
      */
-    @PostMapping("/comment/{id}")
-    public String saveComment(@Valid @ModelAttribute CommentResponseDto commentForm, @PathVariable Long id, BindingResult result) {
-        System.out.println("######################");
+    @PostMapping("/board/{id}/comment")
+    public String saveComment(@Valid @ModelAttribute CommentResponseDto commentForm, Errors result, @PathVariable Long id) {
 
         if (result.hasErrors()) {
             System.out.println("유효성 검증 실패:");
             for (FieldError error : result.getFieldErrors()) {
                 System.out.println("Field: " + error.getField() + ", Code: " + error.getCode() + ", Message: " + error.getDefaultMessage());
             }
-            return "boards/boardDetail";
+            return "redirect:/boards/" + id + "/detail";
         }
 
         Board board = boardService.findOne(id);
