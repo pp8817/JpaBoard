@@ -103,9 +103,14 @@ public class BoardController {
 
         List<CommentResponseDto> comments = board.getComments();
 
+        /* 댓글 관련 */
+        if (comments != null && !comments.isEmpty()) {
+            model.addAttribute("comments", comments);
+        }
+
+
         model.addAttribute("board", board);
         model.addAttribute("commentForm", new CommentResponseDto());
-        model.addAttribute("comments", comments);
 
         return "boards/boardDetail";
     }
