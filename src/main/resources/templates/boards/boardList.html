@@ -45,6 +45,7 @@
                 <th th:text="#{label.board.title}">제목</th>
                 <th th:text="#{label.board.writer}">작성자</th>
                 <th th:text="#{label.board.createTime}">작성 시간</th>
+                <th th:text="#{label.board.view}">조회수</th>
                 <th></th>
             </tr>
             </thead>
@@ -57,6 +58,8 @@
                 </td>
                 <td th:text="${board.writer}"></td>
                 <td th:text="${#temporals.format(board.getBoardDateTime(), 'YY년 MM월 dd일')}"></td>
+                <td th:text="${board.view}"></td>
+<!--                <th th:text="${board.view}"></th>-->
 <!--                <td>-->
 <!--                    <a th:if="${item.status.name() == 'ORDER'}" href="#"-->
 <!--                       th:href="'javascript:cancel('+${item.id}+')'"-->

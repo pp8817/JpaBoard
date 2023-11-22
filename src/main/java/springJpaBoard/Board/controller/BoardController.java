@@ -92,8 +92,8 @@ public class BoardController {
      */
     @GetMapping("/{boardId}/detail")
     public String detail(@PathVariable Long boardId, Model model) {
-        BoardDetailDto board = new BoardDetailDto(boardService.findOne(boardId));
         boardService.updateView(boardId); // views ++
+        BoardDetailDto board = new BoardDetailDto(boardService.findOne(boardId));
 
         List<CommentResponseDto> comments = board.getComments();
 
@@ -150,6 +150,8 @@ public class BoardController {
 
         private String writer;
 
+        private int view;
+
         private LocalDateTime boardDateTime;
 
         public BoardDto(Board board) {
@@ -157,6 +159,7 @@ public class BoardController {
             this.name = board.getMember().getName();
             this.title = board.getTitle();
             this.writer = board.getWriter();
+            this.view = board.getView();
             this.boardDateTime = board.getBoardDateTime();
         }
     }
@@ -171,6 +174,8 @@ public class BoardController {
 
         private String writer;
 
+        private int view;
+
         private LocalDateTime boardDateTime;
 
         private LocalDateTime modifyDateTime;
@@ -182,6 +187,7 @@ public class BoardController {
             this.title = board.getTitle();
             this.content = board.getContent();
             this.writer = board.getWriter();
+            this.view = board.getView();
             this.boardDateTime = board.getBoardDateTime();
             this.modifyDateTime = board.getModifyDateTime();
             this.Comments = board.getCommentList().stream()

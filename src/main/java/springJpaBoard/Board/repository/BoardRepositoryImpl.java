@@ -116,6 +116,8 @@ public class BoardRepositoryImpl implements BoardRepository {
 
     @Modifying
     public void updateView(Long id) {
-        em.createQuery("UPDATE Board b SET b.view = b.view + 1 WHERE b.id = :id");
+        em.createQuery("UPDATE Board b SET b.view = b.view + 1 WHERE b.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 }
