@@ -29,7 +29,7 @@
 <!--                                th:value="나머지"-->
 <!--                                th:text="#{option.gender.ex}">option-->
 <!--                        </option>-->
-                        <option th:each="gender : ${T(springJpaBoard.Board.domain.GenderStatus).values()}"
+                        <option th:each="gender : ${T(springJpaBoard.Board.domain.status.GenderStatus).values()}"
                                 th:value="${gender}"
                                 th:text="${gender}">option
                         </option>

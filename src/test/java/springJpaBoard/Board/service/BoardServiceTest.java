@@ -4,12 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import springJpaBoard.Board.controller.requestdto.BoardForm;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Board;
-import springJpaBoard.Board.domain.GenderStatus;
+import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.BoardRepositoryImpl;
-import springJpaBoard.Board.service.dto.UpdateBoardDto;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
@@ -59,16 +59,18 @@ class BoardServiceTest {
 
         Long savedId = boardService.write(board, member.getId());
 
-        //when
-        UpdateBoardDto boardDto = new UpdateBoardDto(savedId, "Spring", "SangMin", LocalDateTime.now());
+        BoardForm updateBoard = new BoardForm();
+        updateBoard.setId(savedId);
+        updateBoard.setTitle("Spring");
+        updateBoard.setContent("SangMin");
 
-        boardService.update(boardDto);
+        boardService.update(savedId, updateBoard);
         Board findBoard = boardService.findOne(savedId);
 
         //then
-        assertEquals(findBoard.getId(), boardDto.getId());
-        assertEquals(findBoard.getTitle(), boardDto.getTitle());
-        assertEquals(findBoard.getContent(), boardDto.getContent());
+        assertEquals(findBoard.getId(), updateBoard.getId());
+        assertEquals(findBoard.getTitle(), updateBoard.getTitle());
+        assertEquals(findBoard.getContent(), updateBoard.getContent());
     }
 
     @Test

@@ -1,7 +1,7 @@
 package springJpaBoard.Board.domain;
 
 import lombok.Getter;
-import springJpaBoard.Board.service.dto.UpdateBoardDto;
+import springJpaBoard.Board.controller.requestdto.BoardForm;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -39,6 +39,10 @@ public class Board {
 
     private LocalDateTime modifyDateTime;
 
+    public Board() {
+
+    }
+
     public void createBoard(String title, String content, String writer, LocalDateTime localDateTime) {
         this.title = title;
         this.content = content;
@@ -50,10 +54,10 @@ public class Board {
     게시글 수정, Dirty Checking 발생(업데이트 쿼리가 자동으로 나감)
     Setter를 사용하지 않기 위해 수정 메서드를 만듦
      */
-    public void editBoard(UpdateBoardDto boardDto) {
+    public void editBoard(BoardForm boardDto) {
         this.title = boardDto.getTitle();
         this.content = boardDto.getContent();
-        this.modifyDateTime = boardDto.getModifyDateTime();
+        this.modifyDateTime = LocalDateTime.now();
     }
 
     /*

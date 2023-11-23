@@ -1,18 +1,16 @@
 package springJpaBoard.Board.controller;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.controller.requestdto.MemberForm;
+import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Address;
-import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.repository.MemberSearch;
+import springJpaBoard.Board.repository.search.MemberSearch;
 import springJpaBoard.Board.service.MemberService;
-import springJpaBoard.Board.service.dto.UpdateMemberDto;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -71,8 +69,8 @@ public class MemberController {
     @GetMapping
     public String memberList(@ModelAttribute("memberSearch") MemberSearch memberSearch, Model model) {
         List<Member> members = memberService.findSearchMembers(memberSearch);
-        List<MemberDto> memberDtos = members.stream()
-                .map(m -> new MemberDto(m))
+        List<MemberResponseDto> memberDtos = members.stream()
+                .map(m -> new MemberResponseDto(m))
                 .collect(toList());
         model.addAttribute("members", memberDtos);
 
@@ -98,8 +96,10 @@ public class MemberController {
     @PostMapping("{memberId}/edit")
     public String updateMember(@ModelAttribute("form") MemberForm form) {
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
+        Member member = new Member();
 
-        UpdateMemberDto memberDto = new UpdateMemberDto(form.getId(), form.getName(), form.getGender(), address);
+        MemberResponseDto memberDto = new MemberResponseDto();
+        memberDto.UpdateBoard(form.getId(), form.getName(), form.getGender(), address);
         memberService.update(memberDto);
 
         return "redirect:/members"; //회원 수정 후 회원 목록으로 이동
@@ -113,21 +113,6 @@ public class MemberController {
         memberService.delete(memberId);
 
         return "redirect:/members";
-    }
-
-    @Data
-    static class MemberDto {
-        private Long id;
-        private String name;
-        private GenderStatus gender;
-        private Address address;
-
-        public MemberDto(Member member) {
-            this.id = member.getId();
-            this.name = member.getName();
-            this.gender = member.getGender();
-            this.address = member.getAddress();
-        }
     }
 
 }

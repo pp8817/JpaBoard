@@ -3,10 +3,10 @@ package springJpaBoard.Board.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.MemberRepositoryImpl;
-import springJpaBoard.Board.repository.MemberSearch;
-import springJpaBoard.Board.service.dto.UpdateMemberDto;
+import springJpaBoard.Board.repository.search.MemberSearch;
 
 import java.util.List;
 
@@ -64,7 +64,7 @@ public class MemberService {
      * 회원 정보 수정
      */
     @Transactional(readOnly = false)
-    public void update(UpdateMemberDto memberDto) {
+    public void update(MemberResponseDto memberDto) {
         Member findMember = memberRepository.findOne(memberDto.getId());
         /*
         Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현

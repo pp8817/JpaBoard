@@ -1,7 +1,8 @@
 package springJpaBoard.Board.domain;
 
 import lombok.Getter;
-import springJpaBoard.Board.service.dto.UpdateMemberDto;
+import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
+import springJpaBoard.Board.domain.status.GenderStatus;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class Member {
     회원 수정, Dirty Checking 발생(업데이트 쿼리가 자동으로 나감)
     Setter를 사용하지 않기 위해 수정 메서드를 만듦
      */
-    public void editMember(UpdateMemberDto memberDto) {
+    public void editMember(MemberResponseDto memberDto) {
         this.name = memberDto.getName();
         this.gender = memberDto.getGender();
         this.address = memberDto.getAddress();

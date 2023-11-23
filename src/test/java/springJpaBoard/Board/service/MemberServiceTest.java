@@ -5,11 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Address;
-import springJpaBoard.Board.domain.GenderStatus;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.MemberRepositoryImpl;
-import springJpaBoard.Board.service.dto.UpdateMemberDto;
 
 @SpringBootTest //junit4의 @RunWith(SpringRunner.class)이 속해있음
 @Transactional
@@ -64,7 +64,8 @@ class MemberServiceTest {
 
         //when
         Address address1 = new Address("2", "2", "2");
-        UpdateMemberDto memberDto = new UpdateMemberDto(savedId, "member2", GenderStatus.여성, address1);
+        MemberResponseDto memberDto = new MemberResponseDto();
+        memberDto.UpdateBoard(savedId, "member2", GenderStatus.여성, address1);
 
 
         memberService.update(memberDto);

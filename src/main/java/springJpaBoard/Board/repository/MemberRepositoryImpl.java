@@ -5,9 +5,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-import springJpaBoard.Board.domain.GenderStatus;
+import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.QMember;
+import springJpaBoard.Board.repository.search.MemberSearch;
 
 import javax.persistence.EntityManager;
 import java.util.List;

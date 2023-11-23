@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.controller.requestdto.BoardForm;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
 import springJpaBoard.Board.controller.requestdto.UpdateCheck;
+import springJpaBoard.Board.controller.responsedto.BoardResponseDto;
 import springJpaBoard.Board.controller.responsedto.CommentResponseDto;
+import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.repository.BoardSearch;
+import springJpaBoard.Board.repository.search.BoardSearch;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
-import springJpaBoard.Board.service.dto.UpdateBoardDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -99,7 +100,7 @@ public class BoardController {
     @GetMapping("/{boardId}/detail")
     public String detail(@PathVariable Long boardId, Model model) {
         boardService.updateView(boardId); // views ++
-        BoardDetailDto board = new BoardDetailDto(boardService.findOne(boardId));
+        BoardResponseDto board = new BoardResponseDto(boardService.findOne(boardId));
 
         List<CommentResponseDto> comments = board.getComments();
 
@@ -131,9 +132,12 @@ public class BoardController {
 
     @PostMapping("/{boardId}/edit")
     public String updateBoard(@Validated(UpdateCheck.class) @ModelAttribute BoardForm boardForm, @PathVariable Long boardId) {
-        UpdateBoardDto boardDto = new UpdateBoardDto(boardId, boardForm.getTitle(), boardForm.getContent(), LocalDateTime.now());
 
-        boardService.update(boardDto);
+        /*
+//        여기서 굳이 UpdateBoardDto로 변환을 해야할까? BoardForm과 UpdateBoardDto의 변수 차이는
+         */
+//        UpdateBoardDto boardDto = new UpdateBoardDto(boardId, boardForm.getTitle(), boardForm.getContent(), LocalDateTime.now());
+        boardService.update(boardId, boardForm);
 
         return "redirect:/boards"; //게시글 수정 후 게시글 목록으로 이동
     }
@@ -177,50 +181,5 @@ public class BoardController {
             this.commentCount = board.getCommentList().size();
         }
     }
-
-    @Data
-    static class BoardDetailDto{
-        private Long id;
-
-        private String title;
-
-        private String content;
-
-        private String writer;
-
-        private int view;
-
-        private LocalDateTime boardDateTime;
-
-        private LocalDateTime modifyDateTime;
-
-        private List<CommentResponseDto> Comments;
-
-        public BoardDetailDto(Board board) {
-            this.id = board.getId();
-            this.title = board.getTitle();
-            this.content = board.getContent();
-            this.writer = board.getWriter();
-            this.view = board.getView();
-            this.boardDateTime = board.getBoardDateTime();
-            this.modifyDateTime = board.getModifyDateTime();
-            this.Comments = board.getCommentList().stream()
-                    .map(comment -> new CommentResponseDto(comment))
-                    .collect(toList());
-        }
-
-    }
-
-    @Data
-    static class MemberResponseDto {
-        private Long id;
-        private String name;
-
-        public MemberResponseDto(Member member) {
-            this.id = member.getId();
-            this.name = member.getName();
-        }
-    }
-
 
 }

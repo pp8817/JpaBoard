@@ -3,12 +3,12 @@ package springJpaBoard.Board.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springJpaBoard.Board.controller.requestdto.BoardForm;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.BoardRepositoryImpl;
-import springJpaBoard.Board.repository.BoardSearch;
+import springJpaBoard.Board.repository.search.BoardSearch;
 import springJpaBoard.Board.repository.MemberRepositoryImpl;
-import springJpaBoard.Board.service.dto.UpdateBoardDto;
 
 import java.util.List;
 
@@ -70,8 +70,8 @@ public class BoardService {
      * 게시글 수정
      */
     @Transactional
-    public void update(UpdateBoardDto boardDto) {
-        Board findBoard = boardRepository.findOne(boardDto.getId());
+    public void update(Long id, BoardForm boardDto) {
+        Board findBoard = boardRepository.findOne(id);
         /*
         Dirty Checking 발생
          */

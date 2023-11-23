@@ -6,6 +6,7 @@ import springJpaBoard.Board.domain.Member;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,11 +26,14 @@ public class BoardForm {
     private String title;
 
     @NotBlank(message = "작성자는 필수입니다.", groups = {SaveCheck.class})
-    @Size(min = 1, max = 15, message = "1~15자 사이만 가능합니다.", groups = {SaveCheck.class})
+    @Size(min = 1, max = 30, message = "1~30자 사이만 가능합니다.", groups = {SaveCheck.class})
     private String writer;
 
 //    @NotEmpty(message = "게시물의 내용을 작성 해주세요.")
+    @Size(max = 300, message = "300자가 최대입니다.")
     private String content;
+
+    private LocalDateTime modifyDateTime;
 
 
     public void createForm(Long id, String title, String content, String writer) {

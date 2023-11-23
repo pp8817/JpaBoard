@@ -2,7 +2,7 @@ package springJpaBoard.Board.controller.requestdto;
 
 import lombok.Getter;
 import lombok.Setter;
-import springJpaBoard.Board.domain.GenderStatus;
+import springJpaBoard.Board.domain.status.GenderStatus;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
