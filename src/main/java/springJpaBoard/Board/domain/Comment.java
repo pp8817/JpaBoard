@@ -2,12 +2,12 @@ package springJpaBoard.Board.domain;
 
 import lombok.Getter;
 import lombok.ToString;
-import springJpaBoard.Board.controller.responsedto.CommentResponseDto;
+import springJpaBoard.Board.controller.requestdto.CommentForm;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static javax.persistence.FetchType.*;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -49,7 +49,7 @@ public class Comment {
         board.getCommentList().add(this);
     }
 
-    public void createComment(CommentResponseDto commentDto) {
+    public void createComment(CommentForm commentDto) {
         this.writer = commentDto.getWriter();
         this.content = commentDto.getContent();
         this.createDateTime = LocalDateTime.now();

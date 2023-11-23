@@ -7,7 +7,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import springJpaBoard.Board.controller.responsedto.CommentResponseDto;
+import springJpaBoard.Board.controller.requestdto.CommentForm;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.service.BoardService;
@@ -26,7 +26,7 @@ public class CommentController {
      * 댓글 작성
      */
     @PostMapping("/board/{id}/comment")
-    public String saveComment(@Valid @ModelAttribute CommentResponseDto commentForm, BindingResult result, @PathVariable Long id) {
+    public String saveComment(@Valid @ModelAttribute CommentForm commentForm, BindingResult result, @PathVariable Long id) {
 
         if (result.hasErrors()) {
             System.out.println("유효성 검증 실패:");

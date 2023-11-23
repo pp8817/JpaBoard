@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.controller.requestdto.BoardForm;
+import springJpaBoard.Board.controller.requestdto.CommentForm;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
 import springJpaBoard.Board.controller.requestdto.UpdateCheck;
 import springJpaBoard.Board.controller.responsedto.BoardResponseDto;
@@ -111,7 +112,7 @@ public class BoardController {
 
 
         model.addAttribute("board", board);
-        model.addAttribute("commentForm", new CommentResponseDto());
+        model.addAttribute("commentForm", new CommentForm());
 
         return "boards/boardDetail";
     }
