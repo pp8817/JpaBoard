@@ -31,6 +31,8 @@ public class Comment {
     @Column(name = "comment_id")
     private Long id;
 
+    private Long bno;
+
     private String writer; // 작성자
 
     private String content;  //댓글 내용
@@ -50,6 +52,7 @@ public class Comment {
     }
 
     public void createComment(CommentForm commentDto) {
+        this.bno = commentDto.getBno();
         this.writer = commentDto.getWriter();
         this.content = commentDto.getContent();
         this.createDateTime = LocalDateTime.now();

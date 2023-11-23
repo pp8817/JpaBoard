@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @Setter
 public class CommentForm {
 
+    private Long bno;
+
     @NotBlank(message = "작성자는 필수입니다.")
     @Size(min = 1, max = 10, message = "작성자는 1~10 글자 이내만 가능합니다.")
     private String writer;

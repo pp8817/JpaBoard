@@ -4,9 +4,6 @@ import lombok.Getter;
 import springJpaBoard.Board.domain.Board;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Getter
 public class BoardResponseDto {
@@ -25,7 +22,7 @@ public class BoardResponseDto {
 
     private LocalDateTime modifyDateTime;
 
-    private List<CommentResponseDto> Comments;
+//    private List<CommentResponseDto> Comments;
 
     public BoardResponseDto(Board board) {
         this.id = board.getId();
@@ -35,8 +32,8 @@ public class BoardResponseDto {
         this.view = board.getView();
         this.boardDateTime = board.getBoardDateTime();
         this.modifyDateTime = board.getModifyDateTime();
-        this.Comments = board.getCommentList().stream()
-                .map(comment -> new CommentResponseDto(comment))
-                .collect(toList());
+//        this.Comments = board.getCommentList().stream()
+//                .map(comment -> new CommentResponseDto(comment))
+//                .collect(toList());
     }
 }

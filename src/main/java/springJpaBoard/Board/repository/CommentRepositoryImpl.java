@@ -23,18 +23,18 @@ public class CommentRepositoryImpl {
     /**
      * 댓글 모두 조회, 특정 게시물에 맞는 데이터만
      */
-//    public List<Comment> list(Long bno) {
-//        List<Comment> comments = em.createQuery("select c from Comment c where c.bno = :bno", Comment.class)
-//                .setParameter("bno", bno)
-//                .getResultList();
-//        return comments;
-//    }
+    public List<Comment> list(Long bno) {
+        List<Comment> comments = em.createQuery("select c from Comment c where c.bno = :bno", Comment.class)
+                .setParameter("bno", bno)
+                .getResultList();
+        return comments;
+    }
 
     /*
     댓글 단건 조회
      */
     public Comment findById(Long id) {
-        em.find(Comment.class, id);
+        return em.find(Comment.class, id);
     }
 
     /**

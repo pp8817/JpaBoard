@@ -16,4 +16,13 @@ public class CommentService {
     public void save(Comment comment) {
         commentRepository.insert(comment);
     }
+
+    public Comment findById(Long id) {
+        return commentRepository.findById(id);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        commentRepository.delete(id);
+    }
 }

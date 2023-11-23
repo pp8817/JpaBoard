@@ -16,7 +16,6 @@ import springJpaBoard.Board.controller.responsedto.CommentResponseDto;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.repository.CommentRepositoryImpl;
 import springJpaBoard.Board.repository.search.BoardSearch;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
@@ -33,7 +32,6 @@ public class BoardController {
 
     private final BoardService boardService;
     private final MemberService memberService;
-    private final CommentRepositoryImpl commentRepository;
 
     /**
      * 게시글 작성
@@ -103,9 +101,13 @@ public class BoardController {
     @GetMapping("/{boardId}/detail")
     public String detail(@PathVariable Long boardId, Model model) {
         boardService.updateView(boardId); // views ++
-        BoardResponseDto board = new BoardResponseDto(boardService.findOne(boardId));
+        Board board = boardService.findOne(boardId);
+        BoardResponseDto boardDto = new BoardResponseDto(board);
 
-        List<CommentResponseDto> comments = board.getComments();
+//        List<CommentResponseDto> comments = board.getComments();
+        List<CommentResponseDto> comments = board.getCommentList().stream()
+                .map(c -> new CommentResponseDto(c))
+                .collect(toList());
 
         /* 댓글 관련 */
         if (comments != null && !comments.isEmpty()) {
@@ -113,7 +115,7 @@ public class BoardController {
         }
 
 
-        model.addAttribute("board", board);
+        model.addAttribute("board", boardDto);
         model.addAttribute("commentForm", new CommentForm());
 
         return "boards/boardDetail";
