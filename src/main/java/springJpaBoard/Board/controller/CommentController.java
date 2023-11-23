@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.controller.requestdto.CommentForm;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Comment;
@@ -28,8 +25,9 @@ public class CommentController {
      * 댓글 작성
      */
     @PostMapping("/board/comment")
-    public String saveComment(@Valid @ModelAttribute CommentForm commentForm, BindingResult result) {
+    public String saveComment(@Valid @ModelAttribute CommentForm commentForm, BindingResult result, @RequestParam("memberId") Long memberId) {
         Long bno = commentForm.getBno();
+        System.out.println("memberId = " + memberId);
 
         if (result.hasErrors()) {
             System.out.println("유효성 검증 실패:");
@@ -39,14 +37,14 @@ public class CommentController {
             return "redirect:/boards/" + bno + "/detail";
         }
 
-        Board board = boardService.findOne(bno);
+        Board board = boardService.findOne(bno); //쿼리 1번
         Comment comment = new Comment();
         comment.createComment(commentForm);
 
         comment.setBoard(board);
-        commentService.save(comment);
+        commentService.save(comment, memberId);
 
-        return "redirect:/boards/" + bno + "/detail";
+        return "redirect:/boards/" + bno + "/detail"; //쿼리 1번, 게시글 상세 페이지를 다시 로딩하면서 board의 정보가 필요
     }
 
     @GetMapping("/comment/{id}/delete")

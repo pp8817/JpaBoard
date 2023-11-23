@@ -306,12 +306,21 @@
                           th:object="${commentForm}">
                         <input type="hidden" name="bno" th:value="${board.id}">
                         <div class="form-group">
-                            <input type="text" th:field="*{writer}" class="form-control" placeholder="작성자"
-                                   th:class="${#fields.hasErrors('writer')}? 'form-control fieldError' : 'form-control'">
-                            <p th:if="${#fields.hasErrors('writer')}"
-                               th:errors="*{writer}">Incorrect date</p>
+                            <label th:for="writer" th:text="#{label.board.writer}">작성자</label>
+                            <select name="memberId" id="member" class="form-control">
+                                <!-- Iterate over the list of users -->
+                                <option th:each="member : ${members}"
+                                        th:value="${member.id}"
+                                        th:text="${member.name}">
+                                </option>
+                            </select>
                         </div>
                         <div class="form-group">
+<!--                            <input type="text" th:field="*{writer}" class="form-control" placeholder="작성자"-->
+<!--                                   th:class="${#fields.hasErrors('writer')}? 'form-control fieldError' : 'form-control'">-->
+<!--                            <p th:if="${#fields.hasErrors('writer')}"-->
+<!--                               th:errors="*{writer}">Incorrect date</p>-->
+
                             <textarea th:field="*{content}" class="form-control" placeholder="댓글을 작성하세요" rows="3" th:class="${#fields.hasErrors('content')}? 'form-control fieldError' : 'form-control'"></textarea>
                             <p th:if="${#fields.hasErrors('content')}"
                                th:errors="*{content}">Incorrect date</p>

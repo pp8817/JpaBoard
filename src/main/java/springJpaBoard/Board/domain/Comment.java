@@ -33,7 +33,7 @@ public class Comment {
 
     private Long bno;
 
-    private String writer; // 작성자
+//    private String writer; // 작성자
 
     private String content;  //댓글 내용
 
@@ -43,6 +43,10 @@ public class Comment {
     @JoinColumn(name = "board_id")
     private Board board;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     /*
     연관관계 편의 메서드
      */
@@ -51,9 +55,14 @@ public class Comment {
         board.getCommentList().add(this);
     }
 
+    public void setMember(Member member) {
+        this.member = member;
+        member.getCommentList().add(this);
+    }
+
     public void createComment(CommentForm commentDto) {
         this.bno = commentDto.getBno();
-        this.writer = commentDto.getWriter();
+//        this.writer = commentDto.getWriter();
         this.content = commentDto.getContent();
         this.createDateTime = LocalDateTime.now();
     }

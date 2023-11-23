@@ -30,6 +30,9 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL) //양방향 연관관계 지정
     private List<Board> boardList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade= CascadeType.ALL)
+    private List<Comment> commentList = new ArrayList<>();
+
     public void createMember(String name, GenderStatus gender, Address address) {
         this.name = name;
         this.gender = gender;

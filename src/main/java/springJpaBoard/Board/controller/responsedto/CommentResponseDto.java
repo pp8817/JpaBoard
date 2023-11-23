@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import springJpaBoard.Board.domain.Comment;
+import springJpaBoard.Board.domain.Member;
 
 import java.time.LocalDateTime;
 
@@ -19,13 +20,15 @@ public class CommentResponseDto {
 
     private String content;
 
+    private Member member;
+
     private LocalDateTime localDateTime;
 
 
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
         this.bno = comment.getBno();
-        this.writer = comment.getWriter();
+        this.writer = comment.getMember().getName();
         this.content = comment.getContent();
         this.localDateTime = comment.getCreateDateTime();
     }

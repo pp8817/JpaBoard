@@ -37,6 +37,15 @@ public class BoardRepositoryImpl implements BoardRepository {
         return em.find(Board.class, boardId);
     }
 
+    public Board findBoardComment(Long boardId) {
+        String jpql = "SELECT b FROM Board b JOIN FETCH b.commentList WHERE b.id = :boardId";
+        return em.createQuery(jpql, Board.class)
+                .setParameter("boardId", boardId)
+                .getSingleResult();
+    }
+
+
+
     /**
      * 게시물 모두 조회
      * 게시물을 모두 조회하는 경우 게시판에 게시물 목록을 보여주기 위한 용도이므로 추후에 DTO를 만들어서 적용
@@ -79,7 +88,7 @@ public class BoardRepositoryImpl implements BoardRepository {
 
         return query.select(board)
                 .from(board)
-                .join(board.member, member)
+                .join(board.member, member) //inner join 발생
                 .where(statusEq(boardSearch.getMemberGender()),
                         titleLike(boardSearch.getBoardTitle()))
                 .limit(1000)

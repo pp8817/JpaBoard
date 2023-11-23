@@ -101,8 +101,13 @@ public class BoardController {
     @GetMapping("/{boardId}/detail")
     public String detail(@PathVariable Long boardId, Model model) {
         boardService.updateView(boardId); // views ++
-        Board board = boardService.findOne(boardId);
+        Board board = boardService.findOne(boardId); //이때 comments도 담아오게?
         BoardResponseDto boardDto = new BoardResponseDto(board);
+
+        List<Member> memberList = memberService.findMembers();
+        List<MemberResponseDto> members = memberList.stream()
+                .map(m -> new MemberResponseDto(m))
+                .collect(toList());
 
 //        List<CommentResponseDto> comments = board.getComments();
         List<CommentResponseDto> comments = board.getCommentList().stream()
@@ -116,6 +121,7 @@ public class BoardController {
 
 
         model.addAttribute("board", boardDto);
+        model.addAttribute("members", members);
         model.addAttribute("commentForm", new CommentForm());
 
         return "boards/boardDetail";
