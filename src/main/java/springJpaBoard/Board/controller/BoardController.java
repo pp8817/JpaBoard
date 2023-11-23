@@ -16,6 +16,7 @@ import springJpaBoard.Board.controller.responsedto.CommentResponseDto;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.repository.CommentRepositoryImpl;
 import springJpaBoard.Board.repository.search.BoardSearch;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
@@ -32,6 +33,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final MemberService memberService;
+    private final CommentRepositoryImpl commentRepository;
 
     /**
      * 게시글 작성
