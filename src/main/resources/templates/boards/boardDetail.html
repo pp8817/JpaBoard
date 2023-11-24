@@ -244,6 +244,18 @@
         .btn-edit {
             background-color: #ffc107;
         }
+
+        .comment-options {
+            position: relative;
+        }
+
+        .comment-delete {
+            position: absolute;
+            bottom: 5px; /* Adjust this value to move the link up or down */
+            right: 5px; /* Adjust this value to move the link left or right */
+            color: gray;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -285,8 +297,10 @@
                     <div th:each="comment : ${comments}" class="mb-3">
                         <div class="card">
                             <div class="card-body">
-                                <a class="btn btn-delete"
-                                   th:href="@{/comment/{id}/delete(id=${comment.id})}">댓글 삭제</a>
+                                <div class="comment-options">
+                                    <a class="comment-delete"
+                                       th:href="@{/comment/{id}/delete(id=${comment.id})}">댓글 삭제</a>
+                                </div>
                                 <p class="card-text" th:text="${comment.content}"></p>
                                 <p class="card-text text-muted">
                                     작성자: <span th:text="${comment.writer}"></span> |
@@ -316,10 +330,6 @@
                             </select>
                         </div>
                         <div class="form-group">
-<!--                            <input type="text" th:field="*{writer}" class="form-control" placeholder="작성자"-->
-<!--                                   th:class="${#fields.hasErrors('writer')}? 'form-control fieldError' : 'form-control'">-->
-<!--                            <p th:if="${#fields.hasErrors('writer')}"-->
-<!--                               th:errors="*{writer}">Incorrect date</p>-->
 
                             <textarea th:field="*{content}" class="form-control" placeholder="댓글을 작성하세요" rows="3" th:class="${#fields.hasErrors('content')}? 'form-control fieldError' : 'form-control'"></textarea>
                             <p th:if="${#fields.hasErrors('content')}"
