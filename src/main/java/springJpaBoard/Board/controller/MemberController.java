@@ -13,6 +13,7 @@ import springJpaBoard.Board.controller.requestdto.MemberForm;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.MemberSearch;
 import springJpaBoard.Board.service.MemberService;
 
@@ -66,32 +67,29 @@ public class MemberController {
 
     @GetMapping
     public String memberList(@ModelAttribute("memberSearch") MemberSearch memberSearch, Model model, @PageableDefault(page = 0, size=10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-//        List<Member> members = memberService.findSearchMembers(memberSearch);
-//        List<MemberResponseDto> memberDtos = members.stream()
-//                .map(m -> new MemberResponseDto(m))
-//                .collect(toList());
-//        model.addAttribute("members", memberDtos);
-//
-//        return "members/memberList";
 
         Page<Member> memberList = null;
 
-        //아무것도 검색 X
-        if (searchIsEmpty(memberSearch)) { //입력 X
+        if (searchIsEmpty(memberSearch)) {
             memberList = memberService.memberList(pageable);
-        } else if (memberSearch.getMemberGender() == null) { //이름만 검색
-            memberList = memberService.searchName(memberSearch.getMemberName(), pageable);
-        } else { //성별만 검색 or 둘 다 검색
-            memberList = memberService.searchAll(memberSearch.getMemberName(), memberSearch.getMemberGender(), pageable);
-        }
+        } else {
+            String memberName = memberSearch.getMemberName();
+            GenderStatus memberGender = memberSearch.getMemberGender();
 
-        int nowPage = memberList.getPageable().getPageNumber() + 1;
-        int startPage = Math.max(nowPage - 4, 1); //Math.max를 이용해서 start 페이지가 0이하로 되는 것을 방지
-        int endPage = Math.min(nowPage + 5, memberList.getTotalPages()); //endPage가 총 페이지의 개수를 넘지 않도록
+            if (memberGender == null) {
+                memberList = memberService.searchName(memberName, pageable);
+            } else {
+                memberList = memberService.searchAll(memberName, memberGender, pageable);
+            }
+        }
 
         List<MemberResponseDto> members = memberList.stream()
                 .map(m -> new MemberResponseDto(m))
                 .collect(toList());
+
+        int nowPage = memberList.getPageable().getPageNumber() + 1;
+        int startPage = Math.max(nowPage - 4, 1); //Math.max를 이용해서 start 페이지가 0이하로 되는 것을 방지
+        int endPage = Math.min(nowPage + 5, memberList.getTotalPages()); //endPage가 총 페이지의 개수를 넘지 않도록
 
         model.addAttribute("members", members);
         model.addAttribute("nowPage", nowPage);

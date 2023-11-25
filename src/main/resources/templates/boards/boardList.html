@@ -1,6 +1,29 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header"/>
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        list-style: none;
+        padding: 0;
+    }
+
+    .pagination a {
+        color: gray;
+        text-decoration: none;
+        margin: 0 5px;
+        font-size: 14px;
+    }
+
+    .pagination .current-page {
+        font-weight: bold;
+        font-size: 16px;
+        text-decoration: underline;
+        color: black;
+    }
+</style>
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
@@ -52,7 +75,7 @@
             <tbody>
             <tr th:each="board : ${boards}">
                 <td th:text="${board.id}"></td>
-                <td th:text="${board.name}">/td>
+                <td th:text="${board.name}"></td>
                 <td>
                     <a th:href="@{/boards/{id}/detail(id=${board.id})}" th:text="${board.title}"></a>
                     <span th:text="'[' + ${board.commentCount} + ']'"></span>
@@ -71,12 +94,17 @@
         </table>
 
         <!-- 페이징 부분 -->
-<!--        <div class="pagination">-->
-<!--            <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">-->
-<!--                <a th:if="${page != nowPage}" th:href="@{/board/list(page=${page - 1}, searchKeyword=${param.searchKeyword})}" th:text="${page}" class="page-link"></a>-->
-<!--                <strong th:if="${page == nowPage}" th:text="${page}" class="current-page"></strong>-->
-<!--            </th:block>-->
-<!--        </div>-->
+        <!-- 페이지네이션 부분 수정 -->
+        <div class="pagination">
+            <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                <!-- 현재 페이지가 아니라면 -->
+                <a th:if="${page != nowPage}" th:href="@{/boards(page=${page - 1}, boardTitle=${boardSearch.boardTitle}, memberGender=${boardSearch.memberGender})}" th:text="${page}" class="page-link"></a>
+                <!-- 현재 페이지라면 강조 표시 -->
+                <strong th:if="${page == nowPage}" th:text="${page}" class="current-page"></strong>
+            </th:block>
+        </div>
+
+
 
     </div>
     <div th:replace="fragments/footer :: footer"/>

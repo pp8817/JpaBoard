@@ -19,9 +19,12 @@ import springJpaBoard.Board.controller.responsedto.BoardResponseDto;
 import springJpaBoard.Board.controller.responsedto.CommentResponseDto;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Board;
+import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.BoardSearch;
 import springJpaBoard.Board.service.BoardService;
+import springJpaBoard.Board.service.CommentService;
 import springJpaBoard.Board.service.MemberService;
 
 import java.time.LocalDateTime;
@@ -36,6 +39,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final MemberService memberService;
+    private final CommentService commentService;
 
     /**
      * 게시글 작성
@@ -87,24 +91,32 @@ public class BoardController {
 //        return "boards/boardList";
 //    }
     @GetMapping
-    public String boardList(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model, @PageableDefault(page = 0, size=10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-//        List<Board> boardList = boardService.findBoardSearch(boardSearch);
-//
-//        List<BoardDto> boards = boardList.stream()
-//                .map(b -> new BoardDto(b))
-//                .collect(toList());
-//
-//        model.addAttribute("boards", boards);
+    public String boardList(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model, @PageableDefault(page = 0, size=2, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Board> boardList = null;
 
-        if (searchIsEmpty(boardSearch)) { //입력 X
+//        if (searchIsEmpty(boardSearch)) { //입력 X
+//            boardList = boardService.boardList(pageable);
+//        } else if (boardSearch.getMemberGender() == null) { //제목만 입력
+//            boardList = boardService.search(boardSearch.getBoardTitle(), pageable);
+//        } else { // 둘 다 입
+//            boardList = boardService.searchGender(boardSearch.getBoardTitle(), boardSearch.getMemberGender(), pageable);
+//        }
+
+        if (searchIsEmpty(boardSearch)) {
             boardList = boardService.boardList(pageable);
-        } else if (boardSearch.getMemberGender() == null) { //제목만 입력
-            boardList = boardService.search(boardSearch.getBoardTitle(), pageable);
-        } else { // 둘 다 입
-            boardList = boardService.searchGender(boardSearch.getBoardTitle(), boardSearch.getMemberGender(), pageable);
+        } else {
+            String boardTitle = boardSearch.getBoardTitle();
+            GenderStatus memberGender = boardSearch.getMemberGender();
+
+            if (memberGender == null) {
+                boardList = boardService.search(boardTitle, pageable);
+            } else {
+                boardList = boardService.searchGender(boardTitle, memberGender, pageable);
+            }
         }
+
+        model.addAttribute("boardPage", boardList);
 
         int nowPage = boardList.getPageable().getPageNumber() + 1;
         int startPage = Math.max(nowPage - 4, 1); //Math.max를 이용해서 start 페이지가 0이하로 되는 것을 방지
@@ -131,7 +143,8 @@ public class BoardController {
      * 게시글 상세 페이지
      */
     @GetMapping("/{boardId}/detail")
-    public String detail(@PathVariable Long boardId, Model model) {
+    public String detail(@PathVariable Long boardId, @PageableDefault(page = 0, size = 2, sort = "id",
+            direction = Sort.Direction.DESC) Pageable pageable,Model model) {
         boardService.updateView(boardId); // views ++
         Board board = boardService.findOne(boardId); //이때 comments도 담아오게?
         BoardResponseDto boardDto = new BoardResponseDto(board);
@@ -142,7 +155,11 @@ public class BoardController {
                 .collect(toList());
 
 //        List<CommentResponseDto> comments = board.getComments();
-        List<CommentResponseDto> comments = board.getCommentList().stream()
+//        List<CommentResponseDto> comments = board.getCommentList().stream()
+//                .map(c -> new CommentResponseDto(c))
+//                .collect(toList());
+        Page<Comment> commentList = commentService.getCommentsByBno(boardId, pageable);
+        List<CommentResponseDto> comments = commentList.stream()
                 .map(c -> new CommentResponseDto(c))
                 .collect(toList());
 
