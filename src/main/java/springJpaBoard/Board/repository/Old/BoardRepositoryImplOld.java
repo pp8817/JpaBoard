@@ -1,4 +1,4 @@
-package springJpaBoard.Board.repository;
+package springJpaBoard.Board.repository.Old;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class BoardRepositoryImpl implements BoardRepository {
+public class BoardRepositoryImplOld implements BoardRepositoryOld {
 
     private final EntityManager em;
 
@@ -91,7 +91,7 @@ public class BoardRepositoryImpl implements BoardRepository {
                 .join(board.member, member) //inner join 발생
                 .where(statusEq(boardSearch.getMemberGender()),
                         titleLike(boardSearch.getBoardTitle()))
-                .limit(1000)
+                .limit(100) //페이징 기능
                 .fetch();
     }
 

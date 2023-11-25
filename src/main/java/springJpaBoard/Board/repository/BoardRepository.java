@@ -1,26 +1,21 @@
 package springJpaBoard.Board.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import springJpaBoard.Board.domain.Board;
+import springJpaBoard.Board.domain.status.GenderStatus;
 
-import java.util.List;
+public interface BoardRepository extends JpaRepository<Board, Long> {
 
-public interface BoardRepository {
+    Page<Board> findByTitleContaining(String keyword, Pageable pageable);
 
-    // 게시물 작성
-    void write(Board board);
+    Page<Board> findByTitleContainingAndMember_GenderOrMember_GenderIsNull(String keyword, GenderStatus gender, Pageable pageable);
 
-    // 게시물 조회
-    Board findOne(Long boardId);
+    @Modifying
+    @Query("UPDATE Board b SET b.view = b.view + 1 WHERE b.id = :id")
+    void updateView(Long id);
 
-    // 게시물 목록
-    List<Board> findAll();
-
-    // 게시물 수정
-//    void update(Long boardId, UpdateBoardDto updateBoard);
-
-    // 게시뮬 삭제
-    void delete(Long boardId);
-
-    // 게시물 총 갯수
-    int count();
 }

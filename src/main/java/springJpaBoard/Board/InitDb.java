@@ -7,8 +7,8 @@ import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.service.BoardService;
-import springJpaBoard.Board.service.MemberService;
+import springJpaBoard.Board.service.Old.BoardServiceOld;
+import springJpaBoard.Board.service.Old.MemberServiceOld;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -33,8 +33,8 @@ public class InitDb {
 
     static class InitService {
 
-        private final MemberService memberService;
-        private final BoardService boardService;
+        private final MemberServiceOld memberService;
+        private final BoardServiceOld boardServiceOld;
         private final EntityManager em;
 
         public void dbInit1() {
@@ -46,7 +46,7 @@ public class InitDb {
 
             Board board = new Board();
             board.createBoard("spring", "springboot", "Park", LocalDateTime.now());
-            boardService.write(board, member.getId());
+            boardServiceOld.write(board, member.getId());
         }
 
         public void dbInit2() {
@@ -58,7 +58,7 @@ public class InitDb {
 
             Board board = new Board();
             board.createBoard("JPA", "springDataJpa", "sangmin", LocalDateTime.now());
-            boardService.write(board, member.getId());
+            boardServiceOld.write(board, member.getId());
         }
 
         public void dbInit3() {
@@ -70,7 +70,7 @@ public class InitDb {
 
             Board board = new Board();
             board.createBoard("객체지향", "객체지향의 사실과 오해", "김영한", LocalDateTime.now());
-            boardService.write(board, member.getId());
+            boardServiceOld.write(board, member.getId());
         }
 
     }

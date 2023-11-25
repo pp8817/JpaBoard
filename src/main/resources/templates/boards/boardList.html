@@ -69,6 +69,15 @@
             </tr>
             </tbody>
         </table>
+
+        <!-- 페이징 부분 -->
+<!--        <div class="pagination">-->
+<!--            <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">-->
+<!--                <a th:if="${page != nowPage}" th:href="@{/board/list(page=${page - 1}, searchKeyword=${param.searchKeyword})}" th:text="${page}" class="page-link"></a>-->
+<!--                <strong th:if="${page == nowPage}" th:text="${page}" class="current-page"></strong>-->
+<!--            </th:block>-->
+<!--        </div>-->
+
     </div>
     <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->

@@ -2,6 +2,10 @@ package springJpaBoard.Board.controller;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +22,7 @@ import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.search.BoardSearch;
 import springJpaBoard.Board.service.BoardService;
-import springJpaBoard.Board.service.MemberService;
+import springJpaBoard.Board.service.Old.MemberServiceOld;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,7 +35,7 @@ import static java.util.stream.Collectors.toList;
 public class BoardController {
 
     private final BoardService boardService;
-    private final MemberService memberService;
+    private final MemberServiceOld memberService;
 
     /**
      * 게시글 작성
@@ -83,16 +87,44 @@ public class BoardController {
 //        return "boards/boardList";
 //    }
     @GetMapping
-    public String boardList(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model) {
-        List<Board> boardList = boardService.findBoardSearch(boardSearch);
+    public String boardList(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model, @PageableDefault(page = 0, size=10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+//        List<Board> boardList = boardService.findBoardSearch(boardSearch);
+//
+//        List<BoardDto> boards = boardList.stream()
+//                .map(b -> new BoardDto(b))
+//                .collect(toList());
+//
+//        model.addAttribute("boards", boards);
+
+        Page<Board> boardList = null;
+
+        if (searchIsEmpty(boardSearch)) { //입력 X
+            boardList = boardService.boardList(pageable);
+        } else if (boardSearch.getMemberGender() == null) { //제목만 입력
+            boardList = boardService.search(boardSearch.getBoardTitle(), pageable);
+        } else { // 둘 다 입력
+            boardList = boardService.searchGender(boardSearch.getBoardTitle(), boardSearch.getMemberGender(), pageable);
+        }
+
+        int nowPage = boardList.getPageable().getPageNumber() + 1;
+        int startPage = Math.max(nowPage - 4, 1); //Math.max를 이용해서 start 페이지가 0이하로 되는 것을 방지
+        int endPage = Math.min(nowPage + 5, boardList.getTotalPages()); //endPage가 총 페이지의 개수를 넘지 않도록
 
         List<BoardDto> boards = boardList.stream()
                 .map(b -> new BoardDto(b))
                 .collect(toList());
 
         model.addAttribute("boards", boards);
-        
+        model.addAttribute("nowPage", nowPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
         return "boards/boardList";
+
+    }
+
+    private static boolean searchIsEmpty(BoardSearch boardSearch) {
+        return (boardSearch.getBoardTitle() == "" || boardSearch.getBoardTitle() == null) && boardSearch.getMemberGender() == null;
     }
 
     /**

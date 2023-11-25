@@ -1,4 +1,4 @@
-package springJpaBoard.Board.service;
+package springJpaBoard.Board.service.Old;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,13 +10,18 @@ import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.BoardRepository;
+import springJpaBoard.Board.repository.Old.BoardRepositoryImplOld;
 import springJpaBoard.Board.repository.Old.MemberRepositoryImplOld;
+import springJpaBoard.Board.repository.search.BoardSearch;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class BoardService {
+public class BoardServiceOld {
 
+    private final BoardRepositoryImplOld boardRepositoryImplOld;
     private final BoardRepository boardRepository;
     private final MemberRepositoryImplOld memberRepository;
 
@@ -30,36 +35,54 @@ public class BoardService {
         //연관 관계 생성
         board.setMember(member);
 
-        boardRepository.save(board);
+        boardRepositoryImplOld.write(board);
 
         return board.getId();
     }
 
     /**
-     * 게시글 조회
-     * Search
+     * 게시글 목록 조회(엔티티 그대로 반환), controller에서 DTO로 변환 필요
      */
+    public List<Board> findBoards() {
+        return boardRepositoryImplOld.findAll();
+    }
 
-    /* 게시글 전체 조회 */
+    /* Search */
+//    @Transactional
     public Page<Board> boardList(Pageable pageable) {
         return boardRepository.findAll(pageable);
     }
-
-    /* 제목만 검색 */
     public Page<Board> search(String keyword, Pageable pageable) {
         return boardRepository.findByTitleContaining(keyword, pageable);
     }
 
-    /* 제목, 성별 검색 */
     public Page<Board> searchGender(String keyword, GenderStatus gender, Pageable pageable) {
         return boardRepository.findByTitleContainingAndMember_GenderOrMember_GenderIsNull(keyword, gender, pageable);
+    }
+
+
+    /**
+     * 게시글 목록 조회(페이징 + 컬렉션 엔티티 조회), 마찬가지로 controller에서 DTO로 변환 필요
+     * or 별도의 QueryRepository를 만들어서 JPA에서 DTO 직접 조회
+     *  - JPA에서 직접 DTO를 조회하면서 원하는 데이터만 셀렉트, 최적화 가능
+     */
+    public List<Board> findBoardsMember(int offset, int limit) {
+        return boardRepositoryImplOld.findAllWithBoardMember(offset, limit);
+    }
+
+    /**
+     * 게시글 목록 조회(검색) - 검색 기능이 포함된 게시글 목록 조회
+     * controller에서 DTO로 변환 필요
+     */
+    public List<Board> findBoardSearch(BoardSearch boardSearch) {
+        return boardRepositoryImplOld.findAll2(boardSearch);
     }
 
     /**
      * 게시글 단건 조회
      */
     public Board findOne(Long boardId) {
-        return boardRepository.findById(boardId).get();
+        return boardRepositoryImplOld.findOne(boardId);
     }
 
     /**
@@ -67,7 +90,7 @@ public class BoardService {
      */
     @Transactional
     public void update(Long id, BoardForm boardDto) {
-        Board findBoard = boardRepository.findById(id).get();
+        Board findBoard = boardRepositoryImplOld.findOne(id);
         /*
         Dirty Checking 발생
          */
@@ -80,7 +103,7 @@ public class BoardService {
      */
     @Transactional
     public void delete(Long boardId) {
-        boardRepository.deleteById(boardId);
+        boardRepositoryImplOld.delete(boardId);
     }
 
     /**
@@ -88,6 +111,6 @@ public class BoardService {
      */
     @Transactional
     public void updateView(Long boardId) {
-        boardRepository.updateView(boardId);
+        boardRepositoryImplOld.updateView(boardId);
     }
 }

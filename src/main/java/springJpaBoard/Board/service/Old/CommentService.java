@@ -1,4 +1,4 @@
-package springJpaBoard.Board.service;
+package springJpaBoard.Board.service.Old;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,14 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.CommentRepositoryImpl;
-import springJpaBoard.Board.repository.MemberRepositoryImpl;
+import springJpaBoard.Board.repository.Old.MemberRepositoryImplOld;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-    private final BoardService boardService;
+    private final BoardServiceOld boardServiceOld;
     private final CommentRepositoryImpl commentRepository;
-    private final MemberRepositoryImpl memberRepository;
+    private final MemberRepositoryImplOld memberRepository;
 
     @Transactional
     public void save(Comment comment, Long memberId) {
