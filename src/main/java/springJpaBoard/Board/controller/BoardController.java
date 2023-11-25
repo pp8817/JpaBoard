@@ -22,7 +22,7 @@ import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.search.BoardSearch;
 import springJpaBoard.Board.service.BoardService;
-import springJpaBoard.Board.service.Old.MemberServiceOld;
+import springJpaBoard.Board.service.MemberService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,7 +35,7 @@ import static java.util.stream.Collectors.toList;
 public class BoardController {
 
     private final BoardService boardService;
-    private final MemberServiceOld memberService;
+    private final MemberService memberService;
 
     /**
      * 게시글 작성
@@ -102,7 +102,7 @@ public class BoardController {
             boardList = boardService.boardList(pageable);
         } else if (boardSearch.getMemberGender() == null) { //제목만 입력
             boardList = boardService.search(boardSearch.getBoardTitle(), pageable);
-        } else { // 둘 다 입력
+        } else { // 둘 다 입
             boardList = boardService.searchGender(boardSearch.getBoardTitle(), boardSearch.getMemberGender(), pageable);
         }
 

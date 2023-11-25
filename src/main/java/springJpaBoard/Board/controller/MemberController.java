@@ -1,6 +1,10 @@
 package springJpaBoard.Board.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -59,23 +63,46 @@ public class MemberController {
     /**
      * 회원 목록
      */
-//    @GetMapping
-//    public String list(Model model) {
-//        List<Member> members = memberService.findMembers();
-//        model.addAttribute("members", members);
+
+    @GetMapping
+    public String memberList(@ModelAttribute("memberSearch") MemberSearch memberSearch, Model model, @PageableDefault(page = 0, size=10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+//        List<Member> members = memberService.findSearchMembers(memberSearch);
+//        List<MemberResponseDto> memberDtos = members.stream()
+//                .map(m -> new MemberResponseDto(m))
+//                .collect(toList());
+//        model.addAttribute("members", memberDtos);
 //
 //        return "members/memberList";
-//    }
-    @GetMapping
-    public String memberList(@ModelAttribute("memberSearch") MemberSearch memberSearch, Model model) {
-        List<Member> members = memberService.findSearchMembers(memberSearch);
-        List<MemberResponseDto> memberDtos = members.stream()
+
+        Page<Member> memberList = null;
+
+        //아무것도 검색 X
+        if (searchIsEmpty(memberSearch)) { //입력 X
+            memberList = memberService.memberList(pageable);
+        } else if (memberSearch.getMemberGender() == null) { //이름만 검색
+            memberList = memberService.searchName(memberSearch.getMemberName(), pageable);
+        } else { //성별만 검색 or 둘 다 검색
+            memberList = memberService.searchAll(memberSearch.getMemberName(), memberSearch.getMemberGender(), pageable);
+        }
+
+        int nowPage = memberList.getPageable().getPageNumber() + 1;
+        int startPage = Math.max(nowPage - 4, 1); //Math.max를 이용해서 start 페이지가 0이하로 되는 것을 방지
+        int endPage = Math.min(nowPage + 5, memberList.getTotalPages()); //endPage가 총 페이지의 개수를 넘지 않도록
+
+        List<MemberResponseDto> members = memberList.stream()
                 .map(m -> new MemberResponseDto(m))
                 .collect(toList());
-        model.addAttribute("members", memberDtos);
+
+        model.addAttribute("members", members);
+        model.addAttribute("nowPage", nowPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
 
         return "members/memberList";
+    }
 
+    private static boolean searchIsEmpty(MemberSearch memberSearch) {
+        return (memberSearch.getMemberName() == "" || memberSearch.getMemberName() == null) && memberSearch.getMemberGender() == null;
     }
 
     /**

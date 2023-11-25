@@ -4,18 +4,17 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import springJpaBoard.Board.domain.Board;
-import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.domain.QBoard;
 import springJpaBoard.Board.domain.QMember;
+import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.BoardSearch;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@Repository
+//@Repository
 @RequiredArgsConstructor
 public class BoardRepositoryImplOld implements BoardRepositoryOld {
 

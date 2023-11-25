@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Board;
-import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.service.Old.BoardServiceOld;
-import springJpaBoard.Board.service.Old.MemberServiceOld;
+import springJpaBoard.Board.domain.status.GenderStatus;
+import springJpaBoard.Board.service.BoardService;
+import springJpaBoard.Board.service.MemberService;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -33,8 +33,8 @@ public class InitDb {
 
     static class InitService {
 
-        private final MemberServiceOld memberService;
-        private final BoardServiceOld boardServiceOld;
+        private final MemberService memberService;
+        private final BoardService boardServiceOld;
         private final EntityManager em;
 
         public void dbInit1() {

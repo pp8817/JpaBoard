@@ -6,19 +6,18 @@ import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.CommentRepositoryImpl;
-import springJpaBoard.Board.repository.Old.MemberRepositoryImplOld;
+import springJpaBoard.Board.service.MemberService;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-    private final BoardServiceOld boardServiceOld;
     private final CommentRepositoryImpl commentRepository;
-    private final MemberRepositoryImplOld memberRepository;
+    private final MemberService memberService;
 
     @Transactional
     public void save(Comment comment, Long memberId) {
         //엔티티 조회
-        Member member = memberRepository.findOne(memberId);
+        Member member = memberService.findOne(memberId);
         //연관 관계 생성
         comment.setMember(member);
 

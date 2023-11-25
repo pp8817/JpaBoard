@@ -1,21 +1,20 @@
-package springJpaBoard.Board.repository;
+package springJpaBoard.Board.repository.Old;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.QMember;
+import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.MemberSearch;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@Repository
+//@Repository
 @RequiredArgsConstructor
-public class MemberRepositoryImpl implements MemberRepository{
+public class MemberRepositoryImplOld implements MemberRepositoryOld {
 
     private final EntityManager em;
 

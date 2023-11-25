@@ -1,27 +1,24 @@
 package springJpaBoard.Board.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.domain.status.GenderStatus;
 
 import java.util.List;
 
-public interface MemberRepository {
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    // 회원 등록
-    void save(Member member);
+    List<Member> findAllByName(String name);
 
-    // 회원 단건 조회
-    Member findOne(Long memberId);
+    // name만 선링
+    Page<Member> findByNameContaining(String keyword, Pageable pageable);
 
-    // 회원 전체 조회
-    List<Member> findAll();
+    // gender만 선택한 경우
+    Page<Member> findByGender(GenderStatus gender, Pageable pageable);
 
-    //이름으로 회원 조회
-    List<Member> findByName(String name);
-
-//    // 회원 수정
-//    void update(Long memberId, UpdateBoardDto updateMember);
-
-    // 회원 삭제
-    void delete(Long memberId);
-
+    // name과 gender을 모두 입력한 경우
+    Page<Member> findByNameContainingAndGender(String name, GenderStatus gender, Pageable pageable);
 }
+

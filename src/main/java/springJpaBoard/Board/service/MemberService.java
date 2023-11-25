@@ -1,12 +1,14 @@
 package springJpaBoard.Board.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.repository.MemberRepositoryImpl;
-import springJpaBoard.Board.repository.search.MemberSearch;
+import springJpaBoard.Board.domain.status.GenderStatus;
+import springJpaBoard.Board.repository.MemberRepository;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberRepositoryImpl memberRepository;
+    private final MemberRepository memberRepository;
 
     /**
      * 회원 가입
@@ -32,7 +34,7 @@ public class MemberService {
      */
     private void validateDuplicateMember(Member member) {
         //EXCEPTION
-        List<Member> findMembers = memberRepository.findByName(member.getName());
+        List<Member> findMembers = memberRepository.findAllByName(member.getName());
         if (!findMembers.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
@@ -46,18 +48,35 @@ public class MemberService {
     }
 
     /**
-     * 회원 전체 조회(검색) - 검색 기능이 포함된 회원 목록 조회
-     * controller에서 DTO로 변환 필요
+     * 게시글 조회
+     * Search
      */
-    public List<Member> findSearchMembers(MemberSearch memberSearch) {
-        return memberRepository.findAll2(memberSearch);
+
+    /* 회원 전체 조회 */
+    public Page<Member> memberList(Pageable pageable) {
+        return memberRepository.findAll(pageable);
+    }
+
+    /* 이름만 검색 */
+    public Page<Member> searchName(String name, Pageable pageable) {
+        return memberRepository.findByNameContaining(name, pageable);
+    }
+
+    /* 성별만 검색 */
+    public Page<Member> searchGender(GenderStatus gender, Pageable pageable) {
+        return memberRepository.findByGender(gender, pageable);
+    }
+
+    /* 제목, 성별 검색 */
+    public Page<Member> searchAll(String name, GenderStatus gender, Pageable pageable) {
+        return memberRepository.findByNameContainingAndGender(name, gender, pageable);
     }
 
     /**
      * 회원 단건 조회
      */
-    public Member findOne(Long id) {
-        return memberRepository.findOne(id);
+    public Member findOne(Long memberId) {
+        return memberRepository.findById(memberId).get();
     }
 
     /**
@@ -65,7 +84,7 @@ public class MemberService {
      */
     @Transactional(readOnly = false)
     public void update(MemberResponseDto memberDto) {
-        Member findMember = memberRepository.findOne(memberDto.getId());
+        Member findMember = memberRepository.findById(memberDto.getId()).get();
         /*
         Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현
          */
@@ -77,7 +96,7 @@ public class MemberService {
      */
     @Transactional
     public void delete(Long memberId) {
-        memberRepository.delete(memberId);
+        memberRepository.deleteById(memberId);
     }
 
 }

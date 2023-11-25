@@ -9,16 +9,17 @@ import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.status.GenderStatus;
-import springJpaBoard.Board.repository.MemberRepositoryImpl;
+import springJpaBoard.Board.repository.Old.MemberRepositoryImplOld;
+import springJpaBoard.Board.service.Old.MemberServiceOld;
 
 @SpringBootTest //junit4의 @RunWith(SpringRunner.class)이 속해있음
 @Transactional
 class MemberServiceTest {
     @Autowired
-    MemberService memberService;
+    MemberServiceOld memberService;
 
     @Autowired
-    MemberRepositoryImpl memberRepository;
+    MemberRepositoryImplOld memberRepository;
 
     @Test
     public void 회원가입() throws Exception {

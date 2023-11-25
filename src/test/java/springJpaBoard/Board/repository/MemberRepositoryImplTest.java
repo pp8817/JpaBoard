@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.repository.Old.MemberRepositoryImplOld;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MemberRepositoryImplTest {
 
     @Autowired
-    MemberRepositoryImpl memberRepository;
+    MemberRepositoryImplOld memberRepository;
 
     @Test
     public void testMember() throws Exception {
