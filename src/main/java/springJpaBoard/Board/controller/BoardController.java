@@ -91,7 +91,7 @@ public class BoardController {
 //        return "boards/boardList";
 //    }
     @GetMapping
-    public String boardList(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model, @PageableDefault(page = 0, size=2, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String boardList(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model, @PageableDefault(page = 0, size=9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Board> boardList = null;
 
@@ -116,20 +116,22 @@ public class BoardController {
             }
         }
 
-        model.addAttribute("boardPage", boardList);
-
-        int nowPage = boardList.getPageable().getPageNumber() + 1;
-        int startPage = Math.max(nowPage - 4, 1); //Math.max를 이용해서 start 페이지가 0이하로 되는 것을 방지
-        int endPage = Math.min(nowPage + 5, boardList.getTotalPages()); //endPage가 총 페이지의 개수를 넘지 않도록
+//        model.addAttribute("boardPage", boardList);
 
         List<BoardDto> boards = boardList.stream()
                 .map(b -> new BoardDto(b))
                 .collect(toList());
 
+        int nowPage = boardList.getPageable().getPageNumber() + 1;
+        int startPage = Math.max(nowPage - 4, 1); //Math.max를 이용해서 start 페이지가 0이하로 되는 것을 방지
+        int endPage = Math.min(nowPage + 5, boardList.getTotalPages()); //endPage가 총 페이지의 개수를 넘지 않도록
+        int totalPages = boardList.getTotalPages();
+
         model.addAttribute("boards", boards);
         model.addAttribute("nowPage", nowPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("totalPages", totalPages);
 
         return "boards/boardList";
 
@@ -143,7 +145,7 @@ public class BoardController {
      * 게시글 상세 페이지
      */
     @GetMapping("/{boardId}/detail")
-    public String detail(@PathVariable Long boardId, @PageableDefault(page = 0, size = 2, sort = "id",
+    public String detail(@PathVariable Long boardId, @PageableDefault(page = 0, size = 10, sort = "id",
             direction = Sort.Direction.DESC) Pageable pageable,Model model) {
         boardService.updateView(boardId); // views ++
         Board board = boardService.findOne(boardId); //이때 comments도 담아오게?
@@ -154,11 +156,8 @@ public class BoardController {
                 .map(m -> new MemberResponseDto(m))
                 .collect(toList());
 
-//        List<CommentResponseDto> comments = board.getComments();
-//        List<CommentResponseDto> comments = board.getCommentList().stream()
-//                .map(c -> new CommentResponseDto(c))
-//                .collect(toList());
         Page<Comment> commentList = commentService.getCommentsByBno(boardId, pageable);
+
         List<CommentResponseDto> comments = commentList.stream()
                 .map(c -> new CommentResponseDto(c))
                 .collect(toList());
@@ -168,6 +167,15 @@ public class BoardController {
             model.addAttribute("comments", comments);
         }
 
+        int nowPage = commentList.getPageable().getPageNumber() + 1;
+        int startPage = Math.max(nowPage - 4, 1); //Math.max를 이용해서 start 페이지가 0이하로 되는 것을 방지
+        int endPage = Math.min(nowPage + 5, commentList.getTotalPages()); //endPage가 총 페이지의 개수를 넘지 않도록
+        int totalPages = commentList.getTotalPages();
+
+        model.addAttribute("nowPage", nowPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("totalPages", totalPages);
 
         model.addAttribute("board", boardDto);
         model.addAttribute("members", members);

@@ -29,6 +29,10 @@ public class CommentService {
         return commentRepository.findById(id).get();
     }
 
+    public Page<Comment> findAll(Pageable pageable) {
+        return commentRepository.findAll(pageable);
+    }
+
     //게시글 번호에 해당하는 댓글 목록 조회 및 페이징 처리
     public Page<Comment> getCommentsByBno(Long bno, Pageable pageable) {
         return commentRepository.findAllByBno(bno, pageable);

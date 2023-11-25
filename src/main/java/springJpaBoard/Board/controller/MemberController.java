@@ -66,7 +66,7 @@ public class MemberController {
      */
 
     @GetMapping
-    public String memberList(@ModelAttribute("memberSearch") MemberSearch memberSearch, Model model, @PageableDefault(page = 0, size=10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String memberList(@ModelAttribute("memberSearch") MemberSearch memberSearch, Model model, @PageableDefault(page = 0, size=9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Member> memberList = null;
 
@@ -90,11 +90,13 @@ public class MemberController {
         int nowPage = memberList.getPageable().getPageNumber() + 1;
         int startPage = Math.max(nowPage - 4, 1); //Math.max를 이용해서 start 페이지가 0이하로 되는 것을 방지
         int endPage = Math.min(nowPage + 5, memberList.getTotalPages()); //endPage가 총 페이지의 개수를 넘지 않도록
+        int totalPages = memberList.getTotalPages();
 
         model.addAttribute("members", members);
         model.addAttribute("nowPage", nowPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("totalPages", totalPages);
 
         return "members/memberList";
     }
