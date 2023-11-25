@@ -1,10 +1,10 @@
-package springJpaBoard.Board.old.oldservice;
+package springJpaBoard.Board.service.oldservice;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.old.oldRepository.MemberRepositoryImplOld;
+import springJpaBoard.Board.repository.oldRepository.MemberRepositoryImplOld;
 import springJpaBoard.Board.repository.search.MemberSearch;
 
 import java.util.List;

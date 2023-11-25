@@ -43,16 +43,16 @@ dependencies {
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 }
 
-// querydsl에서 사용할 경로 설정(현재 지정한 부분은 .gitignore에 포함됨)
+ //querydsl에서 사용할 경로 설정(현재 지정한 부분은 .gitignore에 포함됨)
 def querydslDir = "$buildDir/generated/querydsl"
 
-// JPA 사용 여부 및 사용할 경로 설정
+ //JPA 사용 여부 및 사용할 경로 설정
 querydsl {
 	jpa = true
 	querydslSourcesDir = querydslDir
 }
 
-// build 시 사용할 sourceSet 추가 설정
+ //build 시 사용할 sourceSet 추가 설정
 sourceSets {
 	main.java.srcDir querydslDir
 }

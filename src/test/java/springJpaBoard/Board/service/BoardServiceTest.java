@@ -7,10 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.controller.requestdto.BoardForm;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Board;
-import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.repository.Old.BoardRepositoryImplOld;
-import springJpaBoard.Board.service.Old.BoardServiceOld;
+import springJpaBoard.Board.domain.status.GenderStatus;
+import springJpaBoard.Board.repository.BoardRepository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
@@ -21,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Transactional
 class BoardServiceTest {
     @Autowired
-    BoardServiceOld boardServiceOld;
+    BoardService boardService;
 
     @Autowired
-    BoardRepositoryImplOld boardRepository;
+    BoardRepository boardRepository;
 
     @Autowired
     EntityManager em;
@@ -41,10 +40,10 @@ class BoardServiceTest {
         em.persist(member);
 
         //when
-        Long savedId = boardServiceOld.write(board, member.getId());
+        Long savedId = boardService.write(board, member.getId());
 
         //then
-        assertEquals(board, boardRepository.findOne(savedId));
+        assertEquals(board, boardRepository.findById(savedId));
     }
 
     @Test
@@ -58,15 +57,15 @@ class BoardServiceTest {
         member.createMember("mwadaw", GenderStatus.여성, address);
         em.persist(member);
 
-        Long savedId = boardServiceOld.write(board, member.getId());
+        Long savedId = boardService.write(board, member.getId());
 
         BoardForm updateBoard = new BoardForm();
         updateBoard.setId(savedId);
         updateBoard.setTitle("Spring");
         updateBoard.setContent("SangMin");
 
-        boardServiceOld.update(savedId, updateBoard);
-        Board findBoard = boardServiceOld.findOne(savedId);
+        boardService.update(savedId, updateBoard);
+        Board findBoard = boardService.findOne(savedId);
 
         //then
         assertEquals(findBoard.getId(), updateBoard.getId());
@@ -85,14 +84,14 @@ class BoardServiceTest {
         member.createMember("mwadaw", GenderStatus.여성, address);
         em.persist(member);
 
-        Long savedId = boardServiceOld.write(board, member.getId());
+        Long savedId = boardService.write(board, member.getId());
 
         Long boardId = board.getId();
 
         //when
-        boardServiceOld.delete(boardId);
+        boardService.delete(boardId);
 
-        Board findBoard = boardServiceOld.findOne(boardId);
+        Board findBoard = boardService.findOne(boardId);
         //then
         assertEquals(findBoard, null);
     }

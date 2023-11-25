@@ -1,4 +1,4 @@
-package springJpaBoard.Board.old.oldRepository;
+package springJpaBoard.Board.repository.oldRepository;
 
 import springJpaBoard.Board.domain.Board;
 

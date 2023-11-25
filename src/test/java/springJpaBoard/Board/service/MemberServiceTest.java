@@ -9,17 +9,16 @@ import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.status.GenderStatus;
-import springJpaBoard.Board.repository.Old.MemberRepositoryImplOld;
-import springJpaBoard.Board.service.Old.MemberServiceOld;
+import springJpaBoard.Board.repository.MemberRepository;
 
 @SpringBootTest //junit4의 @RunWith(SpringRunner.class)이 속해있음
 @Transactional
 class MemberServiceTest {
     @Autowired
-    MemberServiceOld memberService;
+    MemberService memberService;
 
     @Autowired
-    MemberRepositoryImplOld memberRepository;
+    MemberRepository memberRepository;
 
     @Test
     public void 회원가입() throws Exception {
@@ -32,7 +31,7 @@ class MemberServiceTest {
         Long savedId = memberService.join(member);
 
         //then
-        Assertions.assertEquals(member, memberRepository.findOne(savedId));
+        Assertions.assertEquals(member, memberRepository.findById(savedId).get());
         Assertions.assertEquals(member.getName(), "member");
     }
 

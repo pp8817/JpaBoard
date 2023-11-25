@@ -34,7 +34,7 @@ public class InitDb {
     static class InitService {
 
         private final MemberService memberService;
-        private final BoardService boardServiceOld;
+        private final BoardService boardService;
         private final EntityManager em;
 
         public void dbInit1() {
@@ -46,7 +46,7 @@ public class InitDb {
 
             Board board = new Board();
             board.createBoard("spring", "springboot", "Park", LocalDateTime.now());
-            boardServiceOld.write(board, member.getId());
+            boardService.write(board, member.getId());
         }
 
         public void dbInit2() {
@@ -58,7 +58,7 @@ public class InitDb {
 
             Board board = new Board();
             board.createBoard("JPA", "springDataJpa", "sangmin", LocalDateTime.now());
-            boardServiceOld.write(board, member.getId());
+            boardService.write(board, member.getId());
         }
 
         public void dbInit3() {
@@ -70,7 +70,7 @@ public class InitDb {
 
             Board board = new Board();
             board.createBoard("객체지향", "객체지향의 사실과 오해", "김영한", LocalDateTime.now());
-            boardServiceOld.write(board, member.getId());
+            boardService.write(board, member.getId());
         }
 
     }

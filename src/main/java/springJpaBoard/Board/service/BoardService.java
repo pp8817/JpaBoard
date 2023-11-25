@@ -10,7 +10,7 @@ import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.BoardRepository;
-import springJpaBoard.Board.repository.Old.MemberRepositoryImplOld;
+import springJpaBoard.Board.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +18,7 @@ import springJpaBoard.Board.repository.Old.MemberRepositoryImplOld;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final MemberRepositoryImplOld memberRepository;
+    private final MemberRepository memberRepository;
 
     /**
      * 게시글 작성
@@ -26,7 +26,7 @@ public class BoardService {
     @Transactional
     public Long write(Board board, Long memberId) {
         //엔티티 조회
-        Member member = memberRepository.findOne(memberId);
+        Member member = memberRepository.findById(memberId).get();
         //연관 관계 생성
         board.setMember(member);
 

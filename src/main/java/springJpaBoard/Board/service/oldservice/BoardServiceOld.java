@@ -1,4 +1,4 @@
-package springJpaBoard.Board.old.oldservice;
+package springJpaBoard.Board.service.oldservice;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,6 +9,9 @@ import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.BoardRepository;
+import springJpaBoard.Board.repository.oldRepository.BoardRepositoryImplOld;
+import springJpaBoard.Board.repository.oldRepository.BoardRepositoryOld;
+import springJpaBoard.Board.repository.oldRepository.MemberRepositoryImplOld;
 import springJpaBoard.Board.repository.search.BoardSearch;
 
 import java.util.List;
@@ -18,8 +21,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class BoardServiceOld {
 
-    private final BoardRe boardRepositoryImplOld;
-    private final BoardRepository boardRepository;
+    private final BoardRepositoryImplOld boardRepositoryImplOld;
     private final MemberRepositoryImplOld memberRepository;
 
     /**
@@ -44,18 +46,6 @@ public class BoardServiceOld {
         return boardRepositoryImplOld.findAll();
     }
 
-    /* Search */
-//    @Transactional
-    public Page<Board> boardList(Pageable pageable) {
-        return boardRepository.findAll(pageable);
-    }
-    public Page<Board> search(String keyword, Pageable pageable) {
-        return boardRepository.findByTitleContaining(keyword, pageable);
-    }
-
-    public Page<Board> searchGender(String keyword, GenderStatus gender, Pageable pageable) {
-        return boardRepository.findByTitleContainingAndMember_GenderOrMember_GenderIsNull(keyword, gender, pageable);
-    }
 
 
     /**

@@ -1,4 +1,4 @@
-package springJpaBoard.Board.service.Old;
+package springJpaBoard.Board.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.CommentRepositoryImpl;
-import springJpaBoard.Board.service.MemberService;
 
 @Service
 @RequiredArgsConstructor

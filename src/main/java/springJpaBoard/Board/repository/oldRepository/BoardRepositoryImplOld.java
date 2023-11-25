@@ -1,4 +1,4 @@
-package springJpaBoard.Board.repository.oldRepository.
+package springJpaBoard.Board.repository.oldRepository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import springJpaBoard.Board.domain.Board;
+import springJpaBoard.Board.domain.QBoard;
+import springJpaBoard.Board.domain.QMember;
 import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.BoardSearch;
 
@@ -15,7 +17,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class BoardRepositoryImplOld implements Bo {
+public class BoardRepositoryImplOld implements BoardRepositoryOld {
 
     private final EntityManager em;
 

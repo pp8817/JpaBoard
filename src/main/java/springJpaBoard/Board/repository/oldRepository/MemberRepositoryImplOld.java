@@ -1,4 +1,4 @@
-package springJpaBoard.Board.old.oldRepository;
+package springJpaBoard.Board.repository.oldRepository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class MemberRepositoryImplOld implements springJpaBoard.Board.old.oldRepository.MemberRepositoryOld {
+public class MemberRepositoryImplOld implements MemberRepositoryOld {
 
     private final EntityManager em;
 

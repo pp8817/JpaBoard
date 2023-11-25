@@ -5,9 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Address;
-import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.repository.Old.MemberRepositoryImplOld;
+import springJpaBoard.Board.domain.status.GenderStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MemberRepositoryImplTest {
 
     @Autowired
-    MemberRepositoryImplOld memberRepository;
+    MemberRepository memberRepository;
 
     @Test
     public void testMember() throws Exception {
@@ -28,7 +27,7 @@ class MemberRepositoryImplTest {
 
         //when
         memberRepository.save(member);
-        Member findMember = memberRepository.findOne(member.getId());
+        Member findMember = memberRepository.findById(member.getId()).get();
 
         //then
         assertThat(findMember.getId()).isEqualTo(member.getId());

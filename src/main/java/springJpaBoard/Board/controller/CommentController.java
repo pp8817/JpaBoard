@@ -9,7 +9,8 @@ import springJpaBoard.Board.controller.requestdto.CommentForm;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.service.BoardService;
-import springJpaBoard.Board.service.Old.CommentService;
+import springJpaBoard.Board.service.CommentService;
+
 
 import javax.validation.Valid;
 
