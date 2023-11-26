@@ -12,7 +12,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Page<Board> findByTitleContaining(String keyword, Pageable pageable);
 
-    Page<Board> findByTitleContainingAndMember_GenderOrMember_GenderIsNull(String keyword, GenderStatus gender, Pageable pageable);
+    Page<Board> findByTitleContainingAndMember_Gender(String keyword, GenderStatus gender, Pageable pageable);
 
     @Modifying
     @Query("UPDATE Board b SET b.view = b.view + 1 WHERE b.id = :id")

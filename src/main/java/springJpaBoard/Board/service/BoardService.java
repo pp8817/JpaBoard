@@ -46,13 +46,13 @@ public class BoardService {
     }
 
     /* 제목만 검색 */
-    public Page<Board> search(String keyword, Pageable pageable) {
+    public Page<Board> searchTitle(String keyword, Pageable pageable) {
         return boardRepository.findByTitleContaining(keyword, pageable);
     }
 
     /* 제목, 성별 검색 */
-    public Page<Board> searchGender(String keyword, GenderStatus gender, Pageable pageable) {
-        return boardRepository.findByTitleContainingAndMember_GenderOrMember_GenderIsNull(keyword, gender, pageable);
+    public Page<Board> searchAll(String keyword, GenderStatus gender, Pageable pageable) {
+        return boardRepository.findByTitleContainingAndMember_Gender(keyword, gender, pageable);
     }
 
     /**

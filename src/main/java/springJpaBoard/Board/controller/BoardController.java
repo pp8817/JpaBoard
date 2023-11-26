@@ -110,9 +110,9 @@ public class BoardController {
             GenderStatus memberGender = boardSearch.getMemberGender();
 
             if (memberGender == null) {
-                boardList = boardService.search(boardTitle, pageable);
+                boardList = boardService.searchTitle(boardTitle, pageable);
             } else {
-                boardList = boardService.searchGender(boardTitle, memberGender, pageable);
+                boardList = boardService.searchAll(boardTitle, memberGender, pageable);
             }
         }
 
