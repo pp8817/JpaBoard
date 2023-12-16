@@ -8,8 +8,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springJpaBoard.Board.controller.requestdto.LoginCheck;
 import springJpaBoard.Board.controller.requestdto.MemberForm;
+import springJpaBoard.Board.controller.requestdto.SaveCheck;
+import springJpaBoard.Board.controller.requestdto.UpdateCheck;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
@@ -17,7 +21,6 @@ import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.MemberSearch;
 import springJpaBoard.Board.service.MemberService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -41,8 +44,9 @@ public class MemberController {
         return "members/createMemberForm";
     }
 
+
     @PostMapping("/new")
-    public String create(@Valid @ModelAttribute MemberForm memberForm, BindingResult result) {
+    public String create(@Validated(SaveCheck.class) @ModelAttribute MemberForm memberForm, BindingResult result) {
 
         /*
         오류 발생시(@Valid 에서 발생)
@@ -54,7 +58,7 @@ public class MemberController {
         Address address = new Address(memberForm.getCity(), memberForm.getStreet(), memberForm.getZipcode());
 
         Member member = new Member();
-        member.createMember(memberForm.getName(), memberForm.getGender(), address);
+        member.createMember(memberForm, address);
 
         memberService.join(member); //PK 생성
 
@@ -62,12 +66,39 @@ public class MemberController {
     }
 
     /**
+     * 회원 로그인
+     */
+    @GetMapping("/login")
+    public String loginForm(Model model) {
+        model.addAttribute("loginForm", new MemberForm());
+        return "members/loginMemberForm";
+    }
+
+    @PostMapping("/login")
+    public String login(@Validated({SaveCheck.class, LoginCheck.class})
+                        @ModelAttribute("loginForm") MemberForm form, BindingResult result) {
+        if (result.hasErrors()) {
+            return "members/loginMemberForm";
+        }
+
+        Member loginMember = memberService.login(form.getLoginId(), form.getPassword());
+
+        if (loginMember == null) {
+            result.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
+            return "members/loginMemberForm";
+        }
+
+        //로그인 성공 처리 TODO
+
+        return "redirect:/";
+    }
+
+
+    /**
      * 회원 목록
      */
-
     @GetMapping
     public String memberList(@ModelAttribute("memberSearch") MemberSearch memberSearch, Model model, @PageableDefault(page = 0, size=9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-
         Page<Member> memberList = null;
 
         if (searchIsEmpty(memberSearch)) {
@@ -121,7 +152,7 @@ public class MemberController {
     }
 
     @PostMapping("{memberId}/edit")
-    public String updateMember(@ModelAttribute("form") MemberForm form) {
+    public String updateMember(@Validated(UpdateCheck.class) @ModelAttribute("form") MemberForm form) {
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
         Member member = new Member();
 

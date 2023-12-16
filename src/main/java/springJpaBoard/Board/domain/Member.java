@@ -1,6 +1,7 @@
 package springJpaBoard.Board.domain;
 
 import lombok.Getter;
+import springJpaBoard.Board.controller.requestdto.MemberForm;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.status.GenderStatus;
 
@@ -16,6 +17,12 @@ public class Member {
     @Id
     @Column(name = "member_id")
     private Long id;
+
+//    @NotEmpty
+    private String loginId; //로그인 ID
+
+//    @NotEmpty
+    private String password; //로그인 비밀번호
 
     private String name;
 
@@ -33,9 +40,11 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade= CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
 
-    public void createMember(String name, GenderStatus gender, Address address) {
-        this.name = name;
-        this.gender = gender;
+    public void createMember(MemberForm memberForm, Address address) {
+        this.name = memberForm.getName();
+        this.gender = memberForm.getGender();
+        this.loginId = memberForm.getLoginId();
+        this.password = memberForm.getPassword();
         this.address = address;
     }
 

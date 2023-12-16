@@ -99,7 +99,7 @@ public class BoardController {
 //            boardList = boardService.boardList(pageable);
 //        } else if (boardSearch.getMemberGender() == null) { //제목만 입력
 //            boardList = boardService.search(boardSearch.getBoardTitle(), pageable);
-//        } else { // 둘 다 입
+//        } else { // 둘 다 입력
 //            boardList = boardService.searchGender(boardSearch.getBoardTitle(), boardSearch.getMemberGender(), pageable);
 //        }
 

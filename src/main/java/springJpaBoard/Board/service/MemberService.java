@@ -99,4 +99,16 @@ public class MemberService {
         memberRepository.deleteById(memberId);
     }
 
+
+    /**
+     * 회원 로그인
+     * loginId와 password 정보가 정확하다면 회원 객체 반환
+     * 틀리다면 null 반환
+     */
+    public Member login(String loginId, String password) {
+        return memberRepository.findByLoginId(loginId)
+                .filter(m -> m.getPassword().equals(password))
+                .orElse(null);
+    }
+
 }

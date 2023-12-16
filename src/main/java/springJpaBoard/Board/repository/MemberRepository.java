@@ -7,6 +7,7 @@ import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.status.GenderStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
@@ -20,5 +21,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // name과 gender을 모두 입력한 경우
     Page<Member> findByNameContainingAndGender(String name, GenderStatus gender, Pageable pageable);
+
+    /* loginId로 Member 찾아오기 */
+    Optional<Member> findByLoginId(String loginId);
 }
 

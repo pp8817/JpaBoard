@@ -12,6 +12,12 @@ import javax.validation.constraints.Size;
 public class MemberForm {
     private Long id;
 
+    @NotEmpty(message = "Id를 입력해주세요", groups = {SaveCheck.class, LoginCheck.class})
+    private String loginId;
+
+    @NotEmpty(message = "password를 입력해주세요", groups = {SaveCheck.class, LoginCheck.class})
+    private String password;
+
     /**
      * name 의 NotEmpty 조건이 모든 request, response 에 필요하지 않음에도 불필요하게 사용될 수 있으며,
      * 만약 각 API 의 request 와 response 에 맞추기 위해 domain 이 수정되서는 안되기 떄문이다.
@@ -19,8 +25,8 @@ public class MemberForm {
 
      "@NotBlank" 는 null 과 "" 과 " " 모두 허용하지 않는다.
      */
-    @NotEmpty(message = "회원 이름은 필수입니다.")
-    @Size(min = 1, max = 10, message = "회원 이름은 1~10자 사이입니다.")
+    @NotEmpty(message = "회원 이름은 필수입니다.", groups = {SaveCheck.class})
+    @Size(min = 1, max = 10, message = "회원 이름은 1~10자 사이입니다.", groups = {SaveCheck.class})
     private String name;
 
     private GenderStatus gender;
