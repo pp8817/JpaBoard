@@ -21,6 +21,8 @@ import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.MemberSearch;
 import springJpaBoard.Board.service.MemberService;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -76,9 +78,8 @@ public class MemberController {
 
     @PostMapping("/login")
     public String login(@Validated(LoginCheck.class)
-                        @ModelAttribute("loginForm") MemberForm form, BindingResult result) {
+                        @ModelAttribute("loginForm") MemberForm form, BindingResult result, HttpServletResponse response) {
         if (result.hasErrors()) {
-            System.out.println("result: "+result.getAllErrors());
             return "members/loginMemberForm";
         }
 
@@ -90,6 +91,11 @@ public class MemberController {
         }
 
         //로그인 성공 처리 TODO
+
+        /* 쿠키에 시간 정보를 주지 않으면 세션 쿠키(브라우저 종료시 모두 종료)
+        * 로그인에 성공하면 쿠키를 생성하고 HttpServletResponse에 담는다. 쿠키 이름은 memberId이고, 값은 회원의 id를 담아둔다.*/
+        Cookie idCookie = new Cookie("member", String.valueOf(loginMember.getId()));
+        response.addCookie(idCookie);
 
         return "redirect:/";
     }
