@@ -75,9 +75,10 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(@Validated({SaveCheck.class, LoginCheck.class})
+    public String login(@Validated(LoginCheck.class)
                         @ModelAttribute("loginForm") MemberForm form, BindingResult result) {
         if (result.hasErrors()) {
+            System.out.println("result: "+result.getAllErrors());
             return "members/loginMemberForm";
         }
 
