@@ -12,6 +12,8 @@ import springJpaBoard.Board.repository.MemberRepository;
 
 import java.util.List;
 
+import static java.lang.Boolean.*;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -40,13 +42,22 @@ public class MemberService {
                 .orElse(null);
     }
 
+    public Boolean loginValidation(Member loginMember, Member BoardMember) {
+
+        if ((loginMember.getLoginId().equals(BoardMember.getLoginId()) && (loginMember.getPassword().equals(BoardMember.getPassword())))) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
     /**
      * 중복 회원 검사
      */
     private void validateDuplicateMember(Member member) {
         //EXCEPTION
         List<Member> findMembers = memberRepository.findAllByName(member.getName());
-        if (!findMembers.isEmpty()) {
+        List<Member> findLoginId = memberRepository.findAllByLoginId(member.getLoginId());
+        if (!findMembers.isEmpty() || !findLoginId.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springJpaBoard.Board.SesstionConst;
 import springJpaBoard.Board.controller.requestdto.BoardForm;
 import springJpaBoard.Board.controller.requestdto.CommentForm;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
@@ -27,6 +28,7 @@ import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.CommentService;
 import springJpaBoard.Board.service.MemberService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -44,21 +46,46 @@ public class BoardController {
     /**
      * 게시글 작성
      */
+//    @GetMapping("/write")
+//    public String writeForm(Model model) {
+//        /**
+//         * 빈 껍데기인 BoardFrom 객체를 model에 담아서 가져가는 이유는 Validation의 기능을 사용하기 위해서이다.
+//         */
+//        List<Member> memberList = memberService.findMembers();
+//
+//        List<MemberResponseDto> members = memberList.stream()
+//                .map(m -> new MemberResponseDto(m))
+//                .collect(toList());
+//
+//
+//
+//        model.addAttribute("members", members);
+//        model.addAttribute("boardForm", new BoardForm());
+//        return "boards/writeBoardForm";
+//    }
+
     @GetMapping("/write")
-    public String writeForm(Model model) {
+    public String writeFormV2(@SessionAttribute(name = SesstionConst.LOGIN_MEMBER, required = false)
+            Member loginMember, Model model, HttpServletRequest request) {
         /**
          * 빈 껍데기인 MemberFrom 객체를 model에 담아서 가져가는 이유는 Validation의 기능을 사용하기 위해서이다.
          */
-        List<Member> memberList = memberService.findMembers();
 
-        List<MemberResponseDto> members = memberList.stream()
-                .map(m -> new MemberResponseDto(m))
-                .collect(toList());
+        //세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성
+//        HttpSession session = request.getSession(false);
 
-        model.addAttribute("members", members);
+        if (loginMember == null) {
+            return "redirect:/";
+        }
+        MemberResponseDto member = new MemberResponseDto(loginMember);
+//        BoardForm boardForm = new BoardForm();
+//        boardForm.setMember(member);
+
+        model.addAttribute("member", member);
         model.addAttribute("boardForm", new BoardForm());
         return "boards/writeBoardForm";
     }
+
 
     @PostMapping("/write")
     public String write(@Validated(SaveCheck.class) @ModelAttribute BoardForm boardForm, BindingResult result, @RequestParam("memberId") Long memberId) {
@@ -214,8 +241,19 @@ public class BoardController {
      * 게시글 삭제
      */
     @GetMapping("/{boardId}/delete")
-    public String deleteBoard(@PathVariable Long boardId){
-        boardService.delete(boardId);
+    public String deleteBoard(@PathVariable Long boardId,
+                              @SessionAttribute(name = SesstionConst.LOGIN_MEMBER, required = false) Member loginMember){
+        //세션에 회원 데이터가 없으면 home
+        if (loginMember == null) {
+            return "redirect:/boards";
+        }
+        Board board = boardService.findOne(boardId);
+        Member boardMember = board.getMember();
+
+        if (memberService.loginValidation(loginMember, boardMember)) {
+            boardService.delete(boardId);
+            return "redirect:/boards";
+        }
 
         return "redirect:/boards";
     }
