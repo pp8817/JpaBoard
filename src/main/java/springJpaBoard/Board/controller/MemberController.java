@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springJpaBoard.Board.SesstionConst;
 import springJpaBoard.Board.controller.requestdto.LoginCheck;
 import springJpaBoard.Board.controller.requestdto.MemberForm;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
@@ -21,8 +22,8 @@ import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.MemberSearch;
 import springJpaBoard.Board.service.MemberService;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -68,7 +69,7 @@ public class MemberController {
     }
 
     /**
-     * 회원 로그인
+     * 회원 로그인, 로그아웃
      */
     @GetMapping("/login")
     public String loginForm(Model model) {
@@ -77,8 +78,8 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(@Validated(LoginCheck.class)
-                        @ModelAttribute("loginForm") MemberForm form, BindingResult result, HttpServletResponse response) {
+    public String loginV3(@Validated(LoginCheck.class)
+                        @ModelAttribute("loginForm") MemberForm form, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
             return "members/loginMemberForm";
         }
@@ -91,12 +92,21 @@ public class MemberController {
         }
 
         //로그인 성공 처리 TODO
+        /*세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성*/
+        HttpSession session = request.getSession();
+        /*세션에 로그인 회원 정보 보관*/
+        session.setAttribute(SesstionConst.LOGIN_MEMBER, loginMember);
 
-        /* 쿠키에 시간 정보를 주지 않으면 세션 쿠키(브라우저 종료시 모두 종료)
-        * 로그인에 성공하면 쿠키를 생성하고 HttpServletResponse에 담는다. 쿠키 이름은 memberId이고, 값은 회원의 id를 담아둔다.*/
-        Cookie idCookie = new Cookie("member", String.valueOf(loginMember.getId()));
-        response.addCookie(idCookie);
+        return "redirect:/";
+    }
 
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        /*세션 삭제*/
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate(); //세션과 그 안의 데이터가 날아감
+        }
         return "redirect:/";
     }
 
