@@ -219,10 +219,12 @@ public class BoardController {
             required = false) Member loginMember,Model model) {
         //세션에 회원 데이터가 없으면 목록으로
         if (loginMember == null) {
-            return "redirect:/boards";
+            return "redirect:/boards/" + boardId + "/detail";
         }
+
         Board board = boardService.findOne(boardId);
         Member boardMember = board.getMember();
+
         if (memberService.loginValidation(loginMember, boardMember)) {
             BoardForm boardForm = new BoardForm();
             boardForm.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
@@ -231,7 +233,7 @@ public class BoardController {
             return "/boards/updateBoardForm";
         }
 
-        return "redirect:/boards";
+        return "redirect:/boards/" + boardId + "/detail";
     }
 
     @PostMapping("/{boardId}/edit")
@@ -240,7 +242,7 @@ public class BoardController {
                               @PathVariable Long boardId) {
 
         if (loginMember == null) {
-            return "redirect:/boards";
+            return "redirect:/boards/" + boardId + "/detail";
         }
 
         Board board = boardService.findOne(boardId);
@@ -252,7 +254,7 @@ public class BoardController {
             return "redirect:/boards"; //게시글 수정 후 게시글 목록으로 이동
         }
 
-        return "redirect:/boards";
+        return "redirect:/boards/" + boardId + "/detail";
     }
 
     /**
@@ -263,7 +265,7 @@ public class BoardController {
                               @SessionAttribute(name = SesstionConst.LOGIN_MEMBER, required = false) Member loginMember){
         //세션에 회원 데이터가 없으면 home
         if (loginMember == null) {
-            return "redirect:/boards";
+            return "redirect:/boards/" + boardId + "/detail";
         }
         Board board = boardService.findOne(boardId);
         Member boardMember = board.getMember();
@@ -273,7 +275,7 @@ public class BoardController {
             return "redirect:/boards";
         }
 
-        return "redirect:/boards";
+        return "redirect:/boards/" + boardId + "/detail";
     }
 
     /**
