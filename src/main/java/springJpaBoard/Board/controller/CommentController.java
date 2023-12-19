@@ -28,7 +28,6 @@ public class CommentController {
     @PostMapping("/board/comment")
     public String saveComment(@Valid @ModelAttribute CommentForm commentForm, BindingResult result, @RequestParam("memberId") Long memberId) {
         Long bno = commentForm.getBno();
-        System.out.println("memberId = " + memberId);
 
         if (result.hasErrors()) {
             System.out.println("유효성 검증 실패:");
@@ -39,13 +38,17 @@ public class CommentController {
         }
 
         Board board = boardService.findOne(bno); //쿼리 1번
-        Comment comment = new Comment();
-        comment.createComment(commentForm);
+        if (board != null) {
+            board.addComment();
+            Comment comment = new Comment();
+            comment.createComment(commentForm);
 
-        comment.setBoard(board);
-        commentService.save(comment, memberId);
+            comment.setBoard(board);
+            commentService.save(comment, memberId);
 
-        return "redirect:/boards/" + bno + "/detail"; //쿼리 1번, 게시글 상세 페이지를 다시 로딩하면서 board의 정보가 필요
+            return "redirect:/boards/" + bno + "/detail"; //쿼리 1번, 게시글 상세 페이지를 다시 로딩하면서 board의 정보가 필요
+        }
+        return "redirect:/";
     }
 
     @GetMapping("/comment/{id}/delete")

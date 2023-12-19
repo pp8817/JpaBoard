@@ -294,7 +294,7 @@ public class BoardController {
 
         private LocalDateTime boardDateTime;
 
-
+        /*댓글을 작성할 때마다 board의 댓글 수를 증가하는 방식으로*/
         private int commentCount;
 
         public BoardDto(Board board) {
@@ -304,7 +304,7 @@ public class BoardController {
             this.writer = board.getWriter();
             this.view = board.getView();
             this.boardDateTime = board.getBoardDateTime();
-            this.commentCount = board.getCommentList().size();
+            this.commentCount = board.getCommentCount();
         }
     }
 

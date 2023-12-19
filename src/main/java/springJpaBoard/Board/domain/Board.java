@@ -35,6 +35,8 @@ public class Board {
 
     private int view;
 
+    private int commentCount;
+
     private LocalDateTime boardDateTime;
 
     private LocalDateTime modifyDateTime;
@@ -58,6 +60,10 @@ public class Board {
         this.title = boardDto.getTitle();
         this.content = boardDto.getContent();
         this.modifyDateTime = LocalDateTime.now();
+    }
+
+    public void addComment() {
+        this.commentCount += 1;
     }
 
     /*

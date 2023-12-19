@@ -19,7 +19,8 @@ public class CommentService {
     public void save(Comment comment, Long memberId) {
         //엔티티 조회
         Member member = memberService.findOne(memberId);
-        //연관 관계 생성
+
+        //연관 관계 편의 메서드 사용
         comment.setMember(member);
 
         commentRepository.save(comment);
