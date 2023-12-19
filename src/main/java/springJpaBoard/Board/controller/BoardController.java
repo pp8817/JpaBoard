@@ -215,26 +215,44 @@ public class BoardController {
      * 게시글 수정
      */
     @GetMapping("/{boardId}/edit")
-    public String updateBoardForm(@PathVariable("boardId") Long boardId, Model model) {
+    public String updateBoardForm(@PathVariable("boardId") Long boardId, @SessionAttribute(name = SesstionConst.LOGIN_MEMBER,
+            required = false) Member loginMember,Model model) {
+        //세션에 회원 데이터가 없으면 목록으로
+        if (loginMember == null) {
+            return "redirect:/boards";
+        }
         Board board = boardService.findOne(boardId);
+        Member boardMember = board.getMember();
+        if (memberService.loginValidation(loginMember, boardMember)) {
+            BoardForm boardForm = new BoardForm();
+            boardForm.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
 
-        BoardForm boardForm = new BoardForm();
-        boardForm.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
+            model.addAttribute("boardForm", boardForm);
+            return "/boards/updateBoardForm";
+        }
 
-        model.addAttribute("boardForm", boardForm);
-        return "/boards/updateBoardForm";
+        return "redirect:/boards";
     }
 
     @PostMapping("/{boardId}/edit")
-    public String updateBoard(@Validated(UpdateCheck.class) @ModelAttribute BoardForm boardForm, @PathVariable Long boardId) {
+    public String updateBoard(@Validated(UpdateCheck.class) @ModelAttribute BoardForm boardForm,
+                              @SessionAttribute(name = SesstionConst.LOGIN_MEMBER, required = false) Member loginMember,
+                              @PathVariable Long boardId) {
 
-        /*
-//        여기서 굳이 UpdateBoardDto로 변환을 해야할까? BoardForm과 UpdateBoardDto의 변수 차이는
-         */
-//        UpdateBoardDto boardDto = new UpdateBoardDto(boardId, boardForm.getTitle(), boardForm.getContent(), LocalDateTime.now());
-        boardService.update(boardId, boardForm);
+        if (loginMember == null) {
+            return "redirect:/boards";
+        }
 
-        return "redirect:/boards"; //게시글 수정 후 게시글 목록으로 이동
+        Board board = boardService.findOne(boardId);
+        Member boardMember = board.getMember();
+
+        if (memberService.loginValidation(loginMember, boardMember)) {
+            boardService.update(board, boardForm);
+
+            return "redirect:/boards"; //게시글 수정 후 게시글 목록으로 이동
+        }
+
+        return "redirect:/boards";
     }
 
     /**
@@ -265,6 +283,7 @@ public class BoardController {
     static class BoardDto {
         private Long id;
 
+        /*회원 이름은 나중에 회원 이름 변경 기능이 생긴다면 문제가 될 수 있기 때문에 일단 변경 x*/
         private String name;
 
         private String title;
@@ -274,6 +293,7 @@ public class BoardController {
         private int view;
 
         private LocalDateTime boardDateTime;
+
 
         private int commentCount;
 

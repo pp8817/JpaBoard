@@ -66,12 +66,12 @@ public class BoardService {
      * 게시글 수정
      */
     @Transactional
-    public void update(Long id, BoardForm boardDto) {
-        Board findBoard = boardRepository.findById(id).get();
+    public void update(Board board, BoardForm boardDto) {
+//        Board findBoard = boardRepository.findById(id).get();
         /*
         Dirty Checking 발생
          */
-        findBoard.editBoard(boardDto);
+        board.editBoard(boardDto);
     }
 
     /**
