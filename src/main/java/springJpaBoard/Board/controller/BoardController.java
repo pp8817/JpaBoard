@@ -71,12 +71,6 @@ public class BoardController {
          * 빈 껍데기인 MemberFrom 객체를 model에 담아서 가져가는 이유는 Validation의 기능을 사용하기 위해서이다.
          */
 
-        //세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성
-//        HttpSession session = request.getSession(false);
-
-//        if (loginMember == null) {
-//            return "redirect:/";
-//        }
         MemberResponseDto member = new MemberResponseDto(loginMember);
 //        BoardForm boardForm = new BoardForm();
 //        boardForm.setMember(member);
@@ -205,67 +199,39 @@ public class BoardController {
      * 게시글 수정
      */
     @GetMapping("/{boardId}/edit")
-    public String updateBoardForm(@PathVariable("boardId") Long boardId, @SessionAttribute(name = SesstionConst.LOGIN_MEMBER,
-            required = false) Member loginMember,Model model) {
-        //세션에 회원 데이터가 없으면 목록으로
-        if (loginMember == null) {
-            return "redirect:/boards/" + boardId + "/detail";
-        }
-
+    public String updateBoardForm(@PathVariable("boardId") Long boardId, Model model) {
         Board board = boardService.findOne(boardId);
         Member boardMember = board.getMember();
 
-        if (memberService.loginValidation(loginMember, boardMember)) {
-            BoardForm boardForm = new BoardForm();
-            boardForm.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
+        BoardForm boardForm = new BoardForm();
+        boardForm.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
+        model.addAttribute("boardForm", boardForm);
 
-            model.addAttribute("boardForm", boardForm);
-            return "/boards/updateBoardForm";
-        }
-
-        return "redirect:/boards/" + boardId + "/detail";
+        return "/boards/updateBoardForm";
     }
 
     @PostMapping("/{boardId}/edit")
     public String updateBoard(@Validated(UpdateCheck.class) @ModelAttribute BoardForm boardForm,
-                              @SessionAttribute(name = SesstionConst.LOGIN_MEMBER, required = false) Member loginMember,
                               @PathVariable Long boardId) {
-
-        if (loginMember == null) {
-            return "redirect:/boards/" + boardId + "/detail";
-        }
 
         Board board = boardService.findOne(boardId);
         Member boardMember = board.getMember();
 
-        if (memberService.loginValidation(loginMember, boardMember)) {
-            boardService.update(board, boardForm);
-
-            return "redirect:/boards"; //게시글 수정 후 게시글 목록으로 이동
-        }
-
-        return "redirect:/boards/" + boardId + "/detail";
+        boardService.update(board, boardForm);
+        return "redirect:/boards"; //게시글 수정 후 게시글 목록으로 이동
     }
 
     /**
      * 게시글 삭제
      */
     @GetMapping("/{boardId}/delete")
-    public String deleteBoard(@PathVariable Long boardId,
-                              @SessionAttribute(name = SesstionConst.LOGIN_MEMBER, required = false) Member loginMember){
+    public String deleteBoard(@PathVariable Long boardId){
         //세션에 회원 데이터가 없으면 home
-        if (loginMember == null) {
-            return "redirect:/boards/" + boardId + "/detail";
-        }
         Board board = boardService.findOne(boardId);
         Member boardMember = board.getMember();
 
-        if (memberService.loginValidation(loginMember, boardMember)) {
-            boardService.delete(boardId);
-            return "redirect:/boards";
-        }
-
-        return "redirect:/boards/" + boardId + "/detail";
+        boardService.delete(boardId);
+        return "redirect:/boards";
     }
 
     /**
