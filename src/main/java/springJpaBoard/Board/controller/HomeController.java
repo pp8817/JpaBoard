@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import springJpaBoard.Board.SesstionConst;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.repository.MemberRepository;
 
 @Controller
@@ -17,8 +16,7 @@ public class HomeController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/")
-    public String homeLoginV3Spring(@SessionAttribute(name = SesstionConst.LOGIN_MEMBER, required = false)
-                                        Member loginMember, Model model) {
+    public String homeLoginV3ArgumentResolver(@Login Member loginMember, Model model) {
 
         //세션이 없으면 home
         if (loginMember == null) {

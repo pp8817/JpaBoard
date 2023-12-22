@@ -1,10 +1,14 @@
 package springJpaBoard.Board;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import springJpaBoard.Board.domain.argumenresolver.LoginMemberArgumentResolver;
 import springJpaBoard.Board.interceptor.LogInterceptor;
 import springJpaBoard.Board.interceptor.LoginCheckInterceptor;
+
+import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -23,5 +27,10 @@ public class WebConfig implements WebMvcConfigurer {
                         "/boards", "/boards/{boardId}/detail", "/members/logout", "/css/**",
                         "/*.ico", "/error"
                 );
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new LoginMemberArgumentResolver());
     }
 }
