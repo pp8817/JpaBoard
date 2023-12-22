@@ -74,9 +74,9 @@ public class BoardController {
         //세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성
 //        HttpSession session = request.getSession(false);
 
-        if (loginMember == null) {
-            return "redirect:/";
-        }
+//        if (loginMember == null) {
+//            return "redirect:/";
+//        }
         MemberResponseDto member = new MemberResponseDto(loginMember);
 //        BoardForm boardForm = new BoardForm();
 //        boardForm.setMember(member);
@@ -122,14 +122,6 @@ public class BoardController {
 
         Page<Board> boardList = null;
 
-//        if (searchIsEmpty(boardSearch)) { //입력 X
-//            boardList = boardService.boardList(pageable);
-//        } else if (boardSearch.getMemberGender() == null) { //제목만 입력
-//            boardList = boardService.search(boardSearch.getBoardTitle(), pageable);
-//        } else { // 둘 다 입력
-//            boardList = boardService.searchGender(boardSearch.getBoardTitle(), boardSearch.getMemberGender(), pageable);
-//        }
-
         if (searchIsEmpty(boardSearch)) {
             boardList = boardService.boardList(pageable);
         } else {
@@ -142,8 +134,6 @@ public class BoardController {
                 boardList = boardService.searchAll(boardTitle, memberGender, pageable);
             }
         }
-
-//        model.addAttribute("boardPage", boardList);
 
         List<BoardDto> boards = boardList.stream()
                 .map(b -> new BoardDto(b))

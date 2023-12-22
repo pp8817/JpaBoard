@@ -78,8 +78,10 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String loginV3(@Validated(LoginCheck.class)
-                        @ModelAttribute("loginForm") MemberForm form, BindingResult result, HttpServletRequest request) {
+    public String loginV4(@Validated(LoginCheck.class)
+                        @ModelAttribute("loginForm") MemberForm form, BindingResult result, @RequestParam(defaultValue = "/", name = "redirectURL") String redirectURL, HttpServletRequest request) {
+        System.out.println("redirectURL = " + redirectURL);
+
         if (result.hasErrors()) {
             return "members/loginMemberForm";
         }
@@ -92,12 +94,13 @@ public class MemberController {
         }
 
         //로그인 성공 처리 TODO
+
         /*세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성*/
         HttpSession session = request.getSession();
         /*세션에 로그인 회원 정보 보관*/
         session.setAttribute(SesstionConst.LOGIN_MEMBER, loginMember);
 
-        return "redirect:/";
+        return "redirect:" + redirectURL;
     }
 
     @PostMapping("/logout")
