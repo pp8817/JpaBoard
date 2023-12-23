@@ -18,6 +18,8 @@ public class BoardResponseDto {
 
     private int view;
 
+    private int commentCount;
+
     private LocalDateTime boardDateTime;
 
     private LocalDateTime modifyDateTime;
@@ -32,8 +34,6 @@ public class BoardResponseDto {
         this.view = board.getView();
         this.boardDateTime = board.getBoardDateTime();
         this.modifyDateTime = board.getModifyDateTime();
-//        this.Comments = board.getCommentList().stream()
-//                .map(comment -> new CommentResponseDto(comment))
-//                .collect(toList());
+        this.commentCount = board.getCommentCount();
     }
 }

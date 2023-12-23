@@ -366,59 +366,6 @@
 
         </div>
 
-        <!-- 댓글 페이징 부분 -->
-<!--        <nav aria-label="Page navigation example">-->
-<!--            <ul class="pagination">-->
-<!--                <li class="page-item" th:class="${nowPage == 1} ? 'disabled' : ''">-->
-<!--                    <a class="page-link" th:href="@{${'/boards/' + board.id + '/detail?page=' + (nowPage - 1)}}">Previous</a>-->
-<!--                </li>-->
-<!--                <th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">-->
-<!--                    <li class="page-item" th:class="${nowPage == pageNum} ? 'active' : ''">-->
-<!--                        <a class="page-link" th:href="@{${'/boards/' + board.id + '/detail?page=' + pageNum}}"><span th:text="${pageNum}"></span></a>-->
-<!--                    </li>-->
-<!--                </th:block>-->
-<!--                <li class="page-item" th:class="${nowPage == endPage} ? 'disabled' : ''">-->
-<!--                    <a class="page-link" th:href="@{${'/boards/' + board.id + '/detail?page=' + (nowPage + 1)}}">Next</a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </nav>-->
-
-        <!-- 댓글 페이징 부분 -->
-<!--        <nav aria-label="Page navigation example">-->
-<!--            <ul class="pagination">-->
-<!--                <li class="page-item" th:class="${nowPage == 1} ? 'disabled' : ''">-->
-<!--                    <a class="page-link" th:href="@{'/boards/' + {id} + '/detail?page=' + (nowPage - 1)}">Previous</a>-->
-<!--                </li>-->
-<!--                <th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">-->
-<!--                    <li class="page-item" th:class="${nowPage == pageNum} ? 'active' : ''">-->
-<!--                        <a class="page-link" th:href="@{'/boards/' + {id} + '/detail?page=' + pageNum}"><span th:text="${pageNum}"></span></a>-->
-<!--                    </li>-->
-<!--                </th:block>-->
-<!--                <li class="page-item" th:class="${nowPage == endPage} ? 'disabled' : ''">-->
-<!--                    <a class="page-link" th:href="@{'/boards/' + {id} + '/detail?page=' + (nowPage + 1)}">Next</a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </nav>-->
-
-<!--        <div class="pagination">-->
-<!--            <th:block th:if="${startPage > 1}">-->
-<!--                &lt;!&ndash; 이전 페이지로 이동하는 화살표 &ndash;&gt;-->
-<!--                <a th:href="@{'/boards/' + id + '/detail?page=' + (startPage - 2)}" class="page-link">&lt;</a>-->
-<!--            </th:block>-->
-
-<!--            <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">-->
-<!--                &lt;!&ndash; 현재 페이지가 아니라면 &ndash;&gt;-->
-<!--                <a th:if="${page != nowPage}" th:href="@{'/boards/' + id + '/detail?page=' + (page - 1)}" th:text="${page}" class="page-link"></a>-->
-<!--                &lt;!&ndash; 현재 페이지라면 강조 표시 &ndash;&gt;-->
-<!--                <strong th:if="${page == nowPage}" th:text="${page}" class="current-page"></strong>-->
-<!--            </th:block>-->
-
-<!--            <th:block th:if="${endPage < totalPages}">-->
-<!--                &lt;!&ndash; 다음 페이지로 이동하는 화살표 &ndash;&gt;-->
-<!--                <a th:href="@{'/boards/' + id + '/detail?page=' + endPage}" class="page-link">&gt;</a>-->
-<!--            </th:block>-->
-<!--        </div>-->
-
     </div>
     <div th:replace="fragments/footer :: footer"/>
 </div>

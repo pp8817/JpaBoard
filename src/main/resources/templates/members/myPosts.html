@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        list-style: none;
+        padding: 0;
+    }
+
+    .pagination a {
+        color: gray;
+        text-decoration: none;
+        margin: 0 5px;
+        font-size: 14px;
+    }
+
+    .pagination .current-page {
+        font-weight: bold;
+        font-size: 16px;
+        text-decoration: underline;
+        color: black;
+    }
+</style>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <h4 class="mb-3"th:text="|로그인:${name}|">로그인 사용자 이름</h4>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th th:text="#{label.board.title}">제목</th>
+                <th th:text="#{label.board.writer}">작성자</th>
+                <th th:text="#{label.board.createTime}">작성 시간</th>
+                <th th:text="#{label.board.view}">조회수</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board : ${boards}">
+                <td th:text="${board.id}"></td>
+                <td>
+                    <a th:href="@{/boards/{id}/detail(id=${board.id})}" th:text="${board.title}"></a>
+                    <span th:text="'[' + ${board.commentCount} + ']'"></span>
+                </td>
+                <td th:text="${board.writer}"></td>
+                <td th:text="${#temporals.format(board.getBoardDateTime(), 'YY년 MM월 dd일')}"></td>
+                <td th:text="${board.view}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+
+</body>
+<script>
+    function cancel(id) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/orders/" + id + "/cancel");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</html>

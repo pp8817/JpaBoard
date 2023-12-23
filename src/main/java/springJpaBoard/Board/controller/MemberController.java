@@ -15,11 +15,13 @@ import springJpaBoard.Board.controller.requestdto.LoginCheck;
 import springJpaBoard.Board.controller.requestdto.MemberForm;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
 import springJpaBoard.Board.controller.requestdto.UpdateCheck;
+import springJpaBoard.Board.controller.responsedto.BoardResponseDto;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.MemberSearch;
+import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +36,7 @@ import static java.util.stream.Collectors.toList;
 public class MemberController {
 
     private final MemberService memberService;
+    private final BoardService boardService;
 
     /**
      * 회원 가입
@@ -192,4 +195,21 @@ public class MemberController {
         return "redirect:/members";
     }
 
+    /**
+     * 회원이 작성한 게시글 리스트
+     */
+    @GetMapping("/myPosts")
+    public String boardList(Model model, @SessionAttribute(name = SesstionConst.LOGIN_MEMBER, required = false)
+                            Member loginMember) {
+        Long id = loginMember.getId();
+        Member member = memberService.findOne(id);
+
+        List<BoardResponseDto> boards = member.getBoardList().stream()
+                .map(b -> new BoardResponseDto(b))
+                .collect(toList());
+
+        model.addAttribute("name", member.getName());
+        model.addAttribute("boards", boards);
+        return "members/myPosts";
+    }
 }
