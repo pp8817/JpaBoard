@@ -30,7 +30,7 @@ import static java.util.stream.Collectors.toList;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("members")
+@RequestMapping("/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -79,8 +79,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public String loginV4(@Validated(LoginCheck.class)
-                        @ModelAttribute("loginForm") MemberForm form, BindingResult result, @RequestParam(defaultValue = "/", name = "redirectURL") String redirectURL, HttpServletRequest request) {
-        System.out.println("redirectURL = " + redirectURL);
+                        @ModelAttribute("loginForm") MemberForm form, BindingResult result, @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
 
         if (result.hasErrors()) {
             return "members/loginMemberForm";
@@ -93,7 +92,7 @@ public class MemberController {
             return "members/loginMemberForm";
         }
 
-        //로그인 성공 처리 TODO
+        //로그인 성공 처리
 
         /*세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성*/
         HttpSession session = request.getSession();

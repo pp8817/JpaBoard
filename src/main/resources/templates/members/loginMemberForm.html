@@ -11,7 +11,7 @@
 
 <div class="container">
   <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-  <form role="form" action="/members/login" th:object="${loginForm}"
+  <form role="form" action="memberList.html" th:action th:object="${loginForm}"
         method="post">
 
     <div th:if="${#fields.hasGlobalErrors()}">
