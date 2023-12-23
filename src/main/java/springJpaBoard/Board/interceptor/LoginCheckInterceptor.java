@@ -25,7 +25,6 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             return false;
 
         }
-        System.out.println("#########실행##############");
         return true;
     }
 }
