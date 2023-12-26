@@ -20,11 +20,13 @@ public class BoardResponseDto {
 
     private int commentCount;
 
+    private int recommend;
+
     private LocalDateTime boardDateTime;
 
     private LocalDateTime modifyDateTime;
 
-//    private List<CommentResponseDto> Comments;
+
 
     public BoardResponseDto(Board board) {
         this.id = board.getId();

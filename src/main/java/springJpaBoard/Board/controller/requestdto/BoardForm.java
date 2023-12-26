@@ -35,6 +35,8 @@ public class BoardForm {
 
     private LocalDateTime modifyDateTime;
 
+    private int recommend;
+
 
     public void createForm(Long id, String title, String content, String writer) {
         this.id = id;

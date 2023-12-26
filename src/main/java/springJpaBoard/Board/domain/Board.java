@@ -37,6 +37,8 @@ public class Board {
 
     private int commentCount;
 
+    private int recommend;
+
     private LocalDateTime boardDateTime;
 
     private LocalDateTime modifyDateTime;
