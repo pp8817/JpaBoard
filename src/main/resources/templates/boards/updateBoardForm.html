@@ -4,7 +4,7 @@
 <body>
 <div class="container">
   <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-  <form role="form" th:action="@{/boards/{id}/edit(id=${boardRequestDTO.id})}"  method="post" th:object="${boardRequestDTO}">
+  <form role="form" th:action="@{/boards/{id}/edit(id=${boardForm.id})}"  method="post" th:object="${boardForm}">
 
     <div class="form-group">
       <label th:for="title" th:text="#{label.board.title}">제목</label>

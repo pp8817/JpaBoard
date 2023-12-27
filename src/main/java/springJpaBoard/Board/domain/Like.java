@@ -1,16 +1,14 @@
 package springJpaBoard.Board.domain;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.*;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity(name = "likes")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Like {
 
     @Id
@@ -24,5 +22,14 @@ public class Like {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id")
+
     private Board board;
+
+    public Like() {
+    }
+
+    public Like(Member member, Board board) {
+        this.member = member;
+        this.board = board;
+    }
 }

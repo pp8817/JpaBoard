@@ -65,7 +65,7 @@ public class BoardController {
 //    }
 
     @GetMapping("/write")
-    public String writeFormV2(@SessionAttribute(name = SesstionConst.LOGIN_MEMBER, required = false)
+    public String write(@SessionAttribute(name = SesstionConst.LOGIN_MEMBER, required = false)
             Member loginMember, Model model, HttpServletRequest request) {
         /**
          * 빈 껍데기인 MemberFrom 객체를 model에 담아서 가져가는 이유는 Validation의 기능을 사용하기 위해서이다.
@@ -217,7 +217,7 @@ public class BoardController {
         Member boardMember = board.getMember();
 
         boardService.update(board, boardRequestDTO);
-        return "redirect:/boards"; //게시글 수정 후 게시글 목록으로 이동
+        return "redirect:/boards/" + boardId + "/detail"; //게시글 수정 후 게시글 목록으로 이동
     }
 
     /**

@@ -27,6 +27,9 @@ public class Board {
     @OrderBy("id asc") //댓글 정렬
     private List<Comment> commentList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<Like> likeList = new ArrayList<>();
+
     private String title;
 
     private String content;
@@ -37,7 +40,7 @@ public class Board {
 
     private int commentCount;
 
-    private int recommend;
+    private int likes;
 
     private LocalDateTime boardDateTime;
 
@@ -66,6 +69,14 @@ public class Board {
 
     public void addComment() {
         this.commentCount += 1;
+    }
+
+    public void addLike() {
+        this.likes += 1;
+    }
+
+    public void decreaseLike() {
+        this.likes -= 1;
     }
 
     /*

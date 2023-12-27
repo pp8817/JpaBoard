@@ -40,6 +40,9 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade= CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Like> likeList = new ArrayList<>();
+
     public void createMember(MemberRequestDTO memberRequestDTO, Address address) {
         this.name = memberRequestDTO.getName();
         this.gender = memberRequestDTO.getGender();

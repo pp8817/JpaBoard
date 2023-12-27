@@ -35,8 +35,7 @@ public class BoardRequestDTO {
 
     private LocalDateTime modifyDateTime;
 
-    private int recommend;
-
+    private int likes;
 
     public void createForm(Long id, String title, String content, String writer) {
         this.id = id;

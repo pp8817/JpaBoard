@@ -1,11 +1,13 @@
 package springJpaBoard.Board.controller.responsedto;
 
 import lombok.Getter;
+import lombok.Setter;
 import springJpaBoard.Board.domain.Board;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 public class BoardResponseDTO {
 
     private Long id;
@@ -20,7 +22,7 @@ public class BoardResponseDTO {
 
     private int commentCount;
 
-    private int recommend;
+    private int likes;
 
     private LocalDateTime boardDateTime;
 
@@ -37,5 +39,6 @@ public class BoardResponseDTO {
         this.boardDateTime = board.getBoardDateTime();
         this.modifyDateTime = board.getModifyDateTime();
         this.commentCount = board.getCommentCount();
+        this.likes = board.getLikes();
     }
 }

@@ -208,6 +208,8 @@ public class MemberController {
                 .map(b -> new BoardResponseDTO(b))
                 .collect(toList());
 
+        System.out.println("boards = " + boards);
+
         model.addAttribute("name", member.getName());
         model.addAttribute("boards", boards);
         return "members/myPosts";
