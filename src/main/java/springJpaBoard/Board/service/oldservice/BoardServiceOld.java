@@ -1,16 +1,11 @@
 package springJpaBoard.Board.service.oldservice;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-import springJpaBoard.Board.controller.requestdto.BoardForm;
+import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.domain.status.GenderStatus;
-import springJpaBoard.Board.repository.BoardRepository;
 import springJpaBoard.Board.repository.oldRepository.BoardRepositoryImplOld;
-import springJpaBoard.Board.repository.oldRepository.BoardRepositoryOld;
 import springJpaBoard.Board.repository.oldRepository.MemberRepositoryImplOld;
 import springJpaBoard.Board.repository.search.BoardSearch;
 
@@ -76,7 +71,7 @@ public class BoardServiceOld {
      * 게시글 수정
      */
     @Transactional
-    public void update(Long id, BoardForm boardDto) {
+    public void update(Long id, BoardRequestDTO boardDto) {
         Board findBoard = boardRepositoryImplOld.findOne(id);
         /*
         Dirty Checking 발생

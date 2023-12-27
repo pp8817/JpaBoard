@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
+import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.repository.MemberRepository;
@@ -25,7 +25,7 @@ public class HomeController {
 
         /*DTO로 감싸기!*/
         //세션이 유지되면 로그인 홈으로 이동
-        MemberResponseDto memberResponseDto = new MemberResponseDto(loginMember);
+        MemberResponseDTO memberResponseDto = new MemberResponseDTO(loginMember);
 
         model.addAttribute("member", memberResponseDto);
         return "loginHome";

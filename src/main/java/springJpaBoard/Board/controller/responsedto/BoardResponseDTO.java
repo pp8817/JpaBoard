@@ -6,7 +6,7 @@ import springJpaBoard.Board.domain.Board;
 import java.time.LocalDateTime;
 
 @Getter
-public class BoardResponseDto {
+public class BoardResponseDTO {
 
     private Long id;
 
@@ -28,7 +28,7 @@ public class BoardResponseDto {
 
 
 
-    public BoardResponseDto(Board board) {
+    public BoardResponseDTO(Board board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();

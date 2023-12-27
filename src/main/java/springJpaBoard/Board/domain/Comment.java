@@ -2,7 +2,7 @@ package springJpaBoard.Board.domain;
 
 import lombok.Getter;
 import lombok.ToString;
-import springJpaBoard.Board.controller.requestdto.CommentForm;
+import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -60,7 +60,7 @@ public class Comment {
         member.getCommentList().add(this);
     }
 
-    public void createComment(CommentForm commentDto) {
+    public void createComment(CommentRequestDTO commentDto) {
         this.bno = commentDto.getBno();
 //        this.writer = commentDto.getWriter();
         this.content = commentDto.getContent();

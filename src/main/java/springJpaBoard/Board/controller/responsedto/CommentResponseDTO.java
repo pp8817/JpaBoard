@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class CommentResponseDto {
+public class CommentResponseDTO {
     private Long id;
 
     private Long bno;
@@ -25,7 +25,7 @@ public class CommentResponseDto {
     private LocalDateTime localDateTime;
 
 
-    public CommentResponseDto(Comment comment) {
+    public CommentResponseDTO(Comment comment) {
         this.id = comment.getId();
         this.bno = comment.getBno();
         this.writer = comment.getMember().getName();
@@ -33,6 +33,6 @@ public class CommentResponseDto {
         this.localDateTime = comment.getCreateDateTime();
     }
 
-    public CommentResponseDto() {
+    public CommentResponseDTO() {
     }
 }

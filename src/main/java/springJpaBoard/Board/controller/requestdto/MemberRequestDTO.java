@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class MemberForm {
+public class MemberRequestDTO {
     private Long id;
 
     @NotEmpty(message = "Id를 입력해주세요", groups = {SaveCheck.class, LoginCheck.class})

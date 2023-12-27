@@ -172,7 +172,7 @@
 <!--        </div>-->
 <!--        <div class="card-body comment-form">-->
 <!--            <form name="comment-form" th:action="@{'/comment/' + ${board.id}}" method="post"-->
-<!--                  th:object="${commentForm}">-->
+<!--                  th:object="${commentRequestDTO}">-->
 <!--                <div class="form-group">-->
 <!--                    <input type="text" th:field="*{writer}" class="form-control" placeholder="작성자"-->
 <!--                           th:class="${#fields.hasErrors('writer')}? 'form-control fieldError' : 'form-control'">-->
@@ -341,7 +341,7 @@
                 <div class="card-body">
                     <h4 class="card-title">댓글 작성</h4>
                     <form name="comment-form" th:action="@{'/board/comment'}" method="post"
-                          th:object="${commentForm}">
+                          th:object="${commentRequestDTO}">
                         <input type="hidden" name="bno" th:value="${board.id}">
                         <div class="form-group">
                             <label th:for="writer" th:text="#{label.board.writer}">작성자</label>

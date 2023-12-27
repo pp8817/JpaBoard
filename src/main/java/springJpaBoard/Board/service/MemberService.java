@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
+import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.MemberRepository;
@@ -105,7 +105,7 @@ public class MemberService {
      * 회원 정보 수정
      */
     @Transactional(readOnly = false)
-    public void update(MemberResponseDto memberDto) {
+    public void update(MemberResponseDTO memberDto) {
         Member findMember = memberRepository.findById(memberDto.getId()).get();
         /*
         Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현

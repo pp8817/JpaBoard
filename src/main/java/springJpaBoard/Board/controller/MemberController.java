@@ -12,11 +12,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.SesstionConst;
 import springJpaBoard.Board.controller.requestdto.LoginCheck;
-import springJpaBoard.Board.controller.requestdto.MemberForm;
+import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
 import springJpaBoard.Board.controller.requestdto.UpdateCheck;
-import springJpaBoard.Board.controller.responsedto.BoardResponseDto;
-import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
+import springJpaBoard.Board.controller.responsedto.BoardResponseDTO;
+import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.status.GenderStatus;
@@ -46,13 +46,13 @@ public class MemberController {
         /**
          * 빈 껍데기인 MemberFrom 객체를 model에 담아서 가져가는 이유는 Validation의 기능을 사용하기 위해서이다.
          */
-        model.addAttribute("memberForm", new MemberForm());
+        model.addAttribute("memberForm", new MemberRequestDTO());
         return "members/createMemberForm";
     }
 
 
     @PostMapping("/new")
-    public String create(@Validated(SaveCheck.class) @ModelAttribute MemberForm memberForm, BindingResult result) {
+    public String create(@Validated(SaveCheck.class) @ModelAttribute MemberRequestDTO memberRequestDTO, BindingResult result) {
 
         /*
         오류 발생시(@Valid 에서 발생)
@@ -61,10 +61,10 @@ public class MemberController {
             return "members/createMemberForm";
         }
 
-        Address address = new Address(memberForm.getCity(), memberForm.getStreet(), memberForm.getZipcode());
+        Address address = new Address(memberRequestDTO.getCity(), memberRequestDTO.getStreet(), memberRequestDTO.getZipcode());
 
         Member member = new Member();
-        member.createMember(memberForm, address);
+        member.createMember(memberRequestDTO, address);
 
         memberService.join(member); //PK 생성
 
@@ -76,13 +76,13 @@ public class MemberController {
      */
     @GetMapping("/login")
     public String loginForm(Model model) {
-        model.addAttribute("loginForm", new MemberForm());
+        model.addAttribute("loginForm", new MemberRequestDTO());
         return "members/loginMemberForm";
     }
 
     @PostMapping("/login")
     public String loginV4(@Validated(LoginCheck.class)
-                        @ModelAttribute("loginForm") MemberForm form, BindingResult result, @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
+                        @ModelAttribute("loginForm") MemberRequestDTO form, BindingResult result, @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
 
         if (result.hasErrors()) {
             return "members/loginMemberForm";
@@ -136,8 +136,8 @@ public class MemberController {
             }
         }
 
-        List<MemberResponseDto> members = memberList.stream()
-                .map(m -> new MemberResponseDto(m))
+        List<MemberResponseDTO> members = memberList.stream()
+                .map(m -> new MemberResponseDTO(m))
                 .collect(toList());
 
         int nowPage = memberList.getPageable().getPageNumber() + 1;
@@ -166,7 +166,7 @@ public class MemberController {
         Member member = memberService.findOne(memberId);
         Address address = member.getAddress();
 
-        MemberForm form = new MemberForm();
+        MemberRequestDTO form = new MemberRequestDTO();
         form.createForm(member.getId(), member.getName(), member.getGender(),
                 address.getCity(), address.getStreet(), address.getZipcode());
         model.addAttribute("form", form);
@@ -174,11 +174,11 @@ public class MemberController {
     }
 
     @PostMapping("{memberId}/edit")
-    public String updateMember(@Validated(UpdateCheck.class) @ModelAttribute("form") MemberForm form) {
+    public String updateMember(@Validated(UpdateCheck.class) @ModelAttribute("form") MemberRequestDTO form) {
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
         Member member = new Member();
 
-        MemberResponseDto memberDto = new MemberResponseDto();
+        MemberResponseDTO memberDto = new MemberResponseDTO();
         memberDto.UpdateBoard(form.getId(), form.getName(), form.getGender(), address);
         memberService.update(memberDto);
 
@@ -204,8 +204,8 @@ public class MemberController {
         Long id = loginMember.getId();
         Member member = memberService.findOne(id);
 
-        List<BoardResponseDto> boards = member.getBoardList().stream()
-                .map(b -> new BoardResponseDto(b))
+        List<BoardResponseDTO> boards = member.getBoardList().stream()
+                .map(b -> new BoardResponseDTO(b))
                 .collect(toList());
 
         model.addAttribute("name", member.getName());

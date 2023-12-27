@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import springJpaBoard.Board.controller.requestdto.CommentForm;
+import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.service.BoardService;
@@ -26,8 +26,8 @@ public class CommentController {
      * 댓글 작성
      */
     @PostMapping("/board/comment")
-    public String saveComment(@Valid @ModelAttribute CommentForm commentForm, BindingResult result, @RequestParam("memberId") Long memberId) {
-        Long bno = commentForm.getBno();
+    public String saveComment(@Valid @ModelAttribute CommentRequestDTO commentRequestDTO, BindingResult result, @RequestParam("memberId") Long memberId) {
+        Long bno = commentRequestDTO.getBno();
 
         if (result.hasErrors()) {
             System.out.println("유효성 검증 실패:");
@@ -41,7 +41,7 @@ public class CommentController {
         if (board != null) {
             board.addComment();
             Comment comment = new Comment();
-            comment.createComment(commentForm);
+            comment.createComment(commentRequestDTO);
 
             comment.setBoard(board);
             commentService.save(comment, memberId);

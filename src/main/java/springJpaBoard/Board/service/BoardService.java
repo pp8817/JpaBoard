@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springJpaBoard.Board.controller.requestdto.BoardForm;
+import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.status.GenderStatus;
@@ -66,7 +66,7 @@ public class BoardService {
      * 게시글 수정
      */
     @Transactional
-    public void update(Board board, BoardForm boardDto) {
+    public void update(Board board, BoardRequestDTO boardDto) {
 //        Board findBoard = boardRepository.findById(id).get();
         /*
         Dirty Checking 발생

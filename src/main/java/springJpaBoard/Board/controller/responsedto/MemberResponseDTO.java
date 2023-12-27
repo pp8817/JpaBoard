@@ -6,14 +6,14 @@ import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.status.GenderStatus;
 
 @Getter
-public class MemberResponseDto {
+public class MemberResponseDTO {
 
     private Long id;
     private String name;
     private GenderStatus gender;
     private Address address;
 
-    public MemberResponseDto(Member member) {
+    public MemberResponseDTO(Member member) {
         this.id = member.getId();
         this.name = member.getName();
         this.gender = member.getGender();
@@ -27,6 +27,6 @@ public class MemberResponseDto {
         this.address=address;
     }
 
-    public MemberResponseDto() {
+    public MemberResponseDTO() {
     }
 }

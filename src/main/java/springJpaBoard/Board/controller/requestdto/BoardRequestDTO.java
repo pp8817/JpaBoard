@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * 추후 변수로 Member를 추가할 예정 - 로그인 기능과 멤버를 구현했을때
  * 로그인 기능을 구현한 뒤에는 writer가 사라지고 연관관계에 있는 member의 name으로 대체
  */
-public class BoardForm {
+public class BoardRequestDTO {
 
     private Long id;
 

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class CommentForm {
+public class CommentRequestDTO {
 
     private Long bno;
 
@@ -24,6 +24,6 @@ public class CommentForm {
 
     private Member member;
 
-    public CommentForm() {
+    public CommentRequestDTO() {
     }
 }

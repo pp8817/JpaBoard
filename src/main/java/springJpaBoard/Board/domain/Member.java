@@ -1,8 +1,8 @@
 package springJpaBoard.Board.domain;
 
 import lombok.Getter;
-import springJpaBoard.Board.controller.requestdto.MemberForm;
-import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
+import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
+import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.status.GenderStatus;
 
 import javax.persistence.*;
@@ -40,11 +40,11 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade= CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
 
-    public void createMember(MemberForm memberForm, Address address) {
-        this.name = memberForm.getName();
-        this.gender = memberForm.getGender();
-        this.loginId = memberForm.getLoginId();
-        this.password = memberForm.getPassword();
+    public void createMember(MemberRequestDTO memberRequestDTO, Address address) {
+        this.name = memberRequestDTO.getName();
+        this.gender = memberRequestDTO.getGender();
+        this.loginId = memberRequestDTO.getLoginId();
+        this.password = memberRequestDTO.getPassword();
         this.address = address;
     }
 
@@ -52,7 +52,7 @@ public class Member {
     회원 수정, Dirty Checking 발생(업데이트 쿼리가 자동으로 나감)
     Setter를 사용하지 않기 위해 수정 메서드를 만듦
      */
-    public void editMember(MemberResponseDto memberDto) {
+    public void editMember(MemberResponseDTO memberDto) {
         this.name = memberDto.getName();
         this.gender = memberDto.getGender();
         this.address = memberDto.getAddress();

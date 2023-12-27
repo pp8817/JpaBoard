@@ -12,13 +12,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.SesstionConst;
-import springJpaBoard.Board.controller.requestdto.BoardForm;
-import springJpaBoard.Board.controller.requestdto.CommentForm;
+import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
+import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
 import springJpaBoard.Board.controller.requestdto.UpdateCheck;
-import springJpaBoard.Board.controller.responsedto.BoardResponseDto;
-import springJpaBoard.Board.controller.responsedto.CommentResponseDto;
-import springJpaBoard.Board.controller.responsedto.MemberResponseDto;
+import springJpaBoard.Board.controller.responsedto.BoardResponseDTO;
+import springJpaBoard.Board.controller.responsedto.CommentResponseDTO;
+import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
@@ -71,18 +71,18 @@ public class BoardController {
          * 빈 껍데기인 MemberFrom 객체를 model에 담아서 가져가는 이유는 Validation의 기능을 사용하기 위해서이다.
          */
 
-        MemberResponseDto member = new MemberResponseDto(loginMember);
+        MemberResponseDTO member = new MemberResponseDTO(loginMember);
 //        BoardForm boardForm = new BoardForm();
 //        boardForm.setMember(member);
 
         model.addAttribute("member", member);
-        model.addAttribute("boardForm", new BoardForm());
+        model.addAttribute("boardForm", new BoardRequestDTO());
         return "boards/writeBoardForm";
     }
 
 
     @PostMapping("/write")
-    public String write(@Validated(SaveCheck.class) @ModelAttribute BoardForm boardForm, BindingResult result, @RequestParam("memberId") Long memberId) {
+    public String write(@Validated(SaveCheck.class) @ModelAttribute BoardRequestDTO boardRequestDTO, BindingResult result, @RequestParam("memberId") Long memberId) {
 
         /*
         오류 발생시(@Valid 에서 발생)
@@ -92,7 +92,7 @@ public class BoardController {
             return "boards/writeBoardForm";
         }
         Board board = new Board();
-        board.createBoard(boardForm.getTitle(), boardForm.getContent(), boardForm.getWriter(), LocalDateTime.now());
+        board.createBoard(boardRequestDTO.getTitle(), boardRequestDTO.getContent(), boardRequestDTO.getWriter(), LocalDateTime.now());
         boardService.write(board, memberId);
         return "redirect:/";
     }
@@ -160,17 +160,17 @@ public class BoardController {
             direction = Sort.Direction.DESC) Pageable pageable,Model model) {
         boardService.updateView(boardId); // views ++
         Board board = boardService.findOne(boardId); //이때 comments도 담아오게?
-        BoardResponseDto boardDto = new BoardResponseDto(board);
+        BoardResponseDTO boardDto = new BoardResponseDTO(board);
 
         List<Member> memberList = memberService.findMembers();
-        List<MemberResponseDto> members = memberList.stream()
-                .map(m -> new MemberResponseDto(m))
+        List<MemberResponseDTO> members = memberList.stream()
+                .map(m -> new MemberResponseDTO(m))
                 .collect(toList());
 
         Page<Comment> commentList = commentService.getCommentsByBno(boardId, pageable);
 
-        List<CommentResponseDto> comments = commentList.stream()
-                .map(c -> new CommentResponseDto(c))
+        List<CommentResponseDTO> comments = commentList.stream()
+                .map(c -> new CommentResponseDTO(c))
                 .collect(toList());
 
         /* 댓글 관련 */
@@ -190,7 +190,7 @@ public class BoardController {
 
         model.addAttribute("board", boardDto);
         model.addAttribute("members", members);
-        model.addAttribute("commentForm", new CommentForm());
+        model.addAttribute("commentForm", new CommentRequestDTO());
 
         return "boards/boardDetail";
     }
@@ -202,22 +202,21 @@ public class BoardController {
     public String updateBoardForm(@PathVariable("boardId") Long boardId, Model model) {
         Board board = boardService.findOne(boardId);
         Member boardMember = board.getMember();
-
-        BoardForm boardForm = new BoardForm();
-        boardForm.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
-        model.addAttribute("boardForm", boardForm);
+        BoardRequestDTO boardRequestDTO = new BoardRequestDTO();
+        boardRequestDTO.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
+        model.addAttribute("boardForm", boardRequestDTO);
 
         return "/boards/updateBoardForm";
     }
 
     @PostMapping("/{boardId}/edit")
-    public String updateBoard(@Validated(UpdateCheck.class) @ModelAttribute BoardForm boardForm,
+    public String updateBoard(@Validated(UpdateCheck.class) @ModelAttribute BoardRequestDTO boardRequestDTO,
                               @PathVariable Long boardId) {
 
         Board board = boardService.findOne(boardId);
         Member boardMember = board.getMember();
 
-        boardService.update(board, boardForm);
+        boardService.update(board, boardRequestDTO);
         return "redirect:/boards"; //게시글 수정 후 게시글 목록으로 이동
     }
 
