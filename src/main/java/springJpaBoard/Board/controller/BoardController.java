@@ -116,7 +116,7 @@ public class BoardController {
 
         Page<Board> boardList = null;
 
-        if (searchIsEmpty(boardSearch)) {
+        if (boardSearch.searchIsEmpty()) {
             boardList = boardService.boardList(pageable);
         } else {
             String boardTitle = boardSearch.getBoardTitle();
@@ -146,10 +146,6 @@ public class BoardController {
 
         return "boards/boardList";
 
-    }
-
-    private static boolean searchIsEmpty(BoardSearch boardSearch) {
-        return (boardSearch.getBoardTitle() == "" || boardSearch.getBoardTitle() == null) && boardSearch.getMemberGender() == null;
     }
 
     /**

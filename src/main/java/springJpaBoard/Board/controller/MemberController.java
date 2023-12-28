@@ -123,7 +123,7 @@ public class MemberController {
     public String memberList(@ModelAttribute("memberSearch") MemberSearch memberSearch, Model model, @PageableDefault(page = 0, size=9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Member> memberList = null;
 
-        if (searchIsEmpty(memberSearch)) {
+        if (memberSearch.searchIsEmpty()) {
             memberList = memberService.memberList(pageable);
         } else {
             String memberName = memberSearch.getMemberName();
@@ -152,10 +152,6 @@ public class MemberController {
         model.addAttribute("totalPages", totalPages);
 
         return "members/memberList";
-    }
-
-    private static boolean searchIsEmpty(MemberSearch memberSearch) {
-        return (memberSearch.getMemberName() == "" || memberSearch.getMemberName() == null) && memberSearch.getMemberGender() == null;
     }
 
     /**

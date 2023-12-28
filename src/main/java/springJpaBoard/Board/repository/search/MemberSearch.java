@@ -9,4 +9,11 @@ import springJpaBoard.Board.domain.status.GenderStatus;
 public class MemberSearch {
     private String memberName;
     private GenderStatus memberGender; //성별 [MAN, WOMAN, NEUTRALITY]
+
+    public boolean searchIsEmpty() {
+        return (this.memberName == "" || this.memberName == null) && this.memberGender == null;
+    }
+
+    public MemberSearch() {
+    }
 }
