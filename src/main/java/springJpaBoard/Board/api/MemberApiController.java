@@ -48,7 +48,7 @@ public class MemberApiController {
     /* 회원가입 */
     @Transactional
     @PostMapping
-    public ResponseEntity join(@RequestBody @Validated(SaveCheck.class) MemberRequestDTO memberRequestDTO, BindingResult result) {
+    public ResponseEntity<Message> join(@RequestBody @Validated(SaveCheck.class) MemberRequestDTO memberRequestDTO, BindingResult result) {
         if (result.hasErrors()) {
             ResponseEntity.badRequest();
         }
@@ -58,7 +58,12 @@ public class MemberApiController {
         member.createMember(memberRequestDTO, address);
         Long id = memberService.join(member);
 
-        return ResponseEntity.status(HttpStatus.OK).body(id);
+        Message message = new Message(StatusEnum.OK, "회원 목록 조회 성공", id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     /* 회원 로그인 */
@@ -96,12 +101,9 @@ public class MemberApiController {
         if (session != null) {
             session.invalidate();
 
-            Message message = new Message();
+            Message message = new Message(StatusEnum.OK, "회원 목록 조회 성공");
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-            message.setStatus(StatusEnum.OK);
-            message.setMessage("로그아웃 성공");
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
@@ -137,13 +139,9 @@ public class MemberApiController {
 
 //        Result result = new Result(members);
 
-        Message message = new Message();
+        Message message = new Message(StatusEnum.OK, "회원 목록 조회 성공", members);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("회원 목록 조회 성공");
-        message.setData(members);
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
