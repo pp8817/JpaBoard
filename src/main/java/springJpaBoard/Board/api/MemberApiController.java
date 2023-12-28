@@ -58,7 +58,7 @@ public class MemberApiController {
         member.createMember(memberRequestDTO, address);
         Long id = memberService.join(member);
 
-        Message message = new Message(StatusEnum.OK, "회원 목록 조회 성공", id);
+        Message message = new Message(StatusEnum.OK, "회원 가입 성공", id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -146,6 +146,16 @@ public class MemberApiController {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
+    @GetMapping("/{memberId}/edit")
+    public ResponseEntity editForm(@PathVariable Long memberId) {
+        Member member = memberService.findOne(memberId);
+        Address address = member.getAddress();
+
+        ModifyMemberDto memberDto = new ModifyMemberDto(member.getId(), member.getName(), member.getGender(), address);
+
+        Result result = new Result(memberDto);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
 
     @Data
     @AllArgsConstructor
@@ -153,4 +163,12 @@ public class MemberApiController {
         private T data;
     }
 
+    @Data
+    @AllArgsConstructor
+    static class ModifyMemberDto {
+        private Long id;
+        private String name;
+        private GenderStatus genderStatus;
+        private Address address;
+    }
 }
