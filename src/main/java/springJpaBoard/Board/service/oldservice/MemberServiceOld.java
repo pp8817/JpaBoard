@@ -33,7 +33,7 @@ public class MemberServiceOld {
         //EXCEPTION
         List<Member> findMembers = memberRepository.findByName(member.getName());
         if (!findMembers.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+            throw new IllegalStateException("이미 존재하는 회원입니다."); //런타임 에러
         }
     }
 
