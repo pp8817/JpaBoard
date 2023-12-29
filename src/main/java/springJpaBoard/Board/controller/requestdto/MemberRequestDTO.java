@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import springJpaBoard.Board.domain.status.GenderStatus;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -12,10 +12,11 @@ import javax.validation.constraints.Size;
 public class MemberRequestDTO {
     private Long id;
 
-    @NotEmpty(message = "Id를 입력해주세요", groups = {SaveCheck.class, LoginCheck.class})
+    @NotBlank(message = "Id를 입력해주세요", groups = {SaveCheck.class, LoginCheck.class})
+//    @NotBlank
     private String loginId;
 
-    @NotEmpty(message = "password를 입력해주세요", groups = {SaveCheck.class, LoginCheck.class})
+    @NotBlank(message = "password를 입력해주세요", groups = {SaveCheck.class, LoginCheck.class})
     private String password;
 
     /**
@@ -25,7 +26,7 @@ public class MemberRequestDTO {
 
      "@NotBlank" 는 null 과 "" 과 " " 모두 허용하지 않는다.
      */
-    @NotEmpty(message = "회원 이름은 필수입니다.", groups = {SaveCheck.class})
+    @NotBlank(message = "회원 이름은 필수입니다.", groups = {SaveCheck.class})
     @Size(min = 1, max = 10, message = "회원 이름은 1~10자 사이입니다.", groups = {SaveCheck.class})
     private String name;
 

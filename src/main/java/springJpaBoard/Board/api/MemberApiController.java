@@ -20,9 +20,12 @@ import springJpaBoard.Board.SesstionConst;
 import springJpaBoard.Board.controller.requestdto.LoginCheck;
 import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
+import springJpaBoard.Board.controller.requestdto.UpdateCheck;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Address;
+import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.MemberSearch;
 import springJpaBoard.Board.service.BoardService;
@@ -31,6 +34,7 @@ import springJpaBoard.Board.service.MemberService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -48,9 +52,9 @@ public class MemberApiController {
     /* 회원가입 */
     @Transactional
     @PostMapping
-    public ResponseEntity<Message> join(@RequestBody @Validated(SaveCheck.class) MemberRequestDTO memberRequestDTO, BindingResult result) {
+    public ResponseEntity join(@RequestBody @Validated(SaveCheck.class) MemberRequestDTO memberRequestDTO, BindingResult result) {
         if (result.hasErrors()) {
-            ResponseEntity.badRequest();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("실패");
         }
 
         Address address = new Address(memberRequestDTO.getCity(), memberRequestDTO.getStreet(), memberRequestDTO.getZipcode());
@@ -64,6 +68,7 @@ public class MemberApiController {
 
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
+//        return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
 
     /* 회원 로그인 */
@@ -146,8 +151,10 @@ public class MemberApiController {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
+    /* 회원 수정 */
     @GetMapping("/{memberId}/edit")
-    public ResponseEntity editForm(@PathVariable Long memberId) {
+    public ResponseEntity updateForm(@PathVariable Long memberId) {
+
         Member member = memberService.findOne(memberId);
         Address address = member.getAddress();
 
@@ -155,6 +162,62 @@ public class MemberApiController {
 
         Result result = new Result(memberDto);
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    /**
+     *
+     *  업데이트가 안되는 오류 수정 필요
+     * */
+    @PostMapping("{memberId}/edit")
+    public ResponseEntity updateMember(@RequestBody @Validated(UpdateCheck.class) MemberRequestDTO form, BindingResult result, @PathVariable Long memberId) {
+
+        if (result.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("실패");
+        }
+
+        Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
+
+        MemberResponseDTO memberDto = new MemberResponseDTO();
+        memberDto.update(form.getId(), form.getName(), form.getGender(), address);
+
+        Member member = memberService.findOne(memberId);
+        Member updateMember = memberService.update(member, memberDto);
+
+        Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공", updateMember);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
+
+    /* 회원 삭제 */
+    @GetMapping("{memberId}/delete")
+    public ResponseEntity deleteMember(@PathVariable Long memberId) {
+        memberService.delete(memberId);
+
+        return ResponseEntity.status(HttpStatus.OK).body("회원 삭제 성공");
+    }
+
+    /**
+     * 회원이 작성한 게시글 리스트
+     */
+    @GetMapping("/myPosts")
+    public ResponseEntity<Message> boardList(@Login Member loginMember) {
+        Long id = loginMember.getId();
+        Member member = memberService.findOne(id);
+        System.out.println("id = " + id);
+
+
+        List<MyBoardsDto> boards = member.getBoardList().stream()
+                .map(b -> new MyBoardsDto(b))
+                .collect(toList());
+        System.out.println("boards = " + boards.isEmpty());
+
+        Message message = new Message(StatusEnum.OK, "회원이 작성한 게시글 조회 성공", boards);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     @Data
@@ -170,5 +233,25 @@ public class MemberApiController {
         private String name;
         private GenderStatus genderStatus;
         private Address address;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class MyBoardsDto {
+        private Long id;
+        private String title;
+        private String writer;
+        private LocalDateTime localDateTime;
+        private int view;
+        private int commentCount;
+
+        public MyBoardsDto(Board board) {
+            this.id = board.getId();
+            this.title = board.getTitle();
+            this.writer = board.getWriter();
+            this.localDateTime = board.getBoardDateTime();
+            this.view = board.getView();
+            this.commentCount = board.getCommentCount();
+        }
     }
 }

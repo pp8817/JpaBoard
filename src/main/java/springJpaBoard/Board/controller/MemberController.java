@@ -19,6 +19,7 @@ import springJpaBoard.Board.controller.responsedto.BoardResponseDTO;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.MemberSearch;
 import springJpaBoard.Board.service.BoardService;
@@ -52,7 +53,7 @@ public class MemberController {
 
 
     @PostMapping("/new")
-    public String create(@Validated(SaveCheck.class) @ModelAttribute MemberRequestDTO memberRequestDTO, BindingResult result) {
+    public String create(@Validated(SaveCheck.class) @ModelAttribute("memberForm") MemberRequestDTO memberForm, BindingResult result) {
 
         /*
         오류 발생시(@Valid 에서 발생)
@@ -61,10 +62,10 @@ public class MemberController {
             return "members/createMemberForm";
         }
 
-        Address address = new Address(memberRequestDTO.getCity(), memberRequestDTO.getStreet(), memberRequestDTO.getZipcode());
+        Address address = new Address(memberForm.getCity(), memberForm.getStreet(), memberForm.getZipcode());
 
         Member member = new Member();
-        member.createMember(memberRequestDTO, address);
+        member.createMember(memberForm, address);
 
         memberService.join(member); //PK 생성
 
@@ -170,13 +171,17 @@ public class MemberController {
     }
 
     @PostMapping("{memberId}/edit")
-    public String updateMember(@Validated(UpdateCheck.class) @ModelAttribute("form") MemberRequestDTO form) {
+    public String updateMember(@Validated(UpdateCheck.class) @ModelAttribute("form") MemberRequestDTO form,
+                               BindingResult result) {
+        if (result.hasErrors()) {
+            return "redirect:/";
+        }
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
-        Member member = new Member();
 
         MemberResponseDTO memberDto = new MemberResponseDTO();
-        memberDto.UpdateBoard(form.getId(), form.getName(), form.getGender(), address);
-        memberService.update(memberDto);
+        memberDto.update(form.getId(), form.getName(), form.getGender(), address);
+        Member member = memberService.findOne(form.getId());
+        memberService.update(member, memberDto);
 
         return "redirect:/members"; //회원 수정 후 회원 목록으로 이동
     }
@@ -195,8 +200,7 @@ public class MemberController {
      * 회원이 작성한 게시글 리스트
      */
     @GetMapping("/myPosts")
-    public String boardList(Model model, @SessionAttribute(name = SesstionConst.LOGIN_MEMBER, required = false)
-                            Member loginMember) {
+    public String boardList(Model model, @Login Member loginMember) {
         Long id = loginMember.getId();
         Member member = memberService.findOne(id);
 

@@ -104,13 +104,14 @@ public class MemberService {
     /**
      * 회원 정보 수정
      */
-    @Transactional(readOnly = false)
-    public void update(MemberResponseDTO memberDto) {
-        Member findMember = memberRepository.findById(memberDto.getId()).get();
+    @Transactional
+    public Member update(Member member, MemberResponseDTO memberDto) {
         /*
         Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현
          */
-        findMember.editMember(memberDto);
+        member.editMember(memberDto);
+        System.out.println("member.getName() = " + member.getName());
+        return member;
     }
 
     /**

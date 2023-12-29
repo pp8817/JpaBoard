@@ -20,7 +20,7 @@ public class MemberResponseDTO {
         this.address = member.getAddress();
     }
 
-    public void UpdateBoard(Long id, String name, GenderStatus gender, Address address) {
+    public void update(Long id, String name, GenderStatus gender, Address address) {
         this.id=id;
         this.name=name;
         this.gender=gender;
