@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springJpaBoard.Board.SesstionConst;
 import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
@@ -22,6 +21,7 @@ import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.BoardSearch;
 import springJpaBoard.Board.service.BoardService;
@@ -65,8 +65,7 @@ public class BoardController {
 //    }
 
     @GetMapping("/write")
-    public String write(@SessionAttribute(name = SesstionConst.LOGIN_MEMBER, required = false)
-            Member loginMember, Model model, HttpServletRequest request) {
+    public String write(@Login Member loginMember, Model model, HttpServletRequest request) {
         /**
          * 빈 껍데기인 MemberFrom 객체를 model에 담아서 가져가는 이유는 Validation의 기능을 사용하기 위해서이다.
          */
@@ -195,38 +194,51 @@ public class BoardController {
      * 게시글 수정
      */
     @GetMapping("/{boardId}/edit")
-    public String updateBoardForm(@PathVariable("boardId") Long boardId, Model model) {
+    public String updateBoardForm(@PathVariable("boardId") Long boardId, Model model,
+                                  @Login Member loginMember) {
         Board board = boardService.findOne(boardId);
         Member boardMember = board.getMember();
-        BoardRequestDTO boardRequestDTO = new BoardRequestDTO();
-        boardRequestDTO.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
-        model.addAttribute("boardForm", boardRequestDTO);
 
-        return "/boards/updateBoardForm";
+        if (memberService.loginValidation(loginMember, boardMember)) {
+            BoardRequestDTO boardRequestDTO = new BoardRequestDTO();
+            boardRequestDTO.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
+            model.addAttribute("boardForm", boardRequestDTO);
+
+            return "/boards/updateBoardForm";
+        }
+
+        return "redirect:/boards/"+boardId+"/detail";
     }
 
     @PostMapping("/{boardId}/edit")
     public String updateBoard(@Validated(UpdateCheck.class) @ModelAttribute BoardRequestDTO boardRequestDTO,
-                              @PathVariable Long boardId) {
+                              @PathVariable Long boardId, @Login Member loginMember) {
 
         Board board = boardService.findOne(boardId);
         Member boardMember = board.getMember();
 
-        boardService.update(board, boardRequestDTO);
-        return "redirect:/boards/" + boardId + "/detail"; //게시글 수정 후 게시글 목록으로 이동
+        if (memberService.loginValidation(loginMember, boardMember)) {
+            boardService.update(board, boardRequestDTO);
+            return "redirect:/boards/" + boardId + "/detail"; //게시글 수정 후 게시글 목록으로 이동
+        }
+
+        return "redirect:/"; //잘못된 요청인 경우 홈으로
     }
 
     /**
      * 게시글 삭제
      */
     @GetMapping("/{boardId}/delete")
-    public String deleteBoard(@PathVariable Long boardId){
+    public String deleteBoard(@PathVariable Long boardId, @Login Member loginMember){
         //세션에 회원 데이터가 없으면 home
         Board board = boardService.findOne(boardId);
         Member boardMember = board.getMember();
+        if (memberService.loginValidation(loginMember, boardMember)) {
+            boardService.delete(boardId);
+            return "redirect:/boards";
+        }
 
-        boardService.delete(boardId);
-        return "redirect:/boards";
+        return "redirect:/boards/" + boardId + "/detail";
     }
 
     /**
