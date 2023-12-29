@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springJpaBoard.Board.Error.Message;
+import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SesstionConst;
 import springJpaBoard.Board.controller.requestdto.LoginCheck;
 import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
@@ -54,7 +56,7 @@ public class MemberApiController {
     @PostMapping
     public ResponseEntity join(@RequestBody @Validated(SaveCheck.class) MemberRequestDTO memberRequestDTO, BindingResult result) {
         if (result.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("실패");
+            throw new UserException("회원가입: 회원 정보 입력 오류");
         }
 
         Address address = new Address(memberRequestDTO.getCity(), memberRequestDTO.getStreet(), memberRequestDTO.getZipcode());
@@ -77,14 +79,16 @@ public class MemberApiController {
     public ResponseEntity login(@RequestBody @Validated(LoginCheck.class) MemberRequestDTO form, BindingResult result,
                         @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
         if (result.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디 또는 비밀번호 오류");
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디 또는 비밀번호 오류");
+            throw new UserException("로그인: 아이디 또는 비밀번호 오류");
         }
 
         Member loginMember = memberService.login(form.getLoginId(), form.getPassword());
 
         if (loginMember == null) {
             result.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호가 맞지 않습니다.");
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호가 맞지 않습니다.");
+            throw new UserException("로그인: 아이디 또는 비밀번호 오류");
         }
 
         //로그인 성공 처리
@@ -113,7 +117,8 @@ public class MemberApiController {
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        throw new IllegalStateException("로그아웃: 세션 오류");
     }
 
     /* 회원 목록 */
@@ -172,7 +177,8 @@ public class MemberApiController {
     public ResponseEntity updateMember(@RequestBody @Validated(UpdateCheck.class) MemberRequestDTO form, BindingResult result, @PathVariable Long memberId) {
 
         if (result.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("실패");
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("실패");
+            throw new UserException("회원 수정 오류");
         }
 
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
