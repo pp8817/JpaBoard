@@ -202,7 +202,7 @@ public class MemberApiController {
      * 회원이 작성한 게시글 리스트
      */
     @GetMapping("/myPosts")
-    public ResponseEntity<Message> boardList(@Login Member loginMember) {
+    public ResponseEntity boardList(@Login Member loginMember) {
         Long id = loginMember.getId();
         Member member = memberService.findOne(id);
         System.out.println("id = " + id);
