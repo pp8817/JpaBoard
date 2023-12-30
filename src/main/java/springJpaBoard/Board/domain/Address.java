@@ -23,4 +23,10 @@ public class Address {
         this.street = street;
         this.zipcode = zipcode;
     }
+
+    public void updateAddress(String city, String street, String zipcode) {
+        this.city = city;
+        this.street = street;
+        this.zipcode = zipcode;
+    }
 }

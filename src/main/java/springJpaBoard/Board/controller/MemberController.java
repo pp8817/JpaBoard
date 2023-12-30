@@ -178,10 +178,7 @@ public class MemberController {
         }
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
 
-        MemberResponseDTO memberDto = new MemberResponseDTO();
-        memberDto.update(form.getId(), form.getName(), form.getGender(), address);
-        Member member = memberService.findOne(form.getId());
-        memberService.update(member, memberDto);
+        memberService.update(form.getId(), form);
 
         return "redirect:/members"; //회원 수정 후 회원 목록으로 이동
     }
@@ -193,7 +190,7 @@ public class MemberController {
     public String deleteMember(@PathVariable Long memberId) {
         memberService.delete(memberId);
 
-        return "redirect:/members";
+        return "redirect:/";
     }
 
     /**

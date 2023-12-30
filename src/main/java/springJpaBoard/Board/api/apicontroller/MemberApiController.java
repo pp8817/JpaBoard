@@ -1,4 +1,4 @@
-package springJpaBoard.Board.api;
+package springJpaBoard.Board.api.apicontroller;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,13 +12,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SesstionConst;
+import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.controller.requestdto.LoginCheck;
 import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
@@ -44,7 +44,6 @@ import static java.util.stream.Collectors.toList;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/members")
-@Transactional(readOnly = true)
 @Slf4j
 public class MemberApiController {
 
@@ -52,7 +51,6 @@ public class MemberApiController {
     private final BoardService boardService;
 
     /* 회원가입 */
-    @Transactional
     @PostMapping
     public ResponseEntity join(@RequestBody @Validated(SaveCheck.class) MemberRequestDTO memberRequestDTO, BindingResult result) {
         if (result.hasErrors()) {
@@ -60,6 +58,7 @@ public class MemberApiController {
         }
 
         Address address = new Address(memberRequestDTO.getCity(), memberRequestDTO.getStreet(), memberRequestDTO.getZipcode());
+
         Member member = new Member();
         member.createMember(memberRequestDTO, address);
         Long id = memberService.join(member);
@@ -161,9 +160,8 @@ public class MemberApiController {
     public ResponseEntity updateForm(@PathVariable Long memberId) {
 
         Member member = memberService.findOne(memberId);
-        Address address = member.getAddress();
 
-        ModifyMemberDto memberDto = new ModifyMemberDto(member.getId(), member.getName(), member.getGender(), address);
+        ModifyMemberDto memberDto = new ModifyMemberDto(member);
 
         Result result = new Result(memberDto);
         return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -171,25 +169,19 @@ public class MemberApiController {
 
     /**
      *
-     *  업데이트가 안되는 오류 수정 필요
+     *  TODO 수정 안되는 오류 해결
      * */
-    @PostMapping("{memberId}/edit")
-    public ResponseEntity updateMember(@RequestBody @Validated(UpdateCheck.class) MemberRequestDTO form, BindingResult result, @PathVariable Long memberId) {
+    @PutMapping("{memberId}/edit")
+    public ResponseEntity updateMember(@RequestBody @Validated(UpdateCheck.class) MemberRequestDTO form, BindingResult result) {
 
         if (result.hasErrors()) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("실패");
             throw new UserException("회원 수정 오류");
         }
 
-        Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
+        memberService.update(form.getId(), form);
+//        ModifyMemberDto modifyMember = new ModifyMemberDto(updateMember);
 
-        MemberResponseDTO memberDto = new MemberResponseDTO();
-        memberDto.update(form.getId(), form.getName(), form.getGender(), address);
-
-        Member member = memberService.findOne(memberId);
-        Member updateMember = memberService.update(member, memberDto);
-
-        Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공", updateMember);
+        Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -197,7 +189,7 @@ public class MemberApiController {
     }
 
     /* 회원 삭제 */
-    @GetMapping("{memberId}/delete")
+    @DeleteMapping("{memberId}/delete")
     public ResponseEntity deleteMember(@PathVariable Long memberId) {
         memberService.delete(memberId);
 
@@ -237,8 +229,15 @@ public class MemberApiController {
     static class ModifyMemberDto {
         private Long id;
         private String name;
-        private GenderStatus genderStatus;
+        private GenderStatus gender;
         private Address address;
+
+        public ModifyMemberDto(Member member) {
+            this.id = member.getId();
+            this.name = member.getName();
+            this.gender = member.getGender();
+            this.address = member.getAddress();
+        }
     }
 
     @Data

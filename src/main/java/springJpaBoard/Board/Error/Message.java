@@ -2,7 +2,6 @@ package springJpaBoard.Board.Error;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import springJpaBoard.Board.api.StatusEnum;
 
 @Data
 @AllArgsConstructor

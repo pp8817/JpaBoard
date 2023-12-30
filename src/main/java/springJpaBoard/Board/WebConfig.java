@@ -23,10 +23,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(2)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/", "/members/new", "/members/login", "/members",
-                        "/boards", "/boards/{boardId}/detail", "/members/logout", "/css/**",
-                        "/*.ico", "/error", "/error-page/**",
-                        "/api/members/login", "/api/members", "/api/members/logout"
+                        "/", "/css/**", "/*.ico", "/error", "/error-page/**",
+                        "/members/new", "/members/login", "/members",
+                        "/boards", "/boards/{boardId}/detail", "/members/logout",
+                        "/api/members/login", "/api/members", "/api/members/logout",
+                        "/api/**"
                 );
     }
 

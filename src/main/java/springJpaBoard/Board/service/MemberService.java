@@ -5,14 +5,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
+import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.MemberRepository;
 
 import java.util.List;
 
-import static java.lang.Boolean.*;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 @Service
 @Transactional(readOnly = true)
@@ -105,13 +106,14 @@ public class MemberService {
      * 회원 정보 수정
      */
     @Transactional
-    public Member update(Member member, MemberResponseDTO memberDto) {
+    public void update(Long memberId, MemberRequestDTO memberDto) {
         /*
         Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현
          */
+        Member member = memberRepository.findById(memberId).get();
         member.editMember(memberDto);
         System.out.println("member.getName() = " + member.getName());
-        return member;
+//        return member;
     }
 
     /**
@@ -121,6 +123,5 @@ public class MemberService {
     public void delete(Long memberId) {
         memberRepository.deleteById(memberId);
     }
-
 
 }

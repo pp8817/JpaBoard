@@ -13,13 +13,13 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findAllByName(String name);
 
-    // name만 선링
+    // name만 선택
     Page<Member> findByNameContaining(String keyword, Pageable pageable);
 
     // gender만 선택한 경우
     Page<Member> findByGender(GenderStatus gender, Pageable pageable);
 
-    // name과 gender을 모두 입력한 경우
+    // name, gender 모두 입력한 경우
     Page<Member> findByNameContainingAndGender(String name, GenderStatus gender, Pageable pageable);
 
     /* loginId로 Member 찾아오기 */

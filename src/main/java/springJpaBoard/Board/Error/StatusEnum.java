@@ -1,4 +1,4 @@
-package springJpaBoard.Board.api;
+package springJpaBoard.Board.Error;
 
 public enum StatusEnum {
     OK(200, "OK"),
