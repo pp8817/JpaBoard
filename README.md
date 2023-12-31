@@ -10,5 +10,4 @@ Spring data Jpa를 활용해서 Restful 게시판을 만듭니다.
 - Dependency: Thymeleaf, Spring Validation, Spring Web, Lombok, Spring Data JPA
 
 ### ERD (23.12.20 업데이트)
-<img width="760" alt="스크린샷 2023-12-20 00 40 33" src="https://github.com/pp8817/JpaBoard/assets/71458064/2d9c2991-901c-46b9-9287-9da1944fd894">
-
+<img width="480" alt="스크린샷 2023-12-31 19 33 45" src="https://github.com/pp8817/JpaBoard/assets/71458064/55598ebf-81a1-49e3-9c63-ec064b7a31f2">
