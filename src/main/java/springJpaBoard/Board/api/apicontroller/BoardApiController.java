@@ -1,7 +1,13 @@
 package springJpaBoard.Board.api.apicontroller;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,16 +19,25 @@ import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
+import springJpaBoard.Board.controller.responsedto.BoardResponseDTO;
+import springJpaBoard.Board.controller.responsedto.CommentResponseDTO;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Board;
+import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
+import springJpaBoard.Board.domain.status.GenderStatus;
+import springJpaBoard.Board.repository.search.BoardSearch;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.CommentService;
 import springJpaBoard.Board.service.MemberService;
 
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+import static org.springframework.data.domain.Sort.Direction;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,8 +48,9 @@ public class BoardApiController {
     private final MemberService memberService;
     private final CommentService commentService;
 
+    /* 게시글 작성 */
     @GetMapping
-    public ResponseEntity write(@Login Member loginMember) {
+    public ResponseEntity writeForm(@Login Member loginMember) {
 
         MemberResponseDTO member = new MemberResponseDTO(loginMember);
 //        BoardForm boardForm = new BoardForm();
@@ -64,4 +80,92 @@ public class BoardApiController {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
+    /* 게시글 목록 */
+    @GetMapping("/list")
+    public ResponseEntity<Message> boardLost(@RequestBody BoardSearch boardSearch, @PageableDefault(page = 0, size = 9, sort = "id", direction = Direction.ASC) Pageable pageable) {
+
+        Page<Board> boardList = null;
+
+        if (boardSearch.searchIsEmpty()) {
+            boardList = boardService.boardList(pageable);
+        } else {
+            String boardTitle = boardSearch.getBoardTitle();
+            GenderStatus memberGender = boardSearch.getMemberGender();
+
+            if (memberGender == null) {
+                boardList = boardService.searchTitle(boardTitle, pageable);
+            } else {
+                boardList = boardService.searchAll(boardTitle, memberGender, pageable);
+            }
+        }
+
+        List<BoardDto> boards = boardList.stream()
+                .map(b -> new BoardDto(b))
+                .collect(toList());
+
+        Message message = new Message(StatusEnum.OK, "게시글 작성 성공", boards);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
+
+    /* 게시글 상세 */
+    @GetMapping("/{boardId}/detail")
+    public DetailResult detail(@PathVariable Long boardId, @PageableDefault(page = 0, size = 10, sort = "id",
+            direction = Sort.Direction.DESC) Pageable pageable) {
+        boardService.updateView(boardId); // views ++
+        Board board = boardService.findOne(boardId); //이때 comments도 담아오게?
+        BoardResponseDTO boardDto = new BoardResponseDTO(board);
+
+        Page<Comment> commentList = commentService.getCommentsByBno(boardId, pageable);
+
+        List<CommentResponseDTO> comments = commentList.stream()
+                .map(CommentResponseDTO::new)
+                .collect(toList());
+
+        return new DetailResult(boardDto, comments);
+    }
+
+    @Data
+//    @AllArgsConstructor
+    static class DetailResult<T> {
+        private T data;
+        private T comments;
+
+        public DetailResult(T data, T comments) {
+            this.data = data;
+            this.comments = comments;
+        }
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class BoardDto {
+        private Long id;
+
+        /*회원 이름은 나중에 회원 이름 변경 기능이 생긴다면 문제가 될 수 있기 때문에 일단 변경 x*/
+        private String name;
+
+        private String title;
+
+        private String writer;
+
+        private int view;
+
+        private LocalDateTime boardDateTime;
+
+        /*댓글을 작성할 때마다 board의 댓글 수를 증가하는 방식으로*/
+        private int commentCount;
+
+        public BoardDto(Board board) {
+            this.id = board.getId();
+            this.name = board.getMember().getName();
+            this.title = board.getTitle();
+            this.writer = board.getWriter();
+            this.view = board.getView();
+            this.boardDateTime = board.getBoardDateTime();
+            this.commentCount = board.getCommentCount();
+        }
+    }
 }

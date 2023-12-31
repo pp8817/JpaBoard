@@ -1,5 +1,6 @@
 package springJpaBoard.Board.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -46,24 +47,6 @@ public class BoardController {
     /**
      * 게시글 작성
      */
-//    @GetMapping("/write")
-//    public String writeForm(Model model) {
-//        /**
-//         * 빈 껍데기인 BoardFrom 객체를 model에 담아서 가져가는 이유는 Validation의 기능을 사용하기 위해서이다.
-//         */
-//        List<Member> memberList = memberService.findMembers();
-//
-//        List<MemberResponseDto> members = memberList.stream()
-//                .map(m -> new MemberResponseDto(m))
-//                .collect(toList());
-//
-//
-//
-//        model.addAttribute("members", members);
-//        model.addAttribute("boardForm", new BoardForm());
-//        return "boards/writeBoardForm";
-//    }
-
     @GetMapping("/write")
     public String write(@Login Member loginMember, Model model, HttpServletRequest request) {
         /**
@@ -157,11 +140,6 @@ public class BoardController {
         Board board = boardService.findOne(boardId); //이때 comments도 담아오게?
         BoardResponseDTO boardDto = new BoardResponseDTO(board);
 
-        List<Member> memberList = memberService.findMembers();
-        List<MemberResponseDTO> members = memberList.stream()
-                .map(m -> new MemberResponseDTO(m))
-                .collect(toList());
-
         Page<Comment> commentList = commentService.getCommentsByBno(boardId, pageable);
 
         List<CommentResponseDTO> comments = commentList.stream()
@@ -184,7 +162,7 @@ public class BoardController {
         model.addAttribute("totalPages", totalPages);
 
         model.addAttribute("board", boardDto);
-        model.addAttribute("members", members);
+//        model.addAttribute("member", member);
         model.addAttribute("commentForm", new CommentRequestDTO());
 
         return "boards/boardDetail";
@@ -245,6 +223,7 @@ public class BoardController {
      * BoardDto는 Controller에서만 사용하기 때문에 static class로 작성해줬다.
      */
     @Data
+    @AllArgsConstructor
     static class BoardDto {
         private Long id;
 
