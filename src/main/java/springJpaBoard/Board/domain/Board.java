@@ -71,6 +71,10 @@ public class Board {
         this.commentCount += 1;
     }
 
+    public void decreaseComment() {
+        this.commentCount -= 1;
+    }
+
     public void addLike() {
         this.likes += 1;
     }
@@ -78,6 +82,7 @@ public class Board {
     public void decreaseLike() {
         this.likes -= 1;
     }
+
 
     /*
     연관관계 편의 메서드 - 위치는 핵심적으로 컨트롤하는 곳에 작성

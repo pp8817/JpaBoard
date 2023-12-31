@@ -5,14 +5,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.repository.BoardRepository;
 import springJpaBoard.Board.repository.CommentRepository;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final BoardRepository boardRepository;
     private final MemberService memberService;
 
     @Transactional
@@ -40,8 +43,9 @@ public class CommentService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long id, Long bno) {
         commentRepository.deleteById(id);
-
+        Board board = boardRepository.findById(bno).get();
+        board.decreaseComment();
     }
 }

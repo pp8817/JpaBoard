@@ -60,8 +60,8 @@ public class CommentController {
 
     @GetMapping("/comment/{id}/delete")
     public String deleteComment(@PathVariable Long id) {
-        Comment comment = commentService.findById(id);
-        commentService.delete(id);
-        return "redirect:/boards/" + comment.getBno() + "/detail";
+        Long bno = commentService.findById(id).getBno();
+        commentService.delete(id, bno);
+        return "redirect:/boards/" + bno + "/detail";
     }
 }
