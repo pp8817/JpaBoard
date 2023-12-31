@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import springJpaBoard.Board.domain.Comment;
-import springJpaBoard.Board.domain.Member;
 
 import java.time.LocalDateTime;
 
@@ -19,8 +18,6 @@ public class CommentResponseDTO {
     private String writer;
 
     private String content;
-
-    private Member member;
 
     private LocalDateTime localDateTime;
 

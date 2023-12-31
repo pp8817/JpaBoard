@@ -10,21 +10,23 @@ import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.BoardRepository;
 import springJpaBoard.Board.repository.CommentRepository;
+import springJpaBoard.Board.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @Transactional
-    public void save(Comment comment, Long memberId) {
+    public void save(Comment comment, Long memberId, Board board) {
         //엔티티 조회
-        Member member = memberService.findOne(memberId);
+        Member member = memberRepository.findById(memberId).get();
 
         //연관 관계 편의 메서드 사용
         comment.setMember(member);
+        comment.setBoard(board);
 
         commentRepository.save(comment);
     }

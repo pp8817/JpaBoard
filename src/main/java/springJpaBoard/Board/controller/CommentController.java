@@ -50,8 +50,7 @@ public class CommentController {
             Comment comment = new Comment();
             comment.createComment(commentRequestDTO);
 
-            comment.setBoard(board);
-            commentService.save(comment, loginMember.getId());
+            commentService.save(comment, loginMember.getId(), board);
 
             return "redirect:/boards/" + bno + "/detail"; //쿼리 1번, 게시글 상세 페이지를 다시 로딩하면서 board의 정보가 필요
         }
