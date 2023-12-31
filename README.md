@@ -3,7 +3,7 @@ Spring data Jpa를 활용해서 Restful 게시판을 만듭니다.
 - 12.23 - 대략 완성 후 코드를 다듬고 API를 공부하며 개발하고 있습니다.
 
 ## 기술
-- Framework & Language : Spring Boot 3.0 & Java 17 /n
+- Framework & Language : Spring Boot 3.0 & Java 17
 - ORM : JPA, Spring Data JPA, QueryDSL 
 - DB : H2 2.2.224
 - API Test: PostMan
