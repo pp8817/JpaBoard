@@ -11,5 +11,4 @@ Spring data Jpa를 활용해서 Restful 게시판을 만듭니다.
 
 ### ERD (23.12.20 업데이트)
 <img width="760" alt="스크린샷 2023-12-20 00 40 33" src="https://github.com/pp8817/JpaBoard/assets/71458064/2d9c2991-901c-46b9-9287-9da1944fd894">
-![스크린샷 2023-12-31 18 54 32](https://github.com/pp8817/JpaBoard/assets/71458064/00914c26-e645-47cb-ad04-88fcf6271978)
 
