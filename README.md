@@ -9,5 +9,5 @@ Spring data Jpa를 활용해서 Restful 게시판을 만듭니다.
 - API Test: PostMan
 - Dependency: Thymeleaf, Spring Validation, Spring Web, Lombok, Spring Data JPA
 
-### ERD (23.12.20 업데이트)
+### ERD (23.12.31 업데이트)
 <img width="480" alt="스크린샷 2023-12-31 19 33 45" src="https://github.com/pp8817/JpaBoard/assets/71458064/55598ebf-81a1-49e3-9c63-ec064b7a31f2">
