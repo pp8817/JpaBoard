@@ -1,6 +1,7 @@
 package springJpaBoard.Board.domain;
 
 import lombok.Getter;
+import org.hibernate.annotations.DynamicUpdate;
 import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@DynamicUpdate //업데이트 쿼리 최적화
 public class Board {
     @Id
     @GeneratedValue
