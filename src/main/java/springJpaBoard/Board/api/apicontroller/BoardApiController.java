@@ -21,6 +21,7 @@ import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
 import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
+import springJpaBoard.Board.controller.requestdto.UpdateCheck;
 import springJpaBoard.Board.controller.responsedto.CommentResponseDTO;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Board;
@@ -145,6 +146,25 @@ public class BoardApiController {
         }
 
         throw new UserException("게시글 회원 정보와 로그인 회원 정보가 일치하지 않습니다.");
+    }
+
+    @PutMapping("/edit/{boardId}")
+    public ResponseEntity updateBoard(@RequestBody @Validated(UpdateCheck.class) BoardRequestDTO boardRequestDTO, BindingResult result,
+                              @PathVariable Long boardId, @Login Member loginMember) {
+
+        if (result.hasErrors()) {
+            throw new IllegalStateException("양식을 지켜주세요.");
+        }
+
+        Board board = boardApiRepository.findBoardWithMember(boardId);
+        Member boardMember = board.getMember();
+
+        if (memberService.loginValidation(loginMember, boardMember)) {
+            boardService.update(board, boardRequestDTO);
+            return ResponseEntity.status(HttpStatus.OK).body("게시글 수정 성공");
+        }
+
+        throw new UserException("게시글 회원 정보와 로그인 회원 정보 불일치");
     }
 
 

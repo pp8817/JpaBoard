@@ -2,7 +2,6 @@ package springJpaBoard.Board.controller.requestdto;
 
 import lombok.Getter;
 import lombok.Setter;
-import springJpaBoard.Board.domain.Member;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -18,8 +17,8 @@ public class BoardRequestDTO {
 
     private Long id;
 
-    @NotBlank(message = "회원을 선택") //현재 작동 X
-    private Member member;
+//    @NotBlank(message = "회원을 선택", groups = {SaveCheck.class}) //현재 작동 X
+//    private Member member;
 
     @NotBlank(message = "제목은 필수입니다.", groups = {SaveCheck.class, UpdateCheck.class})
     @Size(min = 1, max = 50, message = "제목의 길이는 1~50자 사이입니다.", groups = {SaveCheck.class, UpdateCheck.class})

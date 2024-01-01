@@ -178,7 +178,7 @@ public class BoardController {
     public String updateBoard(@Validated(UpdateCheck.class) @ModelAttribute BoardRequestDTO boardRequestDTO,
                               @PathVariable Long boardId, @Login Member loginMember) {
 
-        Board board = boardService.findOne(boardId);
+        Board board = boardApiRepository.findBoardWithMember(boardId);
         Member boardMember = board.getMember();
 
         if (memberService.loginValidation(loginMember, boardMember)) {
