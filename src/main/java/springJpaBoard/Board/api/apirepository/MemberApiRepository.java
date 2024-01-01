@@ -1,4 +1,4 @@
-package springJpaBoard.Board.api.apiRepository;
+package springJpaBoard.Board.api.apirepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

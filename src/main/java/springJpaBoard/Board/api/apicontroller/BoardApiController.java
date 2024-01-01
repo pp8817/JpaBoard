@@ -17,6 +17,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.StatusEnum;
+import springJpaBoard.Board.Error.exception.UserException;
+import springJpaBoard.Board.api.apirepository.BoardApiRepository;
 import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
 import springJpaBoard.Board.controller.responsedto.CommentResponseDTO;
@@ -45,6 +47,7 @@ public class BoardApiController {
     private final BoardService boardService;
     private final MemberService memberService;
     private final CommentService commentService;
+    private final BoardApiRepository boardApiRepository;
 
     /* 게시글 작성 */
     @GetMapping
@@ -109,7 +112,7 @@ public class BoardApiController {
     }
 
     /* 게시글 상세 */
-    @GetMapping("/{boardId}/detail")
+    @GetMapping("/detail/{boardId}")
     public ResponseEntity<Message> detail(@PathVariable Long boardId, @PageableDefault(page = 0, size = 10, sort = "id",
             direction = Sort.Direction.DESC) Pageable pageable) {
         boardService.updateView(boardId); // views ++
@@ -122,6 +125,28 @@ public class BoardApiController {
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
+
+    /* 게시글 수정 */
+    @GetMapping("/edit/{boardId}")
+    public ResponseEntity updateBoardForm(@PathVariable("boardId") Long boardId,
+                                                   @Login Member loginMember) {
+        Board board = boardApiRepository.findBoardWithMember(boardId);
+        Member boardMember = board.getMember();
+
+        if (memberService.loginValidation(loginMember, boardMember)) {
+            BoardRequestDTO boardRequestDTO = new BoardRequestDTO();
+            boardRequestDTO.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
+
+            Message message = new Message(StatusEnum.OK, "게시글 수정 페이지", boardRequestDTO);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        }
+
+        throw new UserException("게시글 회원 정보와 로그인 회원 정보가 일치하지 않습니다.");
+    }
+
 
     @Data
     @AllArgsConstructor

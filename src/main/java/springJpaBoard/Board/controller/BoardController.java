@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springJpaBoard.Board.api.apirepository.BoardApiRepository;
 import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
@@ -41,6 +42,7 @@ public class BoardController {
     private final BoardService boardService;
     private final MemberService memberService;
     private final CommentService commentService;
+    private final BoardApiRepository boardApiRepository;
 
     /**
      * 게시글 작성
@@ -80,17 +82,6 @@ public class BoardController {
     /**
      * 게시글 목록
      */
-//    @GetMapping
-//    public String list(@RequestParam(value =  "offset", defaultValue = "0") int offset,
-//                       @RequestParam(value = "limit", defaultValue = "100") int limit, Model model) {
-//        List<Board> board = boardService.findBoardsMember(offset, limit);
-//        List<BoardDto> boards = board.stream()
-//                .map(b -> new BoardDto(b))
-//                .collect(Collectors.toList());
-//        model.addAttribute("boards", boards);
-//
-//        return "boards/boardList";
-//    }
     @GetMapping
     public String boardList(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model, @PageableDefault(page = 0, size=9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
@@ -167,8 +158,10 @@ public class BoardController {
     @GetMapping("/{boardId}/edit")
     public String updateBoardForm(@PathVariable("boardId") Long boardId, Model model,
                                   @Login Member loginMember) {
-        Board board = boardService.findOne(boardId);
+//        Board board = boardService.findOne(boardId);
+        Board board = boardApiRepository.findBoardWithMember(boardId);
         Member boardMember = board.getMember();
+
 
         if (memberService.loginValidation(loginMember, boardMember)) {
             BoardRequestDTO boardRequestDTO = new BoardRequestDTO();

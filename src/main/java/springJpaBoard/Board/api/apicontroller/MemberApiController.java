@@ -74,6 +74,7 @@ public class MemberApiController {
 
     /* 회원 로그인 */
     // TODO - redirectURL 해결
+    // 현재 생각한 방법: Result 타입에 redirectURL을 추가해서 같이 반환
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Validated(LoginCheck.class) MemberRequestDTO form, BindingResult result,
                         @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
@@ -109,7 +110,7 @@ public class MemberApiController {
         if (session != null) {
             session.invalidate();
 
-            Message message = new Message(StatusEnum.OK, "회원 목록 조회 성공");
+            Message message = new Message(StatusEnum.OK, "회원 로그아웃 성공");
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -167,10 +168,6 @@ public class MemberApiController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    /**
-     *
-     *  TODO 수정 안되는 오류 해결
-     * */
     @PutMapping("{memberId}/edit")
     public ResponseEntity updateMember(@RequestBody @Validated(UpdateCheck.class) MemberRequestDTO form, BindingResult result) {
 
