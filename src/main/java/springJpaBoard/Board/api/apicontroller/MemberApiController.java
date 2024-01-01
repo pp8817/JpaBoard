@@ -202,14 +202,11 @@ public class MemberApiController {
     @GetMapping("/myPosts")
     public ResponseEntity boardList(@Login Member loginMember) {
         Long id = loginMember.getId();
-        Member member = memberService.findOne(id);
-        System.out.println("id = " + id);
-
+        Member member = memberService.findOne(id); // 1
 
         List<MyBoardsDto> boards = member.getBoardList().stream()
                 .map(b -> new MyBoardsDto(b))
                 .collect(toList());
-        System.out.println("boards = " + boards.isEmpty());
 
         Message message = new Message(StatusEnum.OK, "회원이 작성한 게시글 조회 성공", boards);
         HttpHeaders headers = new HttpHeaders();

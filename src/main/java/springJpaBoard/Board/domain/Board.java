@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -25,7 +24,7 @@ public class Board {
     @JoinColumn(name = "member_id") //FK
     private Member member; //연관관계의 주인
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, fetch = EAGER) //게시글이 삭제되면 댓글도 모두 삭제
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE) //게시글이 삭제되면 댓글도 모두 삭제
     @OrderBy("id asc") //댓글 정렬
     private List<Comment> commentList = new ArrayList<>();
 
