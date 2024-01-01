@@ -44,13 +44,14 @@ public class CommentController {
             return "redirect:/boards/" + bno + "/detail";
         }
 
-        Board board = boardService.findOne(bno); //쿼리 1번
-        if (board != null && memberService.findOne(loginMember.getId())!=null) {
+        Board board = boardService.findOne(bno); //쿼리 1
+        Member member = memberService.findOne(loginMember.getId());
+        if (board != null && member !=null) { //쿼리 2
             board.addComment();
             Comment comment = new Comment();
             comment.createComment(commentRequestDTO);
 
-            commentService.save(comment, loginMember.getId(), board);
+            commentService.save(comment, member, board);
 
             return "redirect:/boards/" + bno + "/detail"; //쿼리 1번, 게시글 상세 페이지를 다시 로딩하면서 board의 정보가 필요
         }

@@ -20,15 +20,12 @@ public class CommentService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void save(Comment comment, Long memberId, Board board) {
-        //엔티티 조회
-        Member member = memberRepository.findById(memberId).get();
-
+    public void save(Comment comment, Member member, Board board) {
         //연관 관계 편의 메서드 사용
         comment.setMember(member);
         comment.setBoard(board);
 
-        commentRepository.save(comment);
+        commentRepository.save(comment); //쿼리 3
     }
 
     public Comment findById(Long id) {

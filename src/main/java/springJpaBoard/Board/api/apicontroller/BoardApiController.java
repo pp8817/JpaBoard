@@ -115,8 +115,10 @@ public class BoardApiController {
     public DetailResult detail(@PathVariable Long boardId, @PageableDefault(page = 0, size = 10, sort = "id",
             direction = Sort.Direction.DESC) Pageable pageable) {
         boardService.updateView(boardId); // views ++
-        Board board = boardService.findOne(boardId); //이때 comments도 담아오게?
+        Board board = boardService.findOne(boardId);
         BoardResponseDTO boardDto = new BoardResponseDTO(board);
+        //TODO 이 부분에서  commentList도 강제 Lazy로 땡겨오기, DTO 새로 만들면 됨 아래아래에 있느 코드를 DTO에 추가
+        // 코드 변경 뒤에 JPA에서 DTO를 직접 가져오는 방식으로 변경?
 
         Page<Comment> commentList = commentService.getCommentsByBno(boardId, pageable);
 
@@ -124,7 +126,7 @@ public class BoardApiController {
                 .map(CommentResponseDTO::new)
                 .collect(toList());
 
-        return new DetailResult(boardDto, comments);
+        return new DetailResult(boardDto, comments); /* 두개 한 번에 DTO로 묶어서 보내기, 조회도 한 번에 가능 */
     }
 
     @Data
@@ -160,7 +162,7 @@ public class BoardApiController {
 
         public BoardDto(Board board) {
             this.id = board.getId();
-            this.name = board.getMember().getName();
+            this.name = board.getMember().getName(); //TODO fecth join으로 가져오도록 수정
             this.title = board.getTitle();
             this.writer = board.getWriter();
             this.view = board.getView();
