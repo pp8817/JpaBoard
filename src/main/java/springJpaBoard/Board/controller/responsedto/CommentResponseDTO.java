@@ -25,7 +25,7 @@ public class CommentResponseDTO {
     public CommentResponseDTO(Comment comment) {
         this.id = comment.getId();
         this.bno = comment.getBno();
-        this.writer = comment.getMember().getName();
+        this.writer = comment.getWriter();
         this.content = comment.getContent();
         this.localDateTime = comment.getCreateDateTime();
     }

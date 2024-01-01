@@ -33,7 +33,7 @@ public class Comment {
 
     private Long bno;
 
-//    private String writer; // 작성자
+    private String writer; // 작성자
 
     private String content;  //댓글 내용
 
@@ -60,9 +60,9 @@ public class Comment {
         member.getCommentList().add(this);
     }
 
-    public void createComment(CommentRequestDTO commentDto) {
+    public void createComment(CommentRequestDTO commentDto, String writer) {
         this.bno = commentDto.getBno();
-//        this.writer = commentDto.getWriter();
+        this.writer = commentDto.getWriter();
         this.content = commentDto.getContent();
         this.createDateTime = LocalDateTime.now();
     }

@@ -16,11 +16,9 @@ import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
 import springJpaBoard.Board.controller.requestdto.UpdateCheck;
-import springJpaBoard.Board.controller.responsedto.BoardResponseDTO;
 import springJpaBoard.Board.controller.responsedto.CommentResponseDTO;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Board;
-import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.domain.status.GenderStatus;
@@ -138,28 +136,23 @@ public class BoardController {
             direction = Sort.Direction.DESC) Pageable pageable,Model model) {
         boardService.updateView(boardId); // views ++
         Board board = boardService.findOne(boardId); //이때 comments도 담아오게?
-        BoardResponseDTO boardDto = new BoardResponseDTO(board);
 
-        Page<Comment> commentList = commentService.getCommentsByBno(boardId, pageable);
-
-        List<CommentResponseDTO> comments = commentList.stream()
-                .map(c -> new CommentResponseDTO(c))
-                .collect(toList());
+        BoardDetailDto boardDto = new BoardDetailDto(board);
 
         /* 댓글 관련 */
-        if (comments != null && !comments.isEmpty()) {
-            model.addAttribute("comments", comments);
+        if (boardDto.comments != null && !boardDto.comments.isEmpty()) {
+            model.addAttribute("comments", boardDto.comments);
         }
 
-        int nowPage = commentList.getPageable().getPageNumber() + 1;
-        int startPage = Math.max(nowPage - 4, 1); //Math.max를 이용해서 start 페이지가 0이하로 되는 것을 방지
-        int endPage = Math.min(nowPage + 5, commentList.getTotalPages()); //endPage가 총 페이지의 개수를 넘지 않도록
-        int totalPages = commentList.getTotalPages();
-
-        model.addAttribute("nowPage", nowPage);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        model.addAttribute("totalPages", totalPages);
+//        int nowPage = commentList.getPageable().getPageNumber() + 1;
+//        int startPage = Math.max(nowPage - 4, 1); //Math.max를 이용해서 start 페이지가 0이하로 되는 것을 방지
+//        int endPage = Math.min(nowPage + 5, commentList.getTotalPages()); //endPage가 총 페이지의 개수를 넘지 않도록
+//        int totalPages = commentList.getTotalPages();
+//
+//        model.addAttribute("nowPage", nowPage);
+//        model.addAttribute("startPage", startPage);
+//        model.addAttribute("endPage", endPage);
+//        model.addAttribute("totalPages", totalPages);
 
         model.addAttribute("board", boardDto);
 //        model.addAttribute("member", member);
@@ -252,4 +245,33 @@ public class BoardController {
         }
     }
 
+    @Data
+    @AllArgsConstructor
+    static class BoardDetailDto {
+        private Long id;
+
+        private String title;
+
+        private String content;
+
+        private String writer;
+
+        private int likes;
+
+        private LocalDateTime boardDateTime;
+
+        private List<CommentResponseDTO> comments;
+
+        public BoardDetailDto(Board board) {
+            this.id = board.getId();
+            this.title = board.getTitle();
+            this.content = board.getContent();
+            this.writer = board.getWriter();
+            this.boardDateTime = board.getBoardDateTime();
+            this.likes = board.getLikes();
+            this.comments = board.getCommentList().stream()
+                    .map(c -> new CommentResponseDTO(c))
+                    .collect(toList());
+        }
+    }
 }

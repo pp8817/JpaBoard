@@ -19,11 +19,9 @@ import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 import springJpaBoard.Board.controller.requestdto.SaveCheck;
-import springJpaBoard.Board.controller.responsedto.BoardResponseDTO;
 import springJpaBoard.Board.controller.responsedto.CommentResponseDTO;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Board;
-import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.domain.status.GenderStatus;
@@ -103,7 +101,7 @@ public class BoardApiController {
                 .map(b -> new BoardDto(b))
                 .collect(toList());
 
-        Message message = new Message(StatusEnum.OK, "게시글 작성 성공", boards);
+        Message message = new Message(StatusEnum.OK, "게시글 목록 조회 성공", boards);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -112,33 +110,23 @@ public class BoardApiController {
 
     /* 게시글 상세 */
     @GetMapping("/{boardId}/detail")
-    public DetailResult detail(@PathVariable Long boardId, @PageableDefault(page = 0, size = 10, sort = "id",
+    public ResponseEntity<Message> detail(@PathVariable Long boardId, @PageableDefault(page = 0, size = 10, sort = "id",
             direction = Sort.Direction.DESC) Pageable pageable) {
         boardService.updateView(boardId); // views ++
         Board board = boardService.findOne(boardId);
-        BoardResponseDTO boardDto = new BoardResponseDTO(board);
-        //TODO 이 부분에서  commentList도 강제 Lazy로 땡겨오기, DTO 새로 만들면 됨 아래아래에 있느 코드를 DTO에 추가
-        // 코드 변경 뒤에 JPA에서 DTO를 직접 가져오는 방식으로 변경?
+        BoardDetailDto boardDto = new BoardDetailDto(board);
 
-        Page<Comment> commentList = commentService.getCommentsByBno(boardId, pageable);
+        Message message = new Message(StatusEnum.OK, "게시글 상세 페이지 조회 성공", boardDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        List<CommentResponseDTO> comments = commentList.stream()
-                .map(CommentResponseDTO::new)
-                .collect(toList());
-
-        return new DetailResult(boardDto, comments); /* 두개 한 번에 DTO로 묶어서 보내기, 조회도 한 번에 가능 */
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     @Data
-//    @AllArgsConstructor
-    static class DetailResult<T> {
+    @AllArgsConstructor
+    static class Result<T> {
         private T data;
-        private T comments;
-
-        public DetailResult(T data, T comments) {
-            this.data = data;
-            this.comments = comments;
-        }
     }
 
     @Data
@@ -162,7 +150,7 @@ public class BoardApiController {
 
         public BoardDto(Board board) {
             this.id = board.getId();
-            this.name = board.getMember().getName(); //TODO fecth join으로 가져오도록 수정
+            this.name = board.getMember().getName();
             this.title = board.getTitle();
             this.writer = board.getWriter();
             this.view = board.getView();
@@ -170,4 +158,35 @@ public class BoardApiController {
             this.commentCount = board.getCommentCount();
         }
     }
+
+    @Data
+    @AllArgsConstructor
+    static class BoardDetailDto {
+        private Long id;
+
+        private String title;
+
+        private String content;
+
+        private String writer;
+
+        private int likes;
+
+        private LocalDateTime boardDateTime;
+
+        private List<CommentResponseDTO> comments;
+
+        public BoardDetailDto(Board board) {
+            this.id = board.getId();
+            this.title = board.getTitle();
+            this.content = board.getContent();
+            this.writer = board.getWriter();
+            this.boardDateTime = board.getBoardDateTime();
+            this.likes = board.getLikes();
+            this.comments = board.getCommentList().stream()
+                    .map(c -> new CommentResponseDTO(c))
+                    .collect(toList());
+        }
+    }
+
 }

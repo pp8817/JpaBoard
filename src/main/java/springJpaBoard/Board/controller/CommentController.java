@@ -49,7 +49,7 @@ public class CommentController {
         if (board != null && member !=null) { //쿼리 2
             board.addComment();
             Comment comment = new Comment();
-            comment.createComment(commentRequestDTO);
+            comment.createComment(commentRequestDTO, member.getName());
 
             commentService.save(comment, member, board);
 

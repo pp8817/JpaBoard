@@ -29,7 +29,6 @@ public class BoardResponseDTO {
     private LocalDateTime modifyDateTime;
 
 
-
     public BoardResponseDTO(Board board) {
         this.id = board.getId();
         this.title = board.getTitle();
@@ -40,5 +39,6 @@ public class BoardResponseDTO {
         this.modifyDateTime = board.getModifyDateTime();
         this.commentCount = board.getCommentCount();
         this.likes = board.getLikes();
+
     }
 }
