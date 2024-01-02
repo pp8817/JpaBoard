@@ -62,7 +62,7 @@ public class Comment {
 
     public void createComment(CommentRequestDTO commentDto, String writer) {
         this.bno = commentDto.getBno();
-        this.writer = commentDto.getWriter();
+        this.writer = writer;
         this.content = commentDto.getContent();
         this.createDateTime = LocalDateTime.now();
     }

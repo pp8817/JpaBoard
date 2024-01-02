@@ -12,6 +12,8 @@ import springJpaBoard.Board.repository.BoardRepository;
 import springJpaBoard.Board.repository.CommentRepository;
 import springJpaBoard.Board.repository.MemberRepository;
 
+import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -24,14 +26,20 @@ public class CommentService {
         //연관 관계 편의 메서드 사용
         comment.setMember(member);
         comment.setBoard(board);
+        board.addComment();
 
         commentRepository.save(comment); //쿼리 3
     }
 
     public Comment findById(Long id) {
-        return commentRepository.findById(id).get();
-    }
+        Comment comment = commentRepository.findById(id).get();
 
+        if (comment == null) {
+            throw new NoSuchElementException("해당 ID에 대한 댓글을 찾을 수 없습니다.");
+        }
+
+        return comment;
+    }
     public Page<Comment> findAll(Pageable pageable) {
         return commentRepository.findAll(pageable);
     }

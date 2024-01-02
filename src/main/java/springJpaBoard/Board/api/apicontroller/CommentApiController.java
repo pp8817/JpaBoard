@@ -1,0 +1,102 @@
+package springJpaBoard.Board.api.apicontroller;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import springJpaBoard.Board.Error.Message;
+import springJpaBoard.Board.Error.StatusEnum;
+import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
+import springJpaBoard.Board.controller.responsedto.CommentResponseDTO;
+import springJpaBoard.Board.domain.Board;
+import springJpaBoard.Board.domain.Comment;
+import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.domain.argumenresolver.Login;
+import springJpaBoard.Board.service.BoardService;
+import springJpaBoard.Board.service.CommentService;
+import springJpaBoard.Board.service.MemberService;
+
+import java.nio.charset.Charset;
+import java.time.LocalDateTime;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/comments")
+@Slf4j
+public class CommentApiController {
+
+    private final BoardService boardService;
+    private final CommentService commentService;
+    private final MemberService memberService;
+
+    /**
+     * 댓글 작성
+     */
+    @PostMapping
+    public ResponseEntity saveComment(@RequestBody CommentRequestDTO commentRequestDTO, BindingResult result, @Login Member loginMember) {
+
+        Long bno = commentRequestDTO.getBno();
+
+        if (result.hasErrors()) {
+            throw new IllegalStateException("양식 불일치 오류");
+        }
+
+        Board board = boardService.findOne(bno); //쿼리 1
+        Member member = memberService.findOne(loginMember.getId());
+        if (board != null && member !=null) { //쿼리 2
+            Comment comment = new Comment();
+            comment.createComment(commentRequestDTO, member.getName());
+
+            commentService.save(comment, member, board);
+
+            CommentResponseDTO commentDto = new CommentResponseDTO(comment);
+
+            Message message = new Message(StatusEnum.OK, "댓글 작성 성공", commentDto);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        }
+
+        throw new IllegalStateException("게시글 정보 또는 회원 정보가 없습니다.");
+    }
+
+    @DeleteMapping("/delete/{commentId}")
+    public ResponseEntity deleteComment(@PathVariable Long commentId) {
+        Comment comment = commentService.findById(commentId);
+        if (comment == null) {
+            throw new NullPointerException("이미 삭제된 댓글입니다.");
+        }
+        Long bno = comment.getBno();
+        commentService.delete(commentId, bno);
+
+        return ResponseEntity.status(HttpStatus.OK).body("댓글 삭제 성공");
+    }
+
+    @Getter
+    static class CommentResponseDto {
+        private Long id;
+
+        private Long bno;
+
+        private String writer; // 작성자
+
+        private String content;  //댓글 내용
+
+        private LocalDateTime createDateTime;  //작성 시간
+
+        public CommentResponseDto(Comment comment) {
+            this.id = comment.getId();
+            this.bno = comment.getBno();
+            this.writer = comment.getWriter();
+            this.content = comment.getContent();
+            this.createDateTime = comment.getCreateDateTime();
+        }
+    }
+
+}

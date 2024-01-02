@@ -47,7 +47,6 @@ public class CommentController {
         Board board = boardService.findOne(bno); //쿼리 1
         Member member = memberService.findOne(loginMember.getId());
         if (board != null && member !=null) { //쿼리 2
-            board.addComment();
             Comment comment = new Comment();
             comment.createComment(commentRequestDTO, member.getName());
 
