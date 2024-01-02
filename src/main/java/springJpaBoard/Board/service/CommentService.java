@@ -35,7 +35,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(id).get();
 
         if (comment == null) {
-            throw new NoSuchElementException("해당 ID에 대한 댓글을 찾을 수 없습니다.");
+            throw new NoSuchElementException();
         }
 
         return comment;

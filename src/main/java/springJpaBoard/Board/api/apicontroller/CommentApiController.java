@@ -23,6 +23,7 @@ import springJpaBoard.Board.service.MemberService;
 
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -68,14 +69,20 @@ public class CommentApiController {
 
     @DeleteMapping("/delete/{commentId}")
     public ResponseEntity deleteComment(@PathVariable Long commentId) {
-        Comment comment = commentService.findById(commentId);
-        if (comment == null) {
-            throw new NullPointerException("이미 삭제된 댓글입니다.");
-        }
-        Long bno = comment.getBno();
-        commentService.delete(commentId, bno);
+        try {
+            Comment comment = commentService.findById(commentId);
+            Long bno = comment.getBno();
+            commentService.delete(commentId, bno);
 
-        return ResponseEntity.status(HttpStatus.OK).body("댓글 삭제 성공");
+            Message message = new Message(StatusEnum.OK, "댓글 삭제 성공", commentId);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            Message message = new Message(StatusEnum.OK, "해당 ID에 대한 댓글을 찾을 수 없습니다.", commentId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+        }
     }
 
     @Getter
