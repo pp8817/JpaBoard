@@ -16,7 +16,7 @@ import static javax.persistence.FetchType.LAZY;
 @DynamicUpdate //업데이트 쿼리 최적화
 public class Board {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
     private Long id;
 
