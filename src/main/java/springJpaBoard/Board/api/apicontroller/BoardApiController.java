@@ -63,7 +63,7 @@ public class BoardApiController {
 
 
     @PostMapping
-    public ResponseEntity<Message> write(@RequestBody@Validated(SaveCheck.class) BoardRequestDTO boardRequestDTO, @Login Member loginMember, BindingResult result) {
+    public ResponseEntity<Message> write(@RequestBody @Validated(SaveCheck.class) BoardRequestDTO boardRequestDTO, @Login Member loginMember, BindingResult result) {
 
         /*
         오류 발생시(@Valid 에서 발생)
@@ -162,6 +162,27 @@ public class BoardApiController {
         if (memberService.loginValidation(loginMember, boardMember)) {
             boardService.update(board, boardRequestDTO);
             return ResponseEntity.status(HttpStatus.OK).body("게시글 수정 성공");
+        }
+
+        throw new UserException("게시글 회원 정보와 로그인 회원 정보 불일치");
+    }
+
+    /**
+     * 게시글 삭제
+     */
+    @DeleteMapping("/delete/{boardId}")
+    public ResponseEntity deleteBoard(@PathVariable Long boardId, @Login Member loginMember){
+        //세션에 회원 데이터가 없으면 home
+        Board board = boardApiRepository.findBoardWithMember(boardId);
+        Member boardMember = board.getMember();
+        if (memberService.loginValidation(loginMember, boardMember)) {
+            boardService.delete(boardId);
+
+            Message message = new Message(StatusEnum.OK, "게시글 삭제 성공", boardId);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
 
         throw new UserException("게시글 회원 정보와 로그인 회원 정보 불일치");

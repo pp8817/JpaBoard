@@ -68,7 +68,7 @@ public class MemberApiController {
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
 
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return new ResponseEntity<>(message, headers, HttpStatus.CREATED);
 //        return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
 
