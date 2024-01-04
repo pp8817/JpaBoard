@@ -1,7 +1,8 @@
 # JpaBoard
 Spring data Jpa를 활용해서 Restful 게시판을 만듭니다.
 - 회원가입 / 로그인 기능은 cookie, session 방식을 이용했습니다. 추후 Spring Security를 공부 후 변경 할 예정입니다.
-- 12.23 - 대략 완성 후 코드를 다듬고 API를 공부하며 개발하고 있습니다.
+- 23.12.23 - 대략 완성 후 코드를 다듬고 API를 공부하며 개발하고 있습니다.
+- 24.01.05 - 양방향 연관관계로 엮여있는 것을 최대한 단방향으로 변경할 계획중
 
 ## 기술
 - Framework & Language : Spring Boot 3.0 & Java 17
