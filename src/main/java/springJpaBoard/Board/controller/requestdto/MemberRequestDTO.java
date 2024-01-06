@@ -2,7 +2,6 @@ package springJpaBoard.Board.controller.requestdto;
 
 import lombok.Getter;
 import lombok.Setter;
-import springJpaBoard.Board.domain.status.GenderStatus;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -30,7 +29,7 @@ public class MemberRequestDTO {
     @Size(min = 1, max = 10, message = "회원 이름은 1~10자 사이입니다.", groups = {SaveCheck.class, UpdateCheck.class})
     private String name;
 
-    private GenderStatus gender;
+    private String gender;
 
 //    private MemberStatus memberStatus;
 
@@ -38,7 +37,7 @@ public class MemberRequestDTO {
     private String street;
     private String zipcode;
 
-    public void createForm(Long id, String name, GenderStatus gender, String city, String street, String zipcode) {
+    public void createForm(Long id, String name, String gender, String city, String street, String zipcode) {
         this.id = id;
         this.name = name;
         this.gender = gender;

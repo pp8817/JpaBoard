@@ -1,88 +1,72 @@
 package springJpaBoard.Board.api.apicontroller;
 
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.test.web.servlet.ResultActions;
+import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
+
+import java.nio.charset.StandardCharsets;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MemberApiController.class)
-@AutoConfigureMockMvc
 @DisplayName("MemberApiController 테스트")
 public class MemberApiControllerTest {
+
     @Autowired
-    private MockMvc mvc;
+    private MockMvc mockMvc;
 
     @MockBean
     private MemberService memberService;
 
-    @BeforeEach
-    public void setUp() {
-        mvc = MockMvcBuilders.standaloneSetup(new CharacterEncodingFilter("UTF-8", true)) // utf-8 필터 추가
-                        .build();
-    }
+    @MockBean
+    private BoardService boardService;
 
-
-//    @Test
-//    @DisplayName("리턴값 없이 테스트하는 방법")
-//    void getTest() throws Exception {
-//        String url = "~~";
-//        // api 요청
-//        mockMvc
-//                .perform(
-//                        get(url) // url
-//                                .param("name", "myName") // parameter(파라미터 명, 데이터)
-//                                .param("value", "myValue") // parameter
-//                )
-//                .andDo(print()) // api 수행내역 로그 출력
-//                .andExpect(status().isOk()) // response status 200 검증
-//                .andExpect(jsonPath("method").value("GET")) // response method 데이터 검증
-//                .andExpect(jsonPath("name").value("myName")) // response name 데이터 검증
-//                .andExpect(jsonPath("value").value("myValue")); // response value 데이터 검증
-//    }
-
-//    @Test
-//    @DisplayName("리턴값을 이용하여 테스트하는 방법")
-//    void getTestReturn() throws Exception {
-//        // api 요청
-//        MvcResult mvcResult = mockMvc
-//                .perform(
-//                        get("/api/mock/getTest") // url
-//                                .param("name", "myName") // parameter
-//                                .param("value", "myValue") // parameter
-//                )
-//                .andDo(print())
-//                .andReturn();
-//
-//        // response 데이터 변환
-//        Map<String, String> responseMap =
-//                new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Map.class);
-//
-//        // 검증
-//        Assertions.assertEquals(responseMap.get("method"), "GET"); // response method 데이터 검증
-//        Assertions.assertEquals(responseMap.get("name"), "myName"); // response name 데이터 검증
-//        Assertions.assertEquals(responseMap.get("value"), "myValue"); // response value 데이터 검증
-//    }
+    protected MediaType contentType =
+            new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
 
     @Test
-    @DisplayName("회원 가입 테스트")
+    @DisplayName("[POST] 회원 가입")
     public void 회원가입() throws Exception {
         //given
+        given(memberService.join(any()))
+                .willReturn(1L);
 
         //when
-
+        ResultActions actions = mockMvc.perform(post("/api/members")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content("{" +
+                        "   \"loginId\" : \"1\"," +
+                        "    \"password\" : \"1\"," +
+                        "    \"name\": \"1\"," +
+                        "    \"gender\": \"남성\"," +
+                        "    \"city\": \"1\"," +
+                        "    \"street\": \"1\"," +
+                        "    \"zipcode\": \"1\"" +
+                        "}")
+        );
         //then
-
+        actions
+                .andExpect(status().isCreated())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("회원 가입 성공"))
+                .andExpect(jsonPath("$.data").value("1"));
 
     }
 }
