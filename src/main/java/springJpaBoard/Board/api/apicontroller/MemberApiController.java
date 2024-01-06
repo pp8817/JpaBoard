@@ -19,10 +19,7 @@ import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SesstionConst;
 import springJpaBoard.Board.Error.StatusEnum;
-import springJpaBoard.Board.controller.requestdto.LoginCheck;
-import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
-import springJpaBoard.Board.controller.requestdto.SaveCheck;
-import springJpaBoard.Board.controller.requestdto.UpdateCheck;
+import springJpaBoard.Board.controller.requestdto.*;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Board;
@@ -63,7 +60,7 @@ public class MemberApiController {
         member.createMember(memberRequestDTO, address);
         Long id = memberService.join(member);
 
-        Message message = new Message(StatusEnum.OK, "회원 가입 성공", id);
+        Message message = new Message(StatusEnum.CREATED, "회원 가입 성공", id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -76,8 +73,8 @@ public class MemberApiController {
     // TODO - redirectURL 해결
     // 현재 생각한 방법: Result 타입에 redirectURL을 추가해서 같이 반환
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Validated(LoginCheck.class) MemberRequestDTO form, BindingResult result,
-                        @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
+    public ResponseEntity login(@RequestBody LoginRequestDTO form, BindingResult result,
+                                @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
         if (result.hasErrors()) {
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디 또는 비밀번호 오류");
             throw new UserException("로그인: 아이디 또는 비밀번호 오류");
@@ -98,7 +95,11 @@ public class MemberApiController {
         /*세션에 로그인 회원 정보 보관*/
         session.setAttribute(SesstionConst.LOGIN_MEMBER, loginMember);
 
-        return ResponseEntity.status(HttpStatus.OK).body("로그인 성공");
+        Message message = new Message(StatusEnum.OK, "로그인 성공", loginMember.getLoginId());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     /* 회원 로그아웃 */
