@@ -223,7 +223,7 @@ public class MemberApiController {
     static class ModifyMemberDto {
         private Long id;
         private String name;
-        private GenderStatus gender;
+        private String gender;
         private Address address;
 
         public ModifyMemberDto(Member member) {

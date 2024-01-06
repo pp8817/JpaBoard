@@ -2,7 +2,6 @@ package springJpaBoard.Board.domain;
 
 import lombok.Getter;
 import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
-import springJpaBoard.Board.domain.status.GenderStatus;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,8 +22,8 @@ public class Member {
 
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    private GenderStatus gender;
+//    @Enumerated(EnumType.STRING)
+    private String gender;
 
 //    private MemberStatus memberStatus;
 
