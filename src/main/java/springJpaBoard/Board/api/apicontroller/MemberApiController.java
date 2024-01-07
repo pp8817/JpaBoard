@@ -16,16 +16,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.Error.Message;
+import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SesstionConst;
-import springJpaBoard.Board.Error.StatusEnum;
-import springJpaBoard.Board.controller.requestdto.*;
+import springJpaBoard.Board.controller.requestdto.LoginRequestDTO;
+import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
+import springJpaBoard.Board.controller.requestdto.SaveCheck;
+import springJpaBoard.Board.controller.requestdto.UpdateCheck;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
-import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.MemberSearch;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
@@ -159,36 +161,46 @@ public class MemberApiController {
     }
 
     /* 회원 수정 */
-    @GetMapping("/{memberId}/edit")
-    public ResponseEntity updateForm(@PathVariable Long memberId) {
+    @GetMapping("/edit/{memberId}")
+    public ResponseEntity updateForm(@PathVariable Long memberId, @Login Member loginMember) {
 
         Member member = memberService.findOne(memberId);
 
-        ModifyMemberDto memberDto = new ModifyMemberDto(member);
+        if (memberService.loginValidation(loginMember, member)) {
+            ModifyMemberDto memberDto = new ModifyMemberDto(member);
 
-        Result result = new Result(memberDto);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+            Result result = new Result(memberDto);
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }
+
+        throw new UserException("회원 정보가 일치하지 않습니다.");
     }
 
-    @PutMapping("{memberId}/edit")
-    public ResponseEntity updateMember(@RequestBody @Validated(UpdateCheck.class) MemberRequestDTO form, BindingResult result) {
+    @PutMapping("/edit/{memberId}")
+    public ResponseEntity updateMember(@RequestBody @Validated(UpdateCheck.class) MemberRequestDTO form, @Login Member loginMember, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new UserException("회원 수정 오류");
         }
 
-        memberService.update(form.getId(), form);
-//        ModifyMemberDto modifyMember = new ModifyMemberDto(updateMember);
+        Member member = memberService.findOne(form.getId());
 
-        Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공");
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        if (memberService.loginValidation(loginMember, member)) {
+            Member updateMember = memberService.update(form.getId(), form);
+            MemberResponseDTO memberResponseDTO = new MemberResponseDTO(updateMember);
 
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공", memberResponseDTO);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        }
+
+        throw new UserException("회원 정보가 일치하지 않습니다.");
     }
 
     /* 회원 삭제 */
-    @DeleteMapping("{memberId}/delete")
+    @DeleteMapping("/delete/{memberId}")
     public ResponseEntity deleteMember(@PathVariable Long memberId) {
         memberService.delete(memberId);
 

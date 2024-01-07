@@ -13,6 +13,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import springJpaBoard.Board.SesstionConst;
 import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
@@ -22,9 +23,11 @@ import springJpaBoard.Board.service.MemberService;
 import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 
+import static java.lang.Boolean.TRUE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
@@ -177,13 +180,40 @@ public class MemberApiControllerTest {
     }
 
     @Test
-    @DisplayName("[GET] 회원 목록")
-    public void 회원목록() throws Exception {
-        //given
+    @DisplayName("[PUT] 회원 수정")
+    public void 회원수정() throws Exception {
+        // given
+        long memberId = 1L;
+        Member member = getMember();
+        Member updateMember = updateMember();
 
-        //when
+        given(memberService.findOne(any()))
+                .willReturn(member);
 
-        //then
+        given(memberService.loginValidation(member, member))
+                .willReturn(TRUE);
+
+        given(memberService.update(any(), any()))
+                .willReturn(updateMember);
+
+        // 로그인 세션 생성
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SesstionConst.LOGIN_MEMBER, member);
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/api/members/edit/{memberId}", memberId)
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"id\": 1, \"name\": \"2\", \"gender\": \"여성\", " +
+                        "\"city\": \"2\", \"street\": \"2\", \"zipcode\": \"2\" }"));
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("회원 정보 수정 성공"))
+                .andExpect(jsonPath("$.data.gender").value("여성"));
     }
 
 
@@ -197,6 +227,20 @@ public class MemberApiControllerTest {
         memberRequestDTO.setPassword("1");
         Member member = new Member();
         member.createMember(memberRequestDTO, address);
+        return member;
+    }
+
+    @NotNull
+    private static Member updateMember() {
+        Address address = new Address("2", "2", "2");
+        MemberRequestDTO memberRequestDTO = new MemberRequestDTO();
+        memberRequestDTO.setName("2");
+        memberRequestDTO.setGender("여성");
+        memberRequestDTO.setLoginId("1");
+        memberRequestDTO.setPassword("1");
+        Member member = new Member();
+        member.createMember(memberRequestDTO, address);
+        member.setId(1L);
         return member;
     }
 
