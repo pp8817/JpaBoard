@@ -103,4 +103,17 @@ public class MemberApiControllerTest {
 
     }
 
+    @NotNull
+    private static Member getMember() {
+        Address address = new Address("1", "1", "1");
+        MemberRequestDTO memberRequestDTO = new MemberRequestDTO();
+        memberRequestDTO.setName("1");
+        memberRequestDTO.setGender("남성");
+        memberRequestDTO.setLoginId("1");
+        memberRequestDTO.setPassword("1");
+        Member member = new Member();
+        member.createMember(memberRequestDTO, address);
+        return member;
+    }
+
 }
