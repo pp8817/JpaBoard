@@ -103,6 +103,34 @@ public class MemberApiControllerTest {
 
     }
 
+    @Test
+    @DisplayName("[POST] 로그인 실패 - 검증")
+    public void 로그인_실패_검증() throws Exception {
+        Member member = getMember();
+
+        //given
+        given(memberService.login("1", "1"))
+                .willReturn(member);
+
+        //when
+        ResultActions actions = mockMvc.perform(post("/api/members/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content("{" +
+                        "    \"password\" : \"1\"" +
+                        "}")
+        );
+        //then
+        actions
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.code").value("USER-EX"))
+                .andExpect(jsonPath("$.message").value("로그인: 아이디 또는 비밀번호 오류"));
+    }
+
+
+
     @NotNull
     private static Member getMember() {
         Address address = new Address("1", "1", "1");

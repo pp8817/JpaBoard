@@ -10,11 +10,11 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Builder
 public class LoginRequestDTO {
-    @NotBlank(message = "Id를 입력해주세요", groups = {SaveCheck.class, LoginCheck.class})
+    @NotBlank(message = "Id를 입력해주세요")
 //    @NotBlank
     private String loginId;
 
-    @NotBlank(message = "password를 입력해주세요", groups = {SaveCheck.class, LoginCheck.class})
+    @NotBlank(message = "password를 입력해주세요")
     private String password;
 
     public LoginRequestDTO() {

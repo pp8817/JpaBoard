@@ -32,6 +32,7 @@ import springJpaBoard.Board.service.MemberService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -73,7 +74,7 @@ public class MemberApiController {
     // TODO - redirectURL 해결
     // 현재 생각한 방법: Result 타입에 redirectURL을 추가해서 같이 반환
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginRequestDTO form, BindingResult result,
+    public ResponseEntity login(@RequestBody @Valid LoginRequestDTO form, BindingResult result,
                                 @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
         if (result.hasErrors()) {
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디 또는 비밀번호 오류");
