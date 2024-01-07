@@ -22,7 +22,6 @@ import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
-import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.BoardSearch;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.CommentService;
@@ -91,9 +90,9 @@ public class BoardController {
             boardList = boardService.boardList(pageable);
         } else {
             String boardTitle = boardSearch.getBoardTitle();
-            GenderStatus memberGender = boardSearch.getMemberGender();
+            String memberGender = boardSearch.getMemberGender();
 
-            if (memberGender == null) {
+            if (memberGender == "") {
                 boardList = boardService.searchTitle(boardTitle, pageable);
             } else {
                 boardList = boardService.searchAll(boardTitle, memberGender, pageable);

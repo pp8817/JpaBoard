@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.BoardRepository;
 import springJpaBoard.Board.repository.MemberRepository;
 
@@ -51,7 +50,7 @@ public class BoardService {
     }
 
     /* 제목, 성별 검색 */
-    public Page<Board> searchAll(String keyword, GenderStatus gender, Pageable pageable) {
+    public Page<Board> searchAll(String keyword, String gender, Pageable pageable) {
         return boardRepository.findByTitleContainingAndMember_Gender(keyword, gender, pageable);
     }
 

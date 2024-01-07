@@ -20,7 +20,6 @@ import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
-import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.MemberSearch;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
@@ -128,9 +127,9 @@ public class MemberController {
             memberList = memberService.memberList(pageable);
         } else {
             String memberName = memberSearch.getMemberName();
-            GenderStatus memberGender = memberSearch.getMemberGender();
+            String memberGender = memberSearch.getMemberGender();
 
-            if (memberGender == null) {
+            if (memberGender == "") {
                 memberList = memberService.searchName(memberName, pageable);
             } else {
                 memberList = memberService.searchAll(memberName, memberGender, pageable);

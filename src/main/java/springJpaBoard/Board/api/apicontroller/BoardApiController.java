@@ -92,7 +92,7 @@ public class BoardApiController {
             boardList = boardService.boardList(pageable);
         } else {
             String boardTitle = boardSearch.getBoardTitle();
-            GenderStatus memberGender = boardSearch.getMemberGender();
+            String memberGender = boardSearch.getMemberGender();
 
             if (memberGender == null) {
                 boardList = boardService.searchTitle(boardTitle, pageable);

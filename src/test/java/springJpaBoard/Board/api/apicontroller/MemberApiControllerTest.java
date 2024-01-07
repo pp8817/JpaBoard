@@ -176,6 +176,16 @@ public class MemberApiControllerTest {
                 });
     }
 
+    @Test
+    @DisplayName("[GET] 회원 목록")
+    public void 회원목록() throws Exception {
+        //given
+
+        //when
+
+        //then
+    }
+
 
     @NotNull
     private static Member getMember() {

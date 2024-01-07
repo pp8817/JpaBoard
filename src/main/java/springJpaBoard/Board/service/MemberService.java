@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.MemberRepository;
 
 import java.util.List;
@@ -86,12 +85,12 @@ public class MemberService {
     }
 
     /* 성별만 검색 */
-    public Page<Member> searchGender(GenderStatus gender, Pageable pageable) {
+    public Page<Member> searchGender(String gender, Pageable pageable) {
         return memberRepository.findByGender(gender, pageable);
     }
 
     /* 제목, 성별 검색 */
-    public Page<Member> searchAll(String name, GenderStatus gender, Pageable pageable) {
+    public Page<Member> searchAll(String name, String gender, Pageable pageable) {
         return memberRepository.findByNameContainingAndGender(name, gender, pageable);
     }
 

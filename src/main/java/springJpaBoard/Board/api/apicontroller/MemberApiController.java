@@ -136,7 +136,7 @@ public class MemberApiController {
             memberList = memberService.memberList(pageable);
         } else {
             String memberName = memberSearch.getMemberName();
-            GenderStatus memberGender = memberSearch.getMemberGender();
+            String memberGender = memberSearch.getMemberGender();
 
             if (memberGender == null) {
                 memberList = memberService.searchName(memberName, pageable);
