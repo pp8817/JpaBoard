@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -18,6 +19,7 @@ import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
 
+import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -129,6 +131,50 @@ public class MemberApiControllerTest {
                 .andExpect(jsonPath("$.message").value("로그인: 아이디 또는 비밀번호 오류"));
     }
 
+    @Test
+    @DisplayName("[POST] 로그아웃 - 세션이 있는 경우")
+    void logoutWithSession() throws Exception {
+        //given
+        Member member = getMember();
+
+        given(memberService.login("1", "1"))
+                .willReturn(member);
+
+        HttpSession session = mockMvc.perform(post("/api/members/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"loginId\":\"1\",\"password\":\"1\"}"))
+                .andExpect(status().isOk())
+                .andReturn().getRequest().getSession();
+
+        // when
+        ResultActions actions = mockMvc.perform(post("/api/members/logout")
+                .session((MockHttpSession) session)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("회원 로그아웃 성공"));
+    }
+
+    @Test
+    @DisplayName("[POST] 로그아웃 - 세션이 없는 경우")
+    void logoutWithoutSession() throws Exception {
+        // when
+        ResultActions actions = mockMvc.perform(post("/api/members/logout")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // then
+        actions
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> {
+                    if (!(result.getResolvedException() instanceof IllegalStateException)) {
+                        throw new AssertionError("Expected IllegalStateException");
+                    }
+                });
+    }
 
 
     @NotNull
