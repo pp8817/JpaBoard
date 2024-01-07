@@ -1,7 +1,6 @@
 package springJpaBoard.Board.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
 
 import javax.persistence.*;
@@ -10,7 +9,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 public class Member {
 
     @Id

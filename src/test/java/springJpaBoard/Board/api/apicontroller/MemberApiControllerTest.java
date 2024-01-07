@@ -1,6 +1,7 @@
 package springJpaBoard.Board.api.apicontroller;
 
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
+import springJpaBoard.Board.domain.Address;
+import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
 
@@ -64,9 +68,39 @@ public class MemberApiControllerTest {
         actions
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.status").value("CREATED"))
                 .andExpect(jsonPath("$.message").value("회원 가입 성공"))
                 .andExpect(jsonPath("$.data").value("1"));
 
     }
+
+    @Test
+    @DisplayName("[POST] 로그인")
+    public void 로그인() throws Exception {
+        Member member = getMember();
+
+        //given
+        given(memberService.login("1", "1"))
+                .willReturn(member);
+
+        //when
+        ResultActions actions = mockMvc.perform(post("/api/members/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content("{" +
+                        "   \"loginId\" : \"1\"," +
+                        "    \"password\" : \"1\"" +
+                        "}")
+        );
+        //then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("로그인 성공"))
+                .andExpect(jsonPath("$.data").value("1"));
+
+    }
+
 }
