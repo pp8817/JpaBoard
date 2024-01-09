@@ -27,7 +27,6 @@ import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
-import springJpaBoard.Board.domain.status.GenderStatus;
 import springJpaBoard.Board.repository.search.BoardSearch;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.CommentService;
@@ -71,9 +70,8 @@ public class BoardApiController {
         if (result.hasErrors()) {
             throw new IllegalStateException("게시글 작성: 양식을 맞춰주세요.");
         }
-        Board board = new Board();
-        board.createBoard(boardRequestDTO.getTitle(), boardRequestDTO.getContent(), boardRequestDTO.getWriter(), LocalDateTime.now());
-        Long boardId = boardService.write(board, loginMember.getId());
+
+        Long boardId = boardService.write(boardRequestDTO, loginMember.getId());
 
         Message message = new Message(StatusEnum.OK, "게시글 작성 성공", boardId);
         HttpHeaders headers = new HttpHeaders();

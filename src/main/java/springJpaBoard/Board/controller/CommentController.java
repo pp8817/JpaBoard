@@ -3,14 +3,11 @@ package springJpaBoard.Board.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
-import springJpaBoard.Board.domain.Board;
-import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.service.BoardService;
@@ -37,24 +34,12 @@ public class CommentController {
 
 
         if (result.hasErrors()) {
-            System.out.println("유효성 검증 실패:");
-            for (FieldError error : result.getFieldErrors()) {
-                System.out.println("Field: " + error.getField() + ", Code: " + error.getCode() + ", Message: " + error.getDefaultMessage());
-            }
             return "redirect:/boards/" + bno + "/detail";
         }
 
-        Board board = boardService.findOne(bno); //쿼리 1
-        Member member = memberService.findOne(loginMember.getId());
-        if (board != null && member !=null) { //쿼리 2
-            Comment comment = new Comment();
-            comment.createComment(commentRequestDTO, member.getName());
+        commentService.save(commentRequestDTO, loginMember.getId());
 
-            commentService.save(comment, member, board);
-
-            return "redirect:/boards/" + bno + "/detail"; //쿼리 1번, 게시글 상세 페이지를 다시 로딩하면서 board의 정보가 필요
-        }
-        return "redirect:/";
+        return "redirect:/boards/" + bno + "/detail"; //쿼리 1번, 게시글 상세 페이지를 다시 로딩하면서 board의 정보가 필요
     }
 
     @GetMapping("/comment/{id}/delete")

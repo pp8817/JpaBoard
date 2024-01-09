@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
@@ -22,13 +23,27 @@ public class CommentService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void save(Comment comment, Member member, Board board) {
+    public Comment save(CommentRequestDTO commentRequestDTO, Long memberId) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("회원 정보가 없습니다."));
+        Board board = boardRepository.findById(commentRequestDTO.getBno())
+                .orElseThrow(() -> new NoSuchElementException("게시글 정보가 없습니다."));
+
+        Comment comment = Comment.builder()
+                .bno(commentRequestDTO.getBno())
+                .writer(member.getName())
+                .content(commentRequestDTO.getContent())
+                .build();
+
         //연관 관계 편의 메서드 사용
         comment.setMember(member);
         comment.setBoard(board);
         board.addComment();
 
         commentRepository.save(comment); //쿼리 3
+
+        return comment;
     }
 
     public Comment findById(Long id) {

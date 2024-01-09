@@ -13,7 +13,6 @@ import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
 import springJpaBoard.Board.controller.responsedto.CommentResponseDTO;
-import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
@@ -47,24 +46,16 @@ public class CommentApiController {
             throw new IllegalStateException("양식 불일치 오류");
         }
 
-        Board board = boardService.findOne(bno); //쿼리 1
-        Member member = memberService.findOne(loginMember.getId());
-        if (board != null && member !=null) { //쿼리 2
-            Comment comment = new Comment();
-            comment.createComment(commentRequestDTO, member.getName());
+        Comment comment = commentService.save(commentRequestDTO, loginMember.getId());
 
-            commentService.save(comment, member, board);
+        CommentResponseDTO commentDto = new CommentResponseDTO(comment);
 
-            CommentResponseDTO commentDto = new CommentResponseDTO(comment);
+        Message message = new Message(StatusEnum.OK, "댓글 작성 성공", commentDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-            Message message = new Message(StatusEnum.OK, "댓글 작성 성공", commentDto);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
 
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        }
-
-        throw new IllegalStateException("게시글 정보 또는 회원 정보가 없습니다.");
     }
 
     @DeleteMapping("/delete/{commentId}")

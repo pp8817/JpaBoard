@@ -6,10 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
+import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.MemberRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -25,11 +27,27 @@ public class MemberService {
      * 회원 가입
      */
     @Transactional(readOnly = false)
-    public Long join(Member member) {
+    public Long join(MemberRequestDTO memberRequestDTO) {
+
+        Address address = Address.builder()
+                .city(memberRequestDTO.getCity())
+                .street(memberRequestDTO.getStreet())
+                .zipcode(memberRequestDTO.getZipcode())
+                .build();
+
+        Member member = Member.builder()
+                .name(memberRequestDTO.getName())
+                .gender(memberRequestDTO.getGender())
+                .loginId(memberRequestDTO.getLoginId())
+                .password(memberRequestDTO.getPassword())
+                .address(address)
+                .build();
+
         validateDuplicateMember(member);
         memberRepository.save(member);
         return member.getId();
     }
+
 
     /**
      * 회원 로그인
@@ -98,7 +116,8 @@ public class MemberService {
      * 회원 단건 조회
      */
     public Member findOne(Long memberId) {
-        return memberRepository.findById(memberId).get();
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("회원 정보가 없습니다."));
     }
 
     /**
@@ -109,7 +128,8 @@ public class MemberService {
         /*
         Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현
          */
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("회원 정보가 없습니다."));;
         member.editMember(memberDto);
         return member;
     }
@@ -121,5 +141,7 @@ public class MemberService {
     public void delete(Long memberId) {
         memberRepository.deleteById(memberId);
     }
+
+
 
 }

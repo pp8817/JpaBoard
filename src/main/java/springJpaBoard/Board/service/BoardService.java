@@ -11,6 +11,8 @@ import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.BoardRepository;
 import springJpaBoard.Board.repository.MemberRepository;
 
+import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,9 +25,14 @@ public class BoardService {
      * 게시글 작성
      */
     @Transactional
-    public Long write(Board board, Long memberId) {
+    public Long write(BoardRequestDTO boardRequestDTO, Long memberId) {
+        Board board = Board.builder()
+                .title(boardRequestDTO.getTitle())
+                .content(boardRequestDTO.getContent())
+                .build();
         //엔티티 조회
         Member member = memberRepository.findById(memberId).get();
+
         //연관 관계 생성
         board.setMember(member);
 
@@ -58,7 +65,8 @@ public class BoardService {
      * 게시글 단건 조회
      */
     public Board findOne(Long boardId) {
-        return boardRepository.findById(boardId).get();
+        return boardRepository.findById(boardId)
+                .orElseThrow(() -> new NoSuchElementException("게시글 정보가 없습니다"));
     }
 
     /**
