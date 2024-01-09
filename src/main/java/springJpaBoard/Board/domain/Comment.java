@@ -1,7 +1,6 @@
 package springJpaBoard.Board.domain;
 
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
 
 import javax.persistence.*;
@@ -10,6 +9,7 @@ import java.time.LocalDateTime;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
 /**
@@ -47,6 +47,15 @@ public class Comment {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Builder
+    public Comment(Long bno, String writer, String content, LocalDateTime localDateTime) {
+        this.bno = bno;
+        this.writer = writer;
+        this.content = content;
+        this.createDateTime = LocalDateTime.now();
+    }
+
+
     /*
     연관관계 편의 메서드
      */
@@ -58,12 +67,5 @@ public class Comment {
     public void setMember(Member member) {
         this.member = member;
         member.getCommentList().add(this);
-    }
-
-    public void createComment(CommentRequestDTO commentDto, String writer) {
-        this.bno = commentDto.getBno();
-        this.writer = writer;
-        this.content = commentDto.getContent();
-        this.createDateTime = LocalDateTime.now();
     }
 }
