@@ -165,8 +165,11 @@ public class MemberApiController {
         if (memberService.loginValidation(loginMember, member)) {
             ModifyMemberDto memberDto = new ModifyMemberDto(member);
 
-            Result result = new Result(memberDto);
-            return ResponseEntity.status(HttpStatus.OK).body(result);
+            Message message = new Message(StatusEnum.OK, "회원 데이터 조회 성공", memberDto);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
 
         throw new UserException("회원 정보가 일치하지 않습니다.");
