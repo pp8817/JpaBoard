@@ -1,7 +1,9 @@
 package springJpaBoard.Board.domain;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
 
 import javax.persistence.*;
@@ -9,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
 public class Member {
 
     @Id
@@ -41,22 +43,53 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Like> likeList = new ArrayList<>();
 
-    public void createMember(MemberRequestDTO memberRequestDTO, Address address) {
-        this.name = memberRequestDTO.getName();
-        this.gender = memberRequestDTO.getGender();
-        this.loginId = memberRequestDTO.getLoginId();
-        this.password = memberRequestDTO.getPassword();
+    /*회원 가입을 위한 생성자*/
+    @Builder
+    public Member(Long id, String loginId, String password, String name, String gender, Address address) {
+        this.id = id;
+        this.loginId = loginId;
+        this.password = password;
+        this.name = name;
+        this.gender = gender;
+        this.address = address;
+    }
+    /* TODO 위 방법 또는 아래 방법 중 고민 */
+//    public static Member of(MemberRequestDTO memberRequestDTO) {
+//        Address address = Address.builder()
+//                .city(memberRequestDTO.getCity())
+//                .street(memberRequestDTO.getStreet())
+//                .zipcode(memberRequestDTO.getZipcode())
+//                .build();
+//
+//        return Member.builder()
+//                .name(memberRequestDTO.getName())
+//                .gender(memberRequestDTO.getGender())
+//                .loginId(memberRequestDTO.getLoginId())
+//                .password(memberRequestDTO.getPassword())
+//                .address(address)
+//                .build();
+//    }
+
+    /*회원 수정*/
+    @Builder
+    public Member(String name, String gender, Address address) {
+        this.name = name;
+        this.gender = gender;
         this.address = address;
     }
 
     /*
-    회원 수정, Dirty Checking 발생(업데이트 쿼리가 자동으로 나감)
-    Setter를 사용하지 않기 위해 수정 메서드를 만듦
+        회원 수정, Dirty Checking 발생(업데이트 쿼리가 자동으로 나감)
+        Setter를 사용하지 않기 위해 수정 메서드를 만듦
      */
     public void editMember(MemberRequestDTO memberDto) {
         this.name = memberDto.getName();
         this.gender = memberDto.getGender();
-        this.address.updateAddress(memberDto.getCity(), memberDto.getStreet(), memberDto.getZipcode());
+        this.address = Address.builder()
+                .city(memberDto.getCity())
+                .zipcode(memberDto.getZipcode())
+                .street(memberDto.getStreet())
+                .build();
     }
 
 }

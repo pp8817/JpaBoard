@@ -1,10 +1,15 @@
 package springJpaBoard.Board.domain;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
 
 import javax.persistence.Embeddable;
 
 @Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Address {
 
@@ -12,21 +17,22 @@ public class Address {
     private String street;
     private String zipcode;
 
-    /*
-     jpa 기본 스펙이 생성을 할 때 reflection, proxy 등의 기술을 써야하기 때문에 기본 생성자가 필요함.
-     */
-    protected Address() {
-    }
 
+    @Builder
     public Address(String city, String street, String zipcode) {
+//        /* 안전한 객체 생성인지 확인 */
+//        Assert.hasText(city, "city must not be empty");
+//        Assert.hasText(street, "street must not be empty");
+//        Assert.hasText(zipcode, "zipcode must not be empty");
+
         this.city = city;
         this.street = street;
         this.zipcode = zipcode;
     }
 
-    public void updateAddress(String city, String street, String zipcode) {
-        this.city = city;
-        this.street = street;
-        this.zipcode = zipcode;
+    public void updateAddress(MemberRequestDTO memberRequestDTO) {
+        this.city = memberRequestDTO.getCity();
+        this.street = memberRequestDTO.getStreet();
+        this.zipcode = memberRequestDTO.getZipcode();
     }
 }

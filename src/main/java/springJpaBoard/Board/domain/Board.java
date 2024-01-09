@@ -1,6 +1,9 @@
 package springJpaBoard.Board.domain;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 
@@ -12,6 +15,7 @@ import java.util.List;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @DynamicUpdate //업데이트 쿼리 최적화
 public class Board {
@@ -47,15 +51,13 @@ public class Board {
 
     private LocalDateTime modifyDateTime;
 
-    public Board() {
 
-    }
-
-    public void createBoard(String title, String content, String writer, LocalDateTime localDateTime) {
+    @Builder
+    public Board(String title, String content, String writer, LocalDateTime localDateTime) {
         this.title = title;
         this.content = content;
         this.writer = writer;
-        this.boardDateTime = localDateTime;
+        this.boardDateTime = LocalDateTime.now();
     }
 
     /*
