@@ -72,9 +72,8 @@ public class BoardController {
             System.out.println("result = " + result.getAllErrors());
             return "boards/writeBoardForm";
         }
-        Board board = new Board();
-        board.createBoard(boardRequestDTO.getTitle(), boardRequestDTO.getContent(), boardRequestDTO.getWriter(), LocalDateTime.now());
-        boardService.write(board, memberId);
+
+        boardService.write(boardRequestDTO, memberId);
         return "redirect:/";
     }
 

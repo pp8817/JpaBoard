@@ -57,11 +57,7 @@ public class MemberApiController {
             throw new UserException("회원가입: 회원 정보 입력 오류");
         }
 
-        Address address = new Address(memberRequestDTO.getCity(), memberRequestDTO.getStreet(), memberRequestDTO.getZipcode());
-
-        Member member = new Member();
-        member.createMember(memberRequestDTO, address);
-        Long id = memberService.join(member);
+        Long id = memberService.join(memberRequestDTO);
 
         Message message = new Message(StatusEnum.CREATED, "회원 가입 성공", id);
         HttpHeaders headers = new HttpHeaders();
