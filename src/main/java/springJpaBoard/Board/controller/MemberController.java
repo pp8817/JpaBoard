@@ -175,7 +175,7 @@ public class MemberController {
         }
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
 
-        memberService.update(form.getId(), form);
+        memberService.update(form.getId(), form);//주석 추가
 
         return "redirect:/members"; //회원 수정 후 회원 목록으로 이동
     }
