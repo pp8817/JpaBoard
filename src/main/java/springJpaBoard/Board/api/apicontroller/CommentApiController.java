@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.StatusEnum;
-import springJpaBoard.Board.controller.commentdto.CommentDto;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
@@ -22,6 +21,7 @@ import java.nio.charset.Charset;
 import java.util.NoSuchElementException;
 
 import static springJpaBoard.Board.controller.commentdto.CommentDto.CommentResponse;
+import static springJpaBoard.Board.controller.commentdto.CommentDto.CreateCommentRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,9 +37,9 @@ public class CommentApiController {
      * 댓글 작성
      */
     @PostMapping
-    public ResponseEntity saveComment(@RequestBody CommentDto.CreateCommentRequest commentRequestDTO, BindingResult result, @Login Member loginMember) {
+    public ResponseEntity saveComment(@RequestBody CreateCommentRequest commentRequestDTO, BindingResult result, @Login Member loginMember) {
 
-        Long bno = commentRequestDTO.getBno();
+        Long bno = commentRequestDTO.bno();
 
         if (result.hasErrors()) {
             throw new IllegalStateException("양식 불일치 오류");

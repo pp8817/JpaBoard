@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
 
 import javax.persistence.Embeddable;
 
@@ -28,11 +27,5 @@ public class Address {
         this.city = city;
         this.street = street;
         this.zipcode = zipcode;
-    }
-
-    public void updateAddress(MemberRequestDTO memberRequestDTO) {
-        this.city = memberRequestDTO.getCity();
-        this.street = memberRequestDTO.getStreet();
-        this.zipcode = memberRequestDTO.getZipcode();
     }
 }

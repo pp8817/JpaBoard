@@ -11,13 +11,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.SesstionConst;
-import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
 import springJpaBoard.Board.controller.requestdto.checkInterface.LoginCheck;
 import springJpaBoard.Board.controller.requestdto.checkInterface.SaveCheck;
 import springJpaBoard.Board.controller.requestdto.checkInterface.UpdateCheck;
 import springJpaBoard.Board.controller.responsedto.BoardResponseDTO;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
-import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.repository.search.MemberSearch;
@@ -30,6 +28,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMember;
 
 @Controller
 @RequiredArgsConstructor
@@ -47,13 +46,13 @@ public class MemberController {
         /**
          * 빈 껍데기인 MemberFrom 객체를 model에 담아서 가져가는 이유는 Validation의 기능을 사용하기 위해서이다.
          */
-        model.addAttribute("memberForm", new MemberRequestDTO());
+        model.addAttribute("memberForm", CreateMemberRequest.builder().build());
         return "members/createMemberForm";
     }
 
 
     @PostMapping("/new")
-    public String create(@Validated(SaveCheck.class) @ModelAttribute("memberForm") MemberRequestDTO memberForm, BindingResult result) {
+    public String create(@Validated(SaveCheck.class) @ModelAttribute("memberForm") CreateMemberRequest memberForm, BindingResult result) {
 
         /*
         오류 발생시(@Valid 에서 발생)
@@ -72,19 +71,19 @@ public class MemberController {
      */
     @GetMapping("/login")
     public String loginForm(Model model) {
-        model.addAttribute("loginForm", new MemberRequestDTO());
+        model.addAttribute("loginForm", CreateMemberRequest.builder().build());
         return "members/loginMemberForm";
     }
 
     @PostMapping("/login")
     public String loginV4(@Validated(LoginCheck.class)
-                        @ModelAttribute("loginForm") MemberRequestDTO form, BindingResult result, @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
+                        @ModelAttribute("loginForm") CreateMemberRequest form, BindingResult result, @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
 
         if (result.hasErrors()) {
             return "members/loginMemberForm";
         }
 
-        Member loginMember = memberService.login(form.getLoginId(), form.getPassword());
+        Member loginMember = memberService.login(form.loginId(), form.password());
 
         if (loginMember == null) {
             result.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
@@ -156,26 +155,21 @@ public class MemberController {
     @GetMapping("{memberId}/edit")
     public String updateMemberForm(@PathVariable("memberId") Long memberId, Model model) {
         Member member = memberService.findOne(memberId);
-        Address address = member.getAddress();
 
-        CreateMemberRequest form = CreateMemberRequest.of(member);
+        ModifyMember form = ModifyMember.toModifyMember(member);
 
-//        MemberRequestDTO form = new MemberRequestDTO();
-//        form.createForm(member.getId(), member.getName(), member.getGender(),
-//                address.getCity(), address.getStreet(), address.getZipcode());
         model.addAttribute("form", form);
         return "members/updateMemberForm";
     }
 
     @PostMapping("{memberId}/edit")
-    public String updateMember(@Validated(UpdateCheck.class) @ModelAttribute("form") MemberRequestDTO form,
+    public String updateMember(@Validated(UpdateCheck.class) @ModelAttribute("form") ModifyMember form,
                                BindingResult result) {
         if (result.hasErrors()) {
             return "redirect:/";
         }
-        Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
 
-        memberService.update(form.getId(), form);//주석 추가
+        memberService.update(form.id(), form);//주석 추가
 
         return "redirect:/members"; //회원 수정 후 회원 목록으로 이동
     }

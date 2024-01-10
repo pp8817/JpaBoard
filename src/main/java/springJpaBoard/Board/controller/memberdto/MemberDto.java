@@ -28,21 +28,38 @@ public class MemberDto {
             String street,
             String zipcode
     ) {
-        public static CreateMemberRequest of(Member member) {
-            Address address = member.getAddress();
-            return CreateMemberRequest.builder()
-                    .id(member.getId())
-                    .loginId(member.getLoginId())
-                    .password(member.getPassword())
-                    .name(member.getName())
-                    .gender(member.getGender())
-                    .city(address.getCity())
-                    .street(address.getStreet())
-                    .zipcode(address.getZipcode())
+
+        public Member toEntity() {
+            return Member.builder()
+                    .name(name)
+                    .gender(gender)
+                    .loginId(loginId)
+                    .password(password)
+                    .address(new Address(city, street, zipcode))
                     .build();
         }
 
+
+
     }
+
+    @Builder
+    public record ModifyMember(
+            Long id,
+            String name,
+            String gender,
+            Address address
+    ) {
+        public static ModifyMember toModifyMember(Member member) {
+            return ModifyMember.builder()
+                    .id(member.getId())
+                    .name(member.getName())
+                    .gender(member.getGender())
+                    .address(member.getAddress())
+                    .build();
+        }
+    }
+
 
 
     /*Response*/

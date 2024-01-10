@@ -20,11 +20,9 @@ import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SesstionConst;
 import springJpaBoard.Board.controller.requestdto.LoginRequestDTO;
-import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
 import springJpaBoard.Board.controller.requestdto.checkInterface.SaveCheck;
 import springJpaBoard.Board.controller.requestdto.checkInterface.UpdateCheck;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
-import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
@@ -40,6 +38,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMember;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,7 +52,7 @@ public class MemberApiController {
 
     /* 회원가입 */
     @PostMapping
-    public ResponseEntity join(@RequestBody @Validated(SaveCheck.class) MemberRequestDTO memberRequestDTO, BindingResult result) {
+    public ResponseEntity join(@RequestBody @Validated(SaveCheck.class) CreateMemberRequest memberRequestDTO, BindingResult result) {
         if (result.hasErrors()) {
             throw new UserException("회원가입: 회원 정보 입력 오류");
         }
@@ -163,7 +163,7 @@ public class MemberApiController {
         Member member = memberService.findOne(memberId);
 
         if (memberService.loginValidation(loginMember, member)) {
-            ModifyMemberDto memberDto = new ModifyMemberDto(member);
+            ModifyMember memberDto = ModifyMember.toModifyMember(member);
 
             Message message = new Message(StatusEnum.OK, "회원 데이터 조회 성공", memberDto);
             HttpHeaders headers = new HttpHeaders();
@@ -176,16 +176,16 @@ public class MemberApiController {
     }
 
     @PutMapping("/edit/{memberId}")
-    public ResponseEntity updateMember(@RequestBody @Validated(UpdateCheck.class) MemberRequestDTO form, @Login Member loginMember, BindingResult result) {
+    public ResponseEntity updateMember(@RequestBody @Validated(UpdateCheck.class) ModifyMember form, @Login Member loginMember, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new UserException("회원 수정 오류");
         }
 
-        Member member = memberService.findOne(form.getId());
+        Member member = memberService.findOne(form.id());
 
         if (memberService.loginValidation(loginMember, member)) {
-            Member updateMember = memberService.update(form.getId(), form);
+            Member updateMember = memberService.update(form.id(), form);
             MemberResponseDTO memberResponseDTO = new MemberResponseDTO(updateMember);
 
             Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공", memberResponseDTO);
@@ -215,7 +215,7 @@ public class MemberApiController {
         Member member = memberService.findOne(id); // 1
 
         List<MyBoardsDto> boards = member.getBoardList().stream()
-                .map(b -> new MyBoardsDto(b))
+                .map(MyBoardsDto::new)
                 .collect(toList());
 
         Message message = new Message(StatusEnum.OK, "회원이 작성한 게시글 조회 성공", boards);
@@ -229,22 +229,6 @@ public class MemberApiController {
     @AllArgsConstructor
     static class Result<T> {
         private T data;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class ModifyMemberDto {
-        private Long id;
-        private String name;
-        private String gender;
-        private Address address;
-
-        public ModifyMemberDto(Member member) {
-            this.id = member.getId();
-            this.name = member.getName();
-            this.gender = member.getGender();
-            this.address = member.getAddress();
-        }
     }
 
     @Data
