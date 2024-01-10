@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
@@ -15,6 +14,8 @@ import springJpaBoard.Board.repository.MemberRepository;
 
 import java.util.NoSuchElementException;
 
+import static springJpaBoard.Board.controller.commentdto.CommentDto.CreateCommentRequest;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -23,7 +24,7 @@ public class CommentService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Comment save(CommentRequestDTO commentRequestDTO, Long memberId) {
+    public Comment save(CreateCommentRequest commentRequestDTO, Long memberId) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보가 없습니다."));

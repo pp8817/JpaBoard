@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.service.BoardService;
@@ -15,6 +14,8 @@ import springJpaBoard.Board.service.CommentService;
 import springJpaBoard.Board.service.MemberService;
 
 import javax.validation.Valid;
+
+import static springJpaBoard.Board.controller.commentdto.CommentDto.CreateCommentRequest;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class CommentController {
      * 댓글 작성
      */
     @PostMapping("/comment")
-    public String saveComment(@Valid @ModelAttribute CommentRequestDTO commentRequestDTO, BindingResult result, @Login Member loginMember) {
+    public String saveComment(@Valid @ModelAttribute CreateCommentRequest commentRequestDTO, BindingResult result, @Login Member loginMember) {
         Long bno = commentRequestDTO.getBno();
 
 

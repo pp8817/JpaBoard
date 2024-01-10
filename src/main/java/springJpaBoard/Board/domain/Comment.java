@@ -1,7 +1,6 @@
 package springJpaBoard.Board.domain;
 
 import lombok.*;
-import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
