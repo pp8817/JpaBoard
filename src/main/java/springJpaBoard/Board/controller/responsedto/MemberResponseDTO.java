@@ -19,13 +19,6 @@ public class MemberResponseDTO {
         this.address = member.getAddress();
     }
 
-    public void update(Long id, String name, String gender, Address address) {
-        this.id=id;
-        this.name=name;
-        this.gender=gender;
-        this.address=address;
-    }
-
     public MemberResponseDTO() {
     }
 }

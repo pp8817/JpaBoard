@@ -11,10 +11,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.SesstionConst;
-import springJpaBoard.Board.controller.requestdto.LoginCheck;
 import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
-import springJpaBoard.Board.controller.requestdto.SaveCheck;
-import springJpaBoard.Board.controller.requestdto.UpdateCheck;
+import springJpaBoard.Board.controller.requestdto.checkInterface.LoginCheck;
+import springJpaBoard.Board.controller.requestdto.checkInterface.SaveCheck;
+import springJpaBoard.Board.controller.requestdto.checkInterface.UpdateCheck;
 import springJpaBoard.Board.controller.responsedto.BoardResponseDTO;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Address;
@@ -29,6 +29,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
 
 @Controller
 @RequiredArgsConstructor
@@ -157,9 +158,11 @@ public class MemberController {
         Member member = memberService.findOne(memberId);
         Address address = member.getAddress();
 
-        MemberRequestDTO form = new MemberRequestDTO();
-        form.createForm(member.getId(), member.getName(), member.getGender(),
-                address.getCity(), address.getStreet(), address.getZipcode());
+        CreateMemberRequest form = CreateMemberRequest.of(member);
+
+//        MemberRequestDTO form = new MemberRequestDTO();
+//        form.createForm(member.getId(), member.getName(), member.getGender(),
+//                address.getCity(), address.getStreet(), address.getZipcode());
         model.addAttribute("form", form);
         return "members/updateMemberForm";
     }

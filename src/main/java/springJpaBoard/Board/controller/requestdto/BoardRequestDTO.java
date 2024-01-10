@@ -2,6 +2,8 @@ package springJpaBoard.Board.controller.requestdto;
 
 import lombok.Getter;
 import lombok.Setter;
+import springJpaBoard.Board.controller.requestdto.checkInterface.SaveCheck;
+import springJpaBoard.Board.controller.requestdto.checkInterface.UpdateCheck;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

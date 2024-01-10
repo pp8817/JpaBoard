@@ -20,9 +20,8 @@ import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
 import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
-import springJpaBoard.Board.controller.requestdto.SaveCheck;
-import springJpaBoard.Board.controller.requestdto.UpdateCheck;
-import springJpaBoard.Board.controller.responsedto.CommentResponseDTO;
+import springJpaBoard.Board.controller.requestdto.checkInterface.SaveCheck;
+import springJpaBoard.Board.controller.requestdto.checkInterface.UpdateCheck;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
@@ -38,6 +37,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.springframework.data.domain.Sort.Direction;
+import static springJpaBoard.Board.controller.commentdto.CommentDto.CommentResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -100,7 +100,7 @@ public class BoardApiController {
         }
 
         List<BoardDto> boards = boardList.stream()
-                .map(b -> new BoardDto(b))
+                .map(BoardDto::new)
                 .collect(toList());
 
         Message message = new Message(StatusEnum.OK, "게시글 목록 조회 성공", boards);
@@ -238,7 +238,7 @@ public class BoardApiController {
 
         private LocalDateTime boardDateTime;
 
-        private List<CommentResponseDTO> comments;
+        private List<CommentResponse> comments;
 
         public BoardDetailDto(Board board) {
             this.id = board.getId();
@@ -248,7 +248,7 @@ public class BoardApiController {
             this.boardDateTime = board.getBoardDateTime();
             this.likes = board.getLikes();
             this.comments = board.getCommentList().stream()
-                    .map(c -> new CommentResponseDTO(c))
+                    .map(CommentResponse::of)
                     .collect(toList());
         }
     }

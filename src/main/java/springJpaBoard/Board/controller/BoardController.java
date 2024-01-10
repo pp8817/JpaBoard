@@ -14,10 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
 import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
-import springJpaBoard.Board.controller.requestdto.CommentRequestDTO;
-import springJpaBoard.Board.controller.requestdto.SaveCheck;
-import springJpaBoard.Board.controller.requestdto.UpdateCheck;
-import springJpaBoard.Board.controller.responsedto.CommentResponseDTO;
+import springJpaBoard.Board.controller.requestdto.checkInterface.SaveCheck;
+import springJpaBoard.Board.controller.requestdto.checkInterface.UpdateCheck;
 import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
@@ -32,6 +30,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static springJpaBoard.Board.controller.commentdto.CommentDto.CommentResponse;
+import static springJpaBoard.Board.controller.commentdto.CommentDto.CreateCommentRequest;
 
 @Controller
 @RequiredArgsConstructor
@@ -145,7 +145,7 @@ public class BoardController {
 
         model.addAttribute("board", boardDto);
 //        model.addAttribute("member", member);
-        model.addAttribute("commentForm", new CommentRequestDTO());
+        model.addAttribute("commentForm", new CreateCommentRequest());
 
         return "boards/boardDetail";
     }
@@ -251,7 +251,7 @@ public class BoardController {
 
         private LocalDateTime boardDateTime;
 
-        private List<CommentResponseDTO> comments;
+        private List<CommentResponse> comments;
 
         public BoardDetailDto(Board board) {
             this.id = board.getId();
@@ -261,7 +261,7 @@ public class BoardController {
             this.boardDateTime = board.getBoardDateTime();
             this.likes = board.getLikes();
             this.comments = board.getCommentList().stream()
-                    .map(c -> new CommentResponseDTO(c))
+                    .map(CommentResponse::of)
                     .collect(toList());
         }
     }
