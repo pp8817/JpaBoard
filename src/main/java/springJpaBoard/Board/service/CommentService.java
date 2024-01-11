@@ -28,13 +28,13 @@ public class CommentService {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보가 없습니다."));
-        Board board = boardRepository.findById(commentRequestDTO.getBno())
+        Board board = boardRepository.findById(commentRequestDTO.bno())
                 .orElseThrow(() -> new NoSuchElementException("게시글 정보가 없습니다."));
 
         Comment comment = Comment.builder()
-                .bno(commentRequestDTO.getBno())
+                .bno(commentRequestDTO.bno())
                 .writer(member.getName())
-                .content(commentRequestDTO.getContent())
+                .content(commentRequestDTO.content())
                 .build();
 
         //연관 관계 편의 메서드 사용

@@ -145,7 +145,7 @@ public class BoardController {
 
         model.addAttribute("board", boardDto);
 //        model.addAttribute("member", member);
-        model.addAttribute("commentForm", new CreateCommentRequest());
+        model.addAttribute("commentForm", CreateCommentRequest.builder().build());
 
         return "boards/boardDetail";
     }

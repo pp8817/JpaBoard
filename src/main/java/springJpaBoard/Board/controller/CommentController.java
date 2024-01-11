@@ -31,7 +31,7 @@ public class CommentController {
      */
     @PostMapping("/comment")
     public String saveComment(@Valid @ModelAttribute CreateCommentRequest commentRequestDTO, BindingResult result, @Login Member loginMember) {
-        Long bno = commentRequestDTO.getBno();
+        Long bno = commentRequestDTO.bno();
 
 
         if (result.hasErrors()) {

@@ -1,7 +1,6 @@
 package springJpaBoard.Board.controller.commentdto;
 
 import lombok.Builder;
-import lombok.Getter;
 import springJpaBoard.Board.domain.Comment;
 
 import javax.validation.constraints.NotBlank;
@@ -9,16 +8,12 @@ import java.time.LocalDateTime;
 
 public class CommentDto {
     /*Request*/
-    @Getter
     @Builder
-    public static class CreateCommentRequest {
-        private Long bno;
-
-        @NotBlank(message = "공백은 불가능합니다.")
-        private String content;
-
-        public CreateCommentRequest() {
-        }
+    public record CreateCommentRequest(
+            Long bno,
+            @NotBlank(message = "공백은 불가능합니다.")
+            String content
+    ) {
     }
 
     /*Response*/

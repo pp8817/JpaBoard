@@ -4,11 +4,12 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMember;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -82,14 +83,10 @@ public class Member {
         회원 수정, Dirty Checking 발생(업데이트 쿼리가 자동으로 나감)
         Setter를 사용하지 않기 위해 수정 메서드를 만듦
      */
-    public void editMember(MemberRequestDTO memberDto) {
-        this.name = memberDto.getName();
-        this.gender = memberDto.getGender();
-        this.address = Address.builder()
-                .city(memberDto.getCity())
-                .zipcode(memberDto.getZipcode())
-                .street(memberDto.getStreet())
-                .build();
+    public void editMember(ModifyMember memberDto) {
+        this.name = memberDto.name();
+        this.gender = memberDto.gender();
+        this.address = memberDto.address();
     }
 
 }

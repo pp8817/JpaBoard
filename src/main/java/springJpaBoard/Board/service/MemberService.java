@@ -5,8 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springJpaBoard.Board.controller.requestdto.MemberRequestDTO;
-import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.MemberRepository;
 
@@ -15,6 +13,8 @@ import java.util.NoSuchElementException;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMember;
 
 @Service
 @Transactional(readOnly = true)
@@ -27,21 +27,16 @@ public class MemberService {
      * 회원 가입
      */
     @Transactional(readOnly = false)
-    public Long join(MemberRequestDTO memberRequestDTO) {
+    public Long join(CreateMemberRequest memberRequestDTO) {
 
-        Address address = Address.builder()
-                .city(memberRequestDTO.getCity())
-                .street(memberRequestDTO.getStreet())
-                .zipcode(memberRequestDTO.getZipcode())
-                .build();
 
-        Member member = Member.builder()
-                .name(memberRequestDTO.getName())
-                .gender(memberRequestDTO.getGender())
-                .loginId(memberRequestDTO.getLoginId())
-                .password(memberRequestDTO.getPassword())
-                .address(address)
-                .build();
+//        Address address = Address.builder()
+//                .city(memberRequestDTO.city())
+//                .street(memberRequestDTO.street())
+//                .zipcode(memberRequestDTO.zipcode())
+//                .build();
+
+        Member member = memberRequestDTO.toEntity();
 
         validateDuplicateMember(member);
         memberRepository.save(member);
@@ -124,7 +119,7 @@ public class MemberService {
      * 회원 정보 수정
      */
     @Transactional
-    public Member update(Long memberId, MemberRequestDTO memberDto) {
+    public Member update(Long memberId, ModifyMember memberDto) {
         /*
         Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현
          */
