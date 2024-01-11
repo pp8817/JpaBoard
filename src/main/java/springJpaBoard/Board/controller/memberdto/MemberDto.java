@@ -1,9 +1,9 @@
 package springJpaBoard.Board.controller.memberdto;
 
 import lombok.Builder;
-import springJpaBoard.Board.controller.requestdto.checkInterface.LoginCheck;
-import springJpaBoard.Board.controller.requestdto.checkInterface.SaveCheck;
-import springJpaBoard.Board.controller.requestdto.checkInterface.UpdateCheck;
+import springJpaBoard.Board.controller.checkInterface.LoginCheck;
+import springJpaBoard.Board.controller.checkInterface.SaveCheck;
+import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 
@@ -61,7 +61,23 @@ public class MemberDto {
     }
 
 
-
     /*Response*/
+    @Builder
+    public record MemberResponse(
+            Long id,
+            String name,
+            String gender,
+            Address address
+    ) {
+        public static MemberResponse of(Member member) {
+            return MemberResponse.builder()
+                    .id(member.getId())
+                    .name(member.getName())
+                    .gender(member.getGender())
+                    .address(member.getAddress())
+                    .build();
+        }
+    }
+
 
 }

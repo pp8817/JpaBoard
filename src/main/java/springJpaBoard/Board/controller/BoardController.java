@@ -14,9 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
 import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
-import springJpaBoard.Board.controller.requestdto.checkInterface.SaveCheck;
-import springJpaBoard.Board.controller.requestdto.checkInterface.UpdateCheck;
-import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
+import springJpaBoard.Board.controller.checkInterface.SaveCheck;
+import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
@@ -32,6 +31,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static springJpaBoard.Board.controller.commentdto.CommentDto.CommentResponse;
 import static springJpaBoard.Board.controller.commentdto.CommentDto.CreateCommentRequest;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.MemberResponse;
 
 @Controller
 @RequiredArgsConstructor
@@ -48,15 +48,8 @@ public class BoardController {
      */
     @GetMapping("/write")
     public String write(@Login Member loginMember, Model model, HttpServletRequest request) {
-        /**
-         * 빈 껍데기인 MemberFrom 객체를 model에 담아서 가져가는 이유는 Validation의 기능을 사용하기 위해서이다.
-         */
 
-        MemberResponseDTO member = new MemberResponseDTO(loginMember);
-//        BoardForm boardForm = new BoardForm();
-//        boardForm.setMember(member);
-
-        model.addAttribute("member", member);
+        model.addAttribute("member", MemberResponse.of(loginMember));
         model.addAttribute("boardForm", new BoardRequestDTO());
         return "boards/writeBoardForm";
     }

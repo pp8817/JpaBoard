@@ -20,9 +20,8 @@ import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
 import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
-import springJpaBoard.Board.controller.requestdto.checkInterface.SaveCheck;
-import springJpaBoard.Board.controller.requestdto.checkInterface.UpdateCheck;
-import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
+import springJpaBoard.Board.controller.checkInterface.SaveCheck;
+import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
@@ -38,6 +37,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.data.domain.Sort.Direction;
 import static springJpaBoard.Board.controller.commentdto.CommentDto.CommentResponse;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.MemberResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,11 +53,11 @@ public class BoardApiController {
     @GetMapping
     public ResponseEntity writeForm(@Login Member loginMember) {
 
-        MemberResponseDTO member = new MemberResponseDTO(loginMember);
+        MemberResponse member = MemberResponse.of(loginMember);
 //        BoardForm boardForm = new BoardForm();
 //        boardForm.setMember(member);
 
-        return ResponseEntity.status(HttpStatus.OK).body(member.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(member.id());
     }
 
 
