@@ -11,11 +11,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.SesstionConst;
-import springJpaBoard.Board.controller.memberdto.MemberDto;
 import springJpaBoard.Board.controller.checkInterface.LoginCheck;
 import springJpaBoard.Board.controller.checkInterface.SaveCheck;
 import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
-import springJpaBoard.Board.controller.responsedto.BoardResponseDTO;
+import springJpaBoard.Board.controller.memberdto.MemberDto;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.repository.search.MemberSearch;
@@ -27,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static springJpaBoard.Board.controller.boarddto.BoardDto.BoardDetailResponse;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMember;
 
@@ -192,11 +192,9 @@ public class MemberController {
         Long id = loginMember.getId();
         Member member = memberService.findOne(id);
 
-        List<BoardResponseDTO> boards = member.getBoardList().stream()
-                .map(b -> new BoardResponseDTO(b))
+        List<BoardDetailResponse> boards = member.getBoardList().stream()
+                .map(BoardDetailResponse::of)
                 .collect(toList());
-
-        System.out.println("boards = " + boards);
 
         model.addAttribute("name", member.getName());
         model.addAttribute("boards", boards);

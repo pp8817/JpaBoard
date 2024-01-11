@@ -13,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
-import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 import springJpaBoard.Board.controller.checkInterface.SaveCheck;
 import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
 import springJpaBoard.Board.domain.Board;
@@ -29,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static springJpaBoard.Board.controller.boarddto.BoardDto.*;
 import static springJpaBoard.Board.controller.commentdto.CommentDto.CommentResponse;
 import static springJpaBoard.Board.controller.commentdto.CommentDto.CreateCommentRequest;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.MemberResponse;
@@ -50,13 +50,13 @@ public class BoardController {
     public String write(@Login Member loginMember, Model model, HttpServletRequest request) {
 
         model.addAttribute("member", MemberResponse.of(loginMember));
-        model.addAttribute("boardForm", new BoardRequestDTO());
+        model.addAttribute("boardForm", CreateBoardRequest.builder().build());
         return "boards/writeBoardForm";
     }
 
 
     @PostMapping("/write")
-    public String write(@Validated(SaveCheck.class) @ModelAttribute BoardRequestDTO boardRequestDTO, BindingResult result, @RequestParam("memberId") Long memberId) {
+    public String write(@Validated(SaveCheck.class) @ModelAttribute CreateBoardRequest boardRequestDTO, BindingResult result, @RequestParam("memberId") Long memberId) {
 
         /*
         오류 발생시(@Valid 에서 발생)
@@ -155,9 +155,9 @@ public class BoardController {
 
 
         if (memberService.loginValidation(loginMember, boardMember)) {
-            BoardRequestDTO boardRequestDTO = new BoardRequestDTO();
-            boardRequestDTO.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
-            model.addAttribute("boardForm", boardRequestDTO);
+
+            ModifyBoardResponse modifyBoardResponse = ModifyBoardResponse.of(board);
+            model.addAttribute("boardForm", modifyBoardResponse);
 
             return "/boards/updateBoardForm";
         }
@@ -166,7 +166,7 @@ public class BoardController {
     }
 
     @PostMapping("/{boardId}/edit")
-    public String updateBoard(@Validated(UpdateCheck.class) @ModelAttribute BoardRequestDTO boardRequestDTO,
+    public String updateBoard(@Validated(UpdateCheck.class) @ModelAttribute ModifyBoardRequest boardRequestDTO,
                               @PathVariable Long boardId, @Login Member loginMember) {
 
         Board board = boardApiRepository.findBoardWithMember(boardId);

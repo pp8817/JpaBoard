@@ -11,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class LoginRequestDTO {
     @NotBlank(message = "Id를 입력해주세요")
-//    @NotBlank
     private String loginId;
 
     @NotBlank(message = "password를 입력해주세요")
