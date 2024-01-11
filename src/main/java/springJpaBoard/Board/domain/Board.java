@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -64,9 +63,9 @@ public class Board {
     게시글 수정, Dirty Checking 발생(업데이트 쿼리가 자동으로 나감)
     Setter를 사용하지 않기 위해 수정 메서드를 만듦
      */
-    public void editBoard(BoardRequestDTO boardDto) {
-        this.title = boardDto.getTitle();
-        this.content = boardDto.getContent();
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
         this.modifyDateTime = LocalDateTime.now();
     }
 

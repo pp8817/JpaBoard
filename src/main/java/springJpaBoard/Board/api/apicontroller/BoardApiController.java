@@ -19,9 +19,7 @@ import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
-import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 import springJpaBoard.Board.controller.checkInterface.SaveCheck;
-import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
@@ -31,11 +29,11 @@ import springJpaBoard.Board.service.CommentService;
 import springJpaBoard.Board.service.MemberService;
 
 import java.nio.charset.Charset;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.springframework.data.domain.Sort.Direction;
+import static springJpaBoard.Board.controller.boarddto.BoardDto.*;
 import static springJpaBoard.Board.controller.commentdto.CommentDto.CommentResponse;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.MemberResponse;
 
@@ -54,15 +52,13 @@ public class BoardApiController {
     public ResponseEntity writeForm(@Login Member loginMember) {
 
         MemberResponse member = MemberResponse.of(loginMember);
-//        BoardForm boardForm = new BoardForm();
-//        boardForm.setMember(member);
 
         return ResponseEntity.status(HttpStatus.OK).body(member.id());
     }
 
 
     @PostMapping
-    public ResponseEntity<Message> write(@RequestBody @Validated(SaveCheck.class) BoardRequestDTO boardRequestDTO, @Login Member loginMember, BindingResult result) {
+    public ResponseEntity<Message> write(@RequestBody @Validated(SaveCheck.class) CreateBoardRequest boardRequestDTO, @Login Member loginMember, BindingResult result) {
 
         /*
         오류 발생시(@Valid 에서 발생)
@@ -84,23 +80,10 @@ public class BoardApiController {
     @GetMapping("/list")
     public ResponseEntity<Message> boardLost(@RequestBody BoardSearch boardSearch, @PageableDefault(page = 0, size = 9, sort = "id", direction = Direction.ASC) Pageable pageable) {
 
-        Page<Board> boardList = null;
+        Page<Board> boardList = searchBoardList(boardSearch, pageable);
 
-        if (boardSearch.searchIsEmpty()) {
-            boardList = boardService.boardList(pageable);
-        } else {
-            String boardTitle = boardSearch.getBoardTitle();
-            String memberGender = boardSearch.getMemberGender();
-
-            if (memberGender == null) {
-                boardList = boardService.searchTitle(boardTitle, pageable);
-            } else {
-                boardList = boardService.searchAll(boardTitle, memberGender, pageable);
-            }
-        }
-
-        List<BoardDto> boards = boardList.stream()
-                .map(BoardDto::new)
+        List<BoardListResponse> boards = boardList.stream()
+                .map(BoardListResponse::of)
                 .collect(toList());
 
         Message message = new Message(StatusEnum.OK, "게시글 목록 조회 성공", boards);
@@ -110,13 +93,19 @@ public class BoardApiController {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
+
     /* 게시글 상세 */
     @GetMapping("/detail/{boardId}")
     public ResponseEntity<Message> detail(@PathVariable Long boardId, @PageableDefault(page = 0, size = 10, sort = "id",
             direction = Sort.Direction.DESC) Pageable pageable) {
         boardService.updateView(boardId); // views ++
         Board board = boardService.findOne(boardId);
-        BoardDetailDto boardDto = new BoardDetailDto(board);
+
+        List<CommentResponse> comments = board.getCommentList().stream()
+                .map(CommentResponse::of)
+                .toList();
+
+        BoardResponse boardDto = BoardResponse.of(board, comments);
 
         Message message = new Message(StatusEnum.OK, "게시글 상세 페이지 조회 성공", boardDto);
         HttpHeaders headers = new HttpHeaders();
@@ -133,10 +122,10 @@ public class BoardApiController {
         Member boardMember = board.getMember();
 
         if (memberService.loginValidation(loginMember, boardMember)) {
-            BoardRequestDTO boardRequestDTO = new BoardRequestDTO();
-            boardRequestDTO.createForm(board.getId(), board.getTitle(), board.getContent(), board.getWriter());
 
-            Message message = new Message(StatusEnum.OK, "게시글 수정 페이지", boardRequestDTO);
+            ModifyBoardResponse modifyBoardResponse = ModifyBoardResponse.of(board);
+
+            Message message = new Message(StatusEnum.OK, "게시글 수정 페이지", modifyBoardResponse);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -147,8 +136,8 @@ public class BoardApiController {
     }
 
     @PutMapping("/edit/{boardId}")
-    public ResponseEntity updateBoard(@RequestBody @Validated(UpdateCheck.class) BoardRequestDTO boardRequestDTO, BindingResult result,
-                              @PathVariable Long boardId, @Login Member loginMember) {
+    public ResponseEntity updateBoard(@RequestBody ModifyBoardRequest boardRequestDTO, BindingResult result,
+                                      @PathVariable Long boardId, @Login Member loginMember) {
 
         if (result.hasErrors()) {
             throw new IllegalStateException("양식을 지켜주세요.");
@@ -193,64 +182,20 @@ public class BoardApiController {
         private T data;
     }
 
-    @Data
-    @AllArgsConstructor
-    static class BoardDto {
-        private Long id;
+    private Page<Board> searchBoardList(BoardSearch boardSearch, Pageable pageable) {
+        Page<Board> boardList;
+        if (boardSearch.searchIsEmpty()) {
+            boardList = boardService.boardList(pageable);
+        } else {
+            String boardTitle = boardSearch.getBoardTitle();
+            String memberGender = boardSearch.getMemberGender();
 
-        /*회원 이름은 나중에 회원 이름 변경 기능이 생긴다면 문제가 될 수 있기 때문에 일단 변경 x*/
-        private String name;
-
-        private String title;
-
-        private String writer;
-
-        private int view;
-
-        private LocalDateTime boardDateTime;
-
-        /*댓글을 작성할 때마다 board의 댓글 수를 증가하는 방식으로*/
-        private int commentCount;
-
-        public BoardDto(Board board) {
-            this.id = board.getId();
-            this.name = board.getMember().getName();
-            this.title = board.getTitle();
-            this.writer = board.getWriter();
-            this.view = board.getView();
-            this.boardDateTime = board.getBoardDateTime();
-            this.commentCount = board.getCommentCount();
+            if (memberGender == null) {
+                boardList = boardService.searchTitle(boardTitle, pageable);
+            } else {
+                boardList = boardService.searchAll(boardTitle, memberGender, pageable);
+            }
         }
+        return boardList;
     }
-
-    @Data
-    @AllArgsConstructor
-    static class BoardDetailDto {
-        private Long id;
-
-        private String title;
-
-        private String content;
-
-        private String writer;
-
-        private int likes;
-
-        private LocalDateTime boardDateTime;
-
-        private List<CommentResponse> comments;
-
-        public BoardDetailDto(Board board) {
-            this.id = board.getId();
-            this.title = board.getTitle();
-            this.content = board.getContent();
-            this.writer = board.getWriter();
-            this.boardDateTime = board.getBoardDateTime();
-            this.likes = board.getLikes();
-            this.comments = board.getCommentList().stream()
-                    .map(CommentResponse::of)
-                    .collect(toList());
-        }
-    }
-
 }

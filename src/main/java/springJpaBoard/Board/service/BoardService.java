@@ -5,13 +5,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springJpaBoard.Board.controller.requestdto.BoardRequestDTO;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.repository.BoardRepository;
 import springJpaBoard.Board.repository.MemberRepository;
 
 import java.util.NoSuchElementException;
+
+import static springJpaBoard.Board.controller.boarddto.BoardDto.CreateBoardRequest;
+import static springJpaBoard.Board.controller.boarddto.BoardDto.ModifyBoardRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -25,11 +27,9 @@ public class BoardService {
      * 게시글 작성
      */
     @Transactional
-    public Long write(BoardRequestDTO boardRequestDTO, Long memberId) {
-        Board board = Board.builder()
-                .title(boardRequestDTO.getTitle())
-                .content(boardRequestDTO.getContent())
-                .build();
+    public Long write(CreateBoardRequest boardRequestDTO, Long memberId) {
+
+        Board board = boardRequestDTO.toEntity();
         //엔티티 조회
         Member member = memberRepository.findById(memberId).get();
 
@@ -73,12 +73,15 @@ public class BoardService {
      * 게시글 수정
      */
     @Transactional
-    public void update(Board board, BoardRequestDTO boardDto) {
+    public void update(Board board, ModifyBoardRequest boardDto) {
 //        Board findBoard = boardRepository.findById(id).get();
         /*
         Dirty Checking 발생
          */
-        board.editBoard(boardDto);
+        board.update(
+                boardDto.title(),
+                boardDto.content()
+        );
     }
 
     /**
