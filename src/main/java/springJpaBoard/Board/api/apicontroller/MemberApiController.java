@@ -20,9 +20,8 @@ import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SesstionConst;
 import springJpaBoard.Board.controller.requestdto.LoginRequestDTO;
-import springJpaBoard.Board.controller.requestdto.checkInterface.SaveCheck;
-import springJpaBoard.Board.controller.requestdto.checkInterface.UpdateCheck;
-import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
+import springJpaBoard.Board.controller.checkInterface.SaveCheck;
+import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
@@ -38,8 +37,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
-import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMember;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -143,8 +141,8 @@ public class MemberApiController {
             }
         }
 
-        List<MemberResponseDTO> members = memberList.stream().
-                map(m -> new MemberResponseDTO(m)).
+        List<MemberResponse> members = memberList.stream().
+                map(MemberResponse::of).
                 collect(toList());
 
 //        Result result = new Result(members);
@@ -186,7 +184,7 @@ public class MemberApiController {
 
         if (memberService.loginValidation(loginMember, member)) {
             Member updateMember = memberService.update(form.id(), form);
-            MemberResponseDTO memberResponseDTO = new MemberResponseDTO(updateMember);
+            MemberResponse memberResponseDTO = MemberResponse.of(updateMember);
 
             Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공", memberResponseDTO);
             HttpHeaders headers = new HttpHeaders();

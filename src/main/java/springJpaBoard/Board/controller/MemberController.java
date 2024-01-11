@@ -11,11 +11,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.SesstionConst;
-import springJpaBoard.Board.controller.requestdto.checkInterface.LoginCheck;
-import springJpaBoard.Board.controller.requestdto.checkInterface.SaveCheck;
-import springJpaBoard.Board.controller.requestdto.checkInterface.UpdateCheck;
+import springJpaBoard.Board.controller.memberdto.MemberDto;
+import springJpaBoard.Board.controller.checkInterface.LoginCheck;
+import springJpaBoard.Board.controller.checkInterface.SaveCheck;
+import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
 import springJpaBoard.Board.controller.responsedto.BoardResponseDTO;
-import springJpaBoard.Board.controller.responsedto.MemberResponseDTO;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.repository.search.MemberSearch;
@@ -131,8 +131,8 @@ public class MemberController {
             }
         }
 
-        List<MemberResponseDTO> members = memberList.stream()
-                .map(m -> new MemberResponseDTO(m))
+        List<MemberDto.MemberResponse> members = memberList.stream()
+                .map(MemberDto.MemberResponse::of)
                 .collect(toList());
 
         int nowPage = memberList.getPageable().getPageNumber() + 1;
