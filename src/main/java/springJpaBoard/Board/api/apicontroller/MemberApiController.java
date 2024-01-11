@@ -19,7 +19,6 @@ import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SesstionConst;
-import springJpaBoard.Board.controller.requestdto.LoginRequestDTO;
 import springJpaBoard.Board.controller.checkInterface.SaveCheck;
 import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
 import springJpaBoard.Board.domain.Board;
@@ -37,6 +36,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static springJpaBoard.Board.controller.memberdto.AuthDto.LoginRequest;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.*;
 
 @RestController
@@ -70,14 +70,14 @@ public class MemberApiController {
     // TODO - redirectURL 해결
     // 현재 생각한 방법: Result 타입에 redirectURL을 추가해서 같이 반환
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginRequestDTO form, BindingResult result,
+    public ResponseEntity login(@RequestBody @Valid LoginRequest loginRequest, BindingResult result,
                                 @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
         if (result.hasErrors()) {
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디 또는 비밀번호 오류");
             throw new UserException("로그인: 아이디 또는 비밀번호 오류");
         }
 
-        Member loginMember = memberService.login(form.getLoginId(), form.getPassword());
+        Member loginMember = memberService.login(loginRequest.loginId(), loginRequest.password());
 
         if (loginMember == null) {
             result.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
