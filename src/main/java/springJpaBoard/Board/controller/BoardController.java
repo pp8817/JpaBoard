@@ -13,8 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
-import springJpaBoard.Board.controller.checkInterface.SaveCheck;
-import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
@@ -56,7 +54,7 @@ public class BoardController {
 
 
     @PostMapping("/write")
-    public String write(@Validated(SaveCheck.class) @ModelAttribute CreateBoardRequest boardRequestDTO, BindingResult result, @RequestParam("memberId") Long memberId) {
+    public String write(@Validated @ModelAttribute CreateBoardRequest boardRequestDTO, BindingResult result, @RequestParam("memberId") Long memberId) {
 
         /*
         오류 발생시(@Valid 에서 발생)
@@ -166,7 +164,7 @@ public class BoardController {
     }
 
     @PostMapping("/{boardId}/edit")
-    public String updateBoard(@Validated(UpdateCheck.class) @ModelAttribute ModifyBoardRequest boardRequestDTO,
+    public String updateBoard(@Validated @ModelAttribute ModifyBoardRequest boardRequestDTO,
                               @PathVariable Long boardId, @Login Member loginMember) {
 
         Board board = boardApiRepository.findBoardWithMember(boardId);

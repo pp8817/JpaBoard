@@ -19,8 +19,6 @@ import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SesstionConst;
-import springJpaBoard.Board.controller.checkInterface.SaveCheck;
-import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
@@ -50,7 +48,7 @@ public class MemberApiController {
 
     /* 회원가입 */
     @PostMapping
-    public ResponseEntity join(@RequestBody @Validated(SaveCheck.class) CreateMemberRequest memberRequestDTO, BindingResult result) {
+    public ResponseEntity join(@RequestBody @Validated CreateMemberRequest memberRequestDTO, BindingResult result) {
         if (result.hasErrors()) {
             throw new UserException("회원가입: 회원 정보 입력 오류");
         }
@@ -174,7 +172,7 @@ public class MemberApiController {
     }
 
     @PutMapping("/edit/{memberId}")
-    public ResponseEntity updateMember(@RequestBody @Validated(UpdateCheck.class) ModifyMember form, @Login Member loginMember, BindingResult result) {
+    public ResponseEntity updateMember(@RequestBody @Validated ModifyMember form, @Login Member loginMember, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new UserException("회원 수정 오류");

@@ -1,8 +1,6 @@
 package springJpaBoard.Board.controller.boarddto;
 
 import lombok.Builder;
-import springJpaBoard.Board.controller.checkInterface.SaveCheck;
-import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
 import springJpaBoard.Board.domain.Board;
 
 import javax.validation.constraints.NotBlank;
@@ -18,11 +16,11 @@ public class BoardDto {
     @Builder
     public record CreateBoardRequest(
             Long id,
-            @NotBlank(message = "제목은 필수입니다.", groups = {SaveCheck.class, UpdateCheck.class})
-            @Size(min = 1, max = 50, message = "제목의 길이는 1~50자 사이입니다.", groups = {SaveCheck.class, UpdateCheck.class})
+            @NotBlank(message = "제목은 필수입니다.")
+            @Size(min = 1, max = 50, message = "제목의 길이는 1~50자 사이입니다.")
             String title,
-            @NotBlank(message = "작성자는 필수입니다.", groups = {SaveCheck.class})
-            @Size(min = 1, max = 30, message = "1~30자 사이만 가능합니다.", groups = {SaveCheck.class})
+            @NotBlank(message = "작성자는 필수입니다.")
+            @Size(min = 1, max = 30, message = "1~30자 사이만 가능합니다.")
             String writer,
             @Size(max = 300, message = "300자가 최대입니다.")
             String content,

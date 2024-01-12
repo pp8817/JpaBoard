@@ -1,9 +1,6 @@
 package springJpaBoard.Board.controller.memberdto;
 
 import lombok.Builder;
-import springJpaBoard.Board.controller.checkInterface.LoginCheck;
-import springJpaBoard.Board.controller.checkInterface.SaveCheck;
-import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 
@@ -16,12 +13,12 @@ public class MemberDto {
     @Builder
     public record CreateMemberRequest(
             Long id,
-            @NotBlank(message = "Id를 입력해주세요", groups = {SaveCheck.class, LoginCheck.class})
+            @NotBlank(message = "Id를 입력해주세요")
             String loginId,
-            @NotBlank(message = "password를 입력해주세요", groups = {SaveCheck.class, LoginCheck.class})
+            @NotBlank(message = "password를 입력해주세요")
             String password,
-            @NotBlank(message = "회원 이름은 필수입니다.", groups = {SaveCheck.class, UpdateCheck.class})
-            @Size(min = 1, max = 10, message = "회원 이름은 1~10자 사이입니다.", groups = {SaveCheck.class, UpdateCheck.class})
+            @NotBlank(message = "회원 이름은 필수입니다.")
+            @Size(min = 1, max = 10, message = "회원 이름은 1~10자 사이입니다.")
             String name,
             String gender,
             String city,

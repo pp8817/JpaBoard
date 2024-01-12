@@ -11,9 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.SesstionConst;
-import springJpaBoard.Board.controller.checkInterface.LoginCheck;
-import springJpaBoard.Board.controller.checkInterface.SaveCheck;
-import springJpaBoard.Board.controller.checkInterface.UpdateCheck;
 import springJpaBoard.Board.controller.memberdto.MemberDto;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
@@ -52,7 +49,7 @@ public class MemberController {
 
 
     @PostMapping("/new")
-    public String create(@Validated(SaveCheck.class) @ModelAttribute("memberForm") CreateMemberRequest memberForm, BindingResult result) {
+    public String create(@Validated @ModelAttribute("memberForm") CreateMemberRequest memberForm, BindingResult result) {
 
         /*
         오류 발생시(@Valid 에서 발생)
@@ -76,7 +73,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String loginV4(@Validated(LoginCheck.class)
+    public String loginV4(@Validated
                         @ModelAttribute("loginForm") CreateMemberRequest form, BindingResult result, @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
 
         if (result.hasErrors()) {
@@ -163,7 +160,7 @@ public class MemberController {
     }
 
     @PostMapping("{memberId}/edit")
-    public String updateMember(@Validated(UpdateCheck.class) @ModelAttribute("form") ModifyMember form,
+    public String updateMember(@Validated @ModelAttribute("form") ModifyMember form,
                                BindingResult result) {
         if (result.hasErrors()) {
             return "redirect:/";

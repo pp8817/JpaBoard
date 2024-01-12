@@ -19,7 +19,6 @@ import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
-import springJpaBoard.Board.controller.checkInterface.SaveCheck;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
@@ -58,7 +57,7 @@ public class BoardApiController {
 
 
     @PostMapping
-    public ResponseEntity<Message> write(@RequestBody @Validated(SaveCheck.class) CreateBoardRequest boardRequestDTO, @Login Member loginMember, BindingResult result) {
+    public ResponseEntity<Message> write(@RequestBody @Validated CreateBoardRequest boardRequestDTO, @Login Member loginMember, BindingResult result) {
 
         /*
         오류 발생시(@Valid 에서 발생)
