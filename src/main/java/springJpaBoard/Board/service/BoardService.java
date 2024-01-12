@@ -12,8 +12,7 @@ import springJpaBoard.Board.repository.MemberRepository;
 
 import java.util.NoSuchElementException;
 
-import static springJpaBoard.Board.controller.boarddto.BoardDto.CreateBoardRequest;
-import static springJpaBoard.Board.controller.boarddto.BoardDto.ModifyBoardRequest;
+import static springJpaBoard.Board.controller.boarddto.BoardDto.*;
 
 @Service
 @RequiredArgsConstructor
@@ -73,7 +72,7 @@ public class BoardService {
      * 게시글 수정
      */
     @Transactional
-    public void update(Board board, ModifyBoardRequest boardDto) {
+    public ModifyBoardResponse update(Board board, ModifyBoardRequest boardDto) {
 //        Board findBoard = boardRepository.findById(id).get();
         /*
         Dirty Checking 발생
@@ -82,6 +81,8 @@ public class BoardService {
                 boardDto.title(),
                 boardDto.content()
         );
+
+        return ModifyBoardResponse.of(board);
     }
 
     /**

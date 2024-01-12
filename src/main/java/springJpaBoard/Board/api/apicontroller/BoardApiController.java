@@ -97,8 +97,9 @@ public class BoardApiController {
     @GetMapping("/detail/{boardId}")
     public ResponseEntity<Message> detail(@PathVariable Long boardId, @PageableDefault(page = 0, size = 10, sort = "id",
             direction = Sort.Direction.DESC) Pageable pageable) {
-        boardService.updateView(boardId); // views ++
+
         Board board = boardService.findOne(boardId);
+        boardService.updateView(boardId); // views ++
 
         List<CommentResponse> comments = board.getCommentList().stream()
                 .map(CommentResponse::of)
@@ -117,7 +118,7 @@ public class BoardApiController {
     @GetMapping("/edit/{boardId}")
     public ResponseEntity updateBoardForm(@PathVariable("boardId") Long boardId,
                                                    @Login Member loginMember) {
-        Board board = boardApiRepository.findBoardWithMember(boardId);
+        Board board = boardApiRepository.findBoardWithMember(boardId); //쿼리 최적화를 위해서 사용
         Member boardMember = board.getMember();
 
         if (memberService.loginValidation(loginMember, boardMember)) {
@@ -146,8 +147,13 @@ public class BoardApiController {
         Member boardMember = board.getMember();
 
         if (memberService.loginValidation(loginMember, boardMember)) {
-            boardService.update(board, boardRequestDTO);
-            return ResponseEntity.status(HttpStatus.OK).body("게시글 수정 성공");
+            ModifyBoardResponse modifyBoardResponse = boardService.update(board, boardRequestDTO);
+
+            Message message = new Message(StatusEnum.OK, "게시글 수정 성공", modifyBoardResponse);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
 
         throw new UserException("게시글 회원 정보와 로그인 회원 정보 불일치");
