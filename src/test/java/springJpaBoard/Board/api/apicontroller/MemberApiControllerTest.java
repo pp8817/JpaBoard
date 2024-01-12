@@ -28,6 +28,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.MemberResponse;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MemberApiController.class)
@@ -85,7 +86,7 @@ public class MemberApiControllerTest {
         // given
         long memberId = 1L;
         Member member = getMember();
-        Member updateMember = updateMember();
+        MemberResponse updateMember = updateMember();
 
         given(memberService.findOne(any()))
                 .willReturn(null);
@@ -113,7 +114,7 @@ public class MemberApiControllerTest {
         // given
         long memberId = 1L;
         Member member = getMember();
-        Member updateMember = updateMember();
+        MemberResponse updateMember = updateMember();
 
         given(memberService.findOne(any()))
                 .willReturn(member);
@@ -216,13 +217,12 @@ public class MemberApiControllerTest {
     }
 
     @NotNull
-    private static Member updateMember() {
-        return Member.builder()
+    private static MemberResponse updateMember() {
+
+        return MemberResponse.builder()
                 .id(1L)
                 .name("2")
                 .gender("여성")
-                .loginId("1")
-                .password("1")
                 .address(new Address("2", "2", "2"))
                 .build();
     }
