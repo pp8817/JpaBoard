@@ -14,6 +14,7 @@ import springJpaBoard.Board.repository.MemberRepository;
 
 import java.util.NoSuchElementException;
 
+import static springJpaBoard.Board.controller.commentdto.CommentDto.CommentResponse;
 import static springJpaBoard.Board.controller.commentdto.CommentDto.CreateCommentRequest;
 
 @Service
@@ -24,7 +25,7 @@ public class CommentService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Comment save(CreateCommentRequest commentRequestDTO, Long memberId) {
+    public CommentResponse save(CreateCommentRequest commentRequestDTO, Long memberId) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보가 없습니다."));
@@ -44,7 +45,7 @@ public class CommentService {
 
         commentRepository.save(comment); //쿼리 3
 
-        return comment;
+        return CommentResponse.of(comment);
     }
 
     public Comment findById(Long id) {

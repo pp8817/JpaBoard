@@ -45,9 +45,7 @@ public class CommentApiController {
             throw new IllegalStateException("양식 불일치 오류");
         }
 
-        Comment comment = commentService.save(commentRequestDTO, loginMember.getId());
-
-        CommentResponse commentDto = CommentResponse.of(comment);
+        CommentResponse commentDto = commentService.save(commentRequestDTO, loginMember.getId());
 
         Message message = new Message(StatusEnum.OK, "댓글 작성 성공", commentDto);
         HttpHeaders headers = new HttpHeaders();
@@ -60,9 +58,9 @@ public class CommentApiController {
     @DeleteMapping("/delete/{commentId}")
     public ResponseEntity deleteComment(@PathVariable Long commentId) {
         try {
+
             Comment comment = commentService.findById(commentId);
-            Long bno = comment.getBno();
-            commentService.delete(commentId, bno);
+            commentService.delete(commentId, comment.getBno());
 
             Message message = new Message(StatusEnum.OK, "댓글 삭제 성공", commentId);
             HttpHeaders headers = new HttpHeaders();
