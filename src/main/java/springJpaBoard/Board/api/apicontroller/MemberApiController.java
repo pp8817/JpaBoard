@@ -19,7 +19,6 @@ import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SesstionConst;
-import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.repository.search.MemberSearch;
@@ -30,10 +29,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.nio.charset.Charset;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static springJpaBoard.Board.controller.boarddto.BoardDto.MyPostsResponse;
 import static springJpaBoard.Board.controller.memberdto.AuthDto.LoginRequest;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.*;
 
@@ -61,7 +60,6 @@ public class MemberApiController {
 
 
         return new ResponseEntity<>(message, headers, HttpStatus.CREATED);
-//        return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
 
     /* 회원 로그인 */
@@ -71,7 +69,6 @@ public class MemberApiController {
     public ResponseEntity login(@RequestBody @Valid LoginRequest loginRequest, BindingResult result,
                                 @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
         if (result.hasErrors()) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디 또는 비밀번호 오류");
             throw new UserException("로그인: 아이디 또는 비밀번호 오류");
         }
 
@@ -79,11 +76,9 @@ public class MemberApiController {
 
         if (loginMember == null) {
             result.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호가 맞지 않습니다.");
             throw new UserException("로그인: 아이디 또는 비밀번호 오류");
         }
 
-        //로그인 성공 처리
 
         /*세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성*/
         HttpSession session = request.getSession();
@@ -104,7 +99,7 @@ public class MemberApiController {
         HttpSession session = request.getSession(false);
 
         if (session != null) {
-            session.invalidate();
+            session.invalidate(); //세션 강제 종료
 
             Message message = new Message(StatusEnum.OK, "회원 로그아웃 성공");
             HttpHeaders headers = new HttpHeaders();
@@ -113,37 +108,18 @@ public class MemberApiController {
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
 
-//        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         throw new IllegalStateException("로그아웃: 세션 오류");
     }
 
     /* 회원 목록 */
-    // TODO - memberSearch의 Gender가 enum 타입이기 때문에 null 값으로 넘어오면 오류 발생
     @GetMapping
     public ResponseEntity<Message> members(@RequestBody MemberSearch memberSearch, @PageableDefault(page = 0, size=9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<Member> memberList = null;
-        log.info("memberName = {}, {}", memberSearch.getMemberGender(), memberSearch.getMemberName());
-
-
-        if (memberSearch.searchIsEmpty()) {
-            memberList = memberService.memberList(pageable);
-        } else {
-            String memberName = memberSearch.getMemberName();
-            String memberGender = memberSearch.getMemberGender();
-
-            if (memberGender == null) {
-                memberList = memberService.searchName(memberName, pageable);
-            } else {
-                memberList = memberService.searchAll(memberName, memberGender, pageable);
-            }
-        }
+        Page<Member> memberList = memberListSearch(memberSearch, pageable);
 
         List<MemberResponse> members = memberList.stream().
                 map(MemberResponse::of).
                 collect(toList());
-
-//        Result result = new Result(members);
 
         Message message = new Message(StatusEnum.OK, "회원 목록 조회 성공", members);
         HttpHeaders headers = new HttpHeaders();
@@ -152,6 +128,7 @@ public class MemberApiController {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
+
     /* 회원 수정 */
     @GetMapping("/edit/{memberId}")
     public ResponseEntity updateForm(@PathVariable Long memberId, @Login Member loginMember) {
@@ -159,9 +136,8 @@ public class MemberApiController {
         Member member = memberService.findOne(memberId);
 
         if (memberService.loginValidation(loginMember, member)) {
-            ModifyMember memberDto = ModifyMember.toModifyMember(member);
 
-            Message message = new Message(StatusEnum.OK, "회원 데이터 조회 성공", memberDto);
+            Message message = new Message(StatusEnum.OK, "회원 데이터 조회 성공", ModifyMember.of(member));
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -181,10 +157,9 @@ public class MemberApiController {
         Member member = memberService.findOne(form.id());
 
         if (memberService.loginValidation(loginMember, member)) {
-            Member updateMember = memberService.update(form.id(), form);
-            MemberResponse memberResponseDTO = MemberResponse.of(updateMember);
+            MemberResponse updateMember = memberService.update(form.id(), form);
 
-            Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공", memberResponseDTO);
+            Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공", updateMember);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -207,11 +182,11 @@ public class MemberApiController {
      */
     @GetMapping("/myPosts")
     public ResponseEntity boardList(@Login Member loginMember) {
-        Long id = loginMember.getId();
-        Member member = memberService.findOne(id); // 1
 
-        List<MyBoardsDto> boards = member.getBoardList().stream()
-                .map(MyBoardsDto::new)
+        Member member = memberService.findOne(loginMember.getId()); // 1
+
+        List<MyPostsResponse> boards = member.getBoardList().stream()
+                .map(MyPostsResponse::of)
                 .collect(toList());
 
         Message message = new Message(StatusEnum.OK, "회원이 작성한 게시글 조회 성공", boards);
@@ -221,29 +196,27 @@ public class MemberApiController {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
+    private Page<Member> memberListSearch(MemberSearch memberSearch, Pageable pageable) {
+        Page<Member> memberList = null;
+        if (memberSearch.searchIsEmpty()) {
+            memberList = memberService.memberList(pageable);
+        } else {
+            String memberName = memberSearch.getMemberName();
+            String memberGender = memberSearch.getMemberGender();
+
+            if (memberGender == null) {
+                memberList = memberService.searchName(memberName, pageable);
+            } else {
+                memberList = memberService.searchAll(memberName, memberGender, pageable);
+            }
+        }
+        return memberList;
+    }
+
     @Data
     @AllArgsConstructor
     static class Result<T> {
         private T data;
     }
 
-    @Data
-    @AllArgsConstructor
-    static class MyBoardsDto {
-        private Long id;
-        private String title;
-        private String writer;
-        private LocalDateTime localDateTime;
-        private int view;
-        private int commentCount;
-
-        public MyBoardsDto(Board board) {
-            this.id = board.getId();
-            this.title = board.getTitle();
-            this.writer = board.getWriter();
-            this.localDateTime = board.getBoardDateTime();
-            this.view = board.getView();
-            this.commentCount = board.getCommentCount();
-        }
-    }
 }

@@ -153,7 +153,7 @@ public class MemberController {
     public String updateMemberForm(@PathVariable("memberId") Long memberId, Model model) {
         Member member = memberService.findOne(memberId);
 
-        ModifyMember form = ModifyMember.toModifyMember(member);
+        ModifyMember form = ModifyMember.of(member);
 
         model.addAttribute("form", form);
         return "members/updateMemberForm";

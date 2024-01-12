@@ -13,8 +13,7 @@ import java.util.NoSuchElementException;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
-import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMember;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -119,14 +118,15 @@ public class MemberService {
      * 회원 정보 수정
      */
     @Transactional
-    public Member update(Long memberId, ModifyMember memberDto) {
+    public MemberResponse update(Long memberId, ModifyMember memberDto) {
         /*
         Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현
          */
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보가 없습니다."));;
         member.editMember(memberDto);
-        return member;
+
+        return MemberResponse.of(member);
     }
 
     /**

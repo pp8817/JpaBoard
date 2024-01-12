@@ -47,7 +47,7 @@ public class MemberDto {
             String gender,
             Address address
     ) {
-        public static ModifyMember toModifyMember(Member member) {
+        public static ModifyMember of(Member member) {
             return ModifyMember.builder()
                     .id(member.getId())
                     .name(member.getName())
@@ -75,6 +75,7 @@ public class MemberDto {
                     .build();
         }
     }
+
 
 
 }

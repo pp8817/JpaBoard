@@ -134,4 +134,25 @@ public class BoardDto {
         }
     }
 
+    @Builder
+    public record MyPostsResponse(
+            Long id,
+            String title,
+            String writer,
+            int view,
+            LocalDateTime localDateTime,
+            int commentCount
+    ) {
+        public static MyPostsResponse of(Board board) {
+            return MyPostsResponse.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .writer(board.getWriter())
+                    .view(board.getView())
+                    .localDateTime(board.getBoardDateTime())
+                    .commentCount(board.getCommentCount())
+                    .build();
+        }
+    }
+
 }
