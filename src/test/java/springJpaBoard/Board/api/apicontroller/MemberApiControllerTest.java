@@ -133,8 +133,13 @@ public class MemberApiControllerTest {
         ResultActions actions = mockMvc.perform(put("/api/members/edit/{memberId}", memberId)
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"id\": 1, \"name\": \"2\", \"gender\": \"여성\", " +
-                        "\"city\": \"2\", \"street\": \"2\", \"zipcode\": \"2\" }"));
+                .content("{ " +
+                        "\"id\": 1," +
+                        " \"name\": \"2\"," +
+                        " \"gender\": \"여성\", " +
+                        "\"city\": \"2\"," +
+                        " \"street\": \"2\"," +
+                        " \"zipcode\": \"2\" }"));
 
         // then
         actions

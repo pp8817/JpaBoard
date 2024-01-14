@@ -1,5 +1,6 @@
 package springJpaBoard.Board.api.apicontroller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,8 +23,12 @@ import springJpaBoard.Board.service.MemberService;
 
 import java.nio.charset.StandardCharsets;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static springJpaBoard.Board.controller.boarddto.BoardDto.CreateBoardRequest;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(BoardApiController.class)
@@ -45,14 +50,18 @@ class BoardApiControllerTest {
     @MockBean
     private BoardApiRepository boardApiRepository;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     protected MediaType contentType =
             new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
 
     @Test
     @DisplayName("[GET] 게시글 작성")
     public void 게시글_작성_GET() throws Exception {
-        Member member = getMember();
         //given
+        Member member = getMember();
+
         /*로그인 세션*/
         MockHttpSession session = new MockHttpSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, member);
@@ -67,6 +76,38 @@ class BoardApiControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").value(1L));
+    }
+
+    @Test
+    @DisplayName("[POST] 게시글 작성")
+    public void 게시글_작성_POST() throws Exception {
+        //given
+        Member member = getMember();
+        CreateBoardRequest request = CreateBoardRequest.builder()
+                .title("title")
+                .writer("username")
+                .content("content")
+                .build();
+
+        /*로그인 세션*/
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+
+        given(boardService.write(any(), any()))
+                .willReturn(1L);
+
+        //when
+        ResultActions actions = mockMvc.perform(post("/api/boards")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)));
+        //then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("게시글 작성 성공"))
+                .andExpect(jsonPath("$.data").value(1));
     }
 
 
