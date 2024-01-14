@@ -79,7 +79,7 @@ class BoardApiControllerTest {
     }
 
     @Test
-    @DisplayName("[POST] 게시글 작성")
+    @DisplayName("[POST] 게시글 작성 - 로그인 세션이 유효한 경우")
     public void 게시글_작성_POST() throws Exception {
         //given
         Member member = getMember();
@@ -110,6 +110,60 @@ class BoardApiControllerTest {
                 .andExpect(jsonPath("$.data").value(1));
     }
 
+    @Test
+    @DisplayName("[POST] 게시글 작성 - 로그인 세션이 유효하지 않은 경우")
+    public void 게시글_작성_로그인_세션_X() throws Exception {
+        //given
+        Member member = getMember();
+        CreateBoardRequest request = CreateBoardRequest.builder()
+                .title("title")
+                .writer("username")
+                .content("content")
+                .build();
+
+        /*로그인 세션*/
+
+        given(boardService.write(any(), any()))
+                .willReturn(1L);
+
+        //when
+        ResultActions actions = mockMvc.perform(post("/api/boards")
+//                .session(session)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)));
+        //then
+        actions
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    @DisplayName("[POST] 게시글 작성 - 양식 오류")
+    public void 게시글_작성_검증_오류() throws Exception {
+        //given
+        Member member = getMember();
+        CreateBoardRequest request = CreateBoardRequest.builder()
+                .title("")
+                .writer("username")
+                .content("content")
+                .build();
+
+        /*로그인 세션*/
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+
+        given(boardService.write(any(), any()))
+                .willReturn(1L);
+
+        //when
+        ResultActions actions = mockMvc.perform(post("/api/boards")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)));
+        //then
+        actions
+                .andExpect(status().is5xxServerError());
+    }
+
 
     @NotNull
     private static Member getMember() {
@@ -122,5 +176,6 @@ class BoardApiControllerTest {
                 .address(new Address("1", "1", "1"))
                 .build();
     }
+
 
 }
