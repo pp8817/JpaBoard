@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
 import springJpaBoard.Board.domain.Address;
+import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.CommentService;
@@ -162,6 +163,36 @@ class BoardApiControllerTest {
         //then
         actions
                 .andExpect(status().is5xxServerError());
+    }
+
+    @Test
+    @DisplayName("[GET] 게시글 상세")
+    public void 게시글_상세() throws Exception {
+        //given
+        Long boardId = 1L;
+        Board board = Board.builder()
+                .title("title")
+                .writer("writer")
+                .content("content")
+                .build();
+
+        given(boardService.findOne(any()))
+                .willReturn(board);
+
+        //when
+        ResultActions actions = mockMvc.perform(get("/api/boards/detail/{boardId}", boardId)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("게시글 상세 페이지 조회 성공"))
+                .andExpect(jsonPath("$.data.title").value("title"))
+                .andExpect(jsonPath("$.data.content").value("content"))
+                .andExpect(jsonPath("$.data.writer").value("writer"))
+                .andExpect(jsonPath("$.data.likes").value(0));
     }
 
 
