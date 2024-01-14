@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springJpaBoard.Board.SesstionConst;
+import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
@@ -19,7 +19,7 @@ public class LikeApiController {
     private final BoardService boardService;
 
     @GetMapping("/up/{boardId}")
-    public ResponseEntity addLike(@PathVariable Long boardId, @SessionAttribute(name = SesstionConst.LOGIN_MEMBER, required = false) Member loginMember) {
+    public ResponseEntity addLike(@PathVariable Long boardId, @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
 
         Board board = boardService.findOne(boardId);
         likeService.addLike(loginMember, board);

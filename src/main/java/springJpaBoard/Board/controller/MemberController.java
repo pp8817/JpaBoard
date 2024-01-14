@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springJpaBoard.Board.SesstionConst;
+import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.controller.memberdto.MemberDto;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
@@ -92,7 +92,7 @@ public class MemberController {
         /*세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성*/
         HttpSession session = request.getSession();
         /*세션에 로그인 회원 정보 보관*/
-        session.setAttribute(SesstionConst.LOGIN_MEMBER, loginMember);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
         return "redirect:" + redirectURL;
     }

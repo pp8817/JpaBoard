@@ -1,5 +1,5 @@
 package springJpaBoard.Board;
 
-public class SesstionConst {
+public class SessionConst {
     public static final String LOGIN_MEMBER = "loginMember";
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import springJpaBoard.Board.SesstionConst;
+import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.domain.Member;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +44,6 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
             return null;
         }
 
-        return session.getAttribute(SesstionConst.LOGIN_MEMBER);
+        return session.getAttribute(SessionConst.LOGIN_MEMBER);
     }
 }

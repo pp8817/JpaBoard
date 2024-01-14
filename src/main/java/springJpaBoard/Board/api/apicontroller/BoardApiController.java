@@ -63,7 +63,7 @@ public class BoardApiController {
         오류 발생시(@Valid 에서 발생)
          */
         if (result.hasErrors()) {
-            throw new IllegalStateException("게시글 작성: 양식을 맞춰주세요.");
+            throw new IllegalStateException("게시글 양식에 맞지 않습니다.");
         }
 
         Long boardId = boardService.write(boardRequestDTO, loginMember.getId());

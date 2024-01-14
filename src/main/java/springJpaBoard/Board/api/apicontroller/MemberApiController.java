@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.Error.exception.UserException;
-import springJpaBoard.Board.SesstionConst;
+import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.repository.search.MemberSearch;
@@ -83,7 +83,7 @@ public class MemberApiController {
         /*세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성*/
         HttpSession session = request.getSession();
         /*세션에 로그인 회원 정보 보관*/
-        session.setAttribute(SesstionConst.LOGIN_MEMBER, loginMember);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
         Message message = new Message(StatusEnum.OK, "로그인 성공", loginMember.getLoginId());
         HttpHeaders headers = new HttpHeaders();

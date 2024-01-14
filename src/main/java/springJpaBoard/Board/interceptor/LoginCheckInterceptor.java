@@ -2,7 +2,7 @@ package springJpaBoard.Board.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
-import springJpaBoard.Board.SesstionConst;
+import springJpaBoard.Board.SessionConst;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +18,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         log.info("인증 체크 인터셉터 실행 {}", requestURI);
         HttpSession session = request.getSession(false);
 
-        if (session == null || session.getAttribute(SesstionConst.LOGIN_MEMBER) == null) {
+        if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
             log.info("미인증 사용자 요청");
             // 로그인으로 redirect
             response.sendRedirect("/members/login?redirectURL=" + requestURI);

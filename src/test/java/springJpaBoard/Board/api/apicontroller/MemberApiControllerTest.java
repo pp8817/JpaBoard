@@ -14,7 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import springJpaBoard.Board.Error.exception.UserException;
-import springJpaBoard.Board.SesstionConst;
+import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
@@ -62,7 +62,7 @@ public class MemberApiControllerTest {
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SesstionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
         // when
         ResultActions actions = mockMvc.perform(get("/api/members/edit/{memberId}", memberId)
@@ -93,18 +93,18 @@ public class MemberApiControllerTest {
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SesstionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
         // when
         ResultActions actions = mockMvc.perform(get("/api/members/edit/{memberId}", memberId)
-                .session(session)
+                        .session(session)
                 .contentType(MediaType.APPLICATION_JSON));
 
         // then
         actions
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.code").value("USER-EX"))
+                .andExpect(jsonPath("$.code").value("UserException"))
                 .andExpect(jsonPath("$.message").value("회원 정보가 일치하지 않습니다."));
     }
 
@@ -127,14 +127,19 @@ public class MemberApiControllerTest {
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SesstionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
         // when
         ResultActions actions = mockMvc.perform(put("/api/members/edit/{memberId}", memberId)
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"id\": 1, \"name\": \"2\", \"gender\": \"여성\", " +
-                        "\"city\": \"2\", \"street\": \"2\", \"zipcode\": \"2\" }"));
+                .content("{ " +
+                        "\"id\": 1," +
+                        " \"name\": \"2\"," +
+                        " \"gender\": \"여성\", " +
+                        "\"city\": \"2\"," +
+                        " \"street\": \"2\"," +
+                        " \"zipcode\": \"2\" }"));
 
         // then
         actions
@@ -156,7 +161,7 @@ public class MemberApiControllerTest {
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SesstionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
         // when
         mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
@@ -177,7 +182,7 @@ public class MemberApiControllerTest {
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SesstionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
         // when
         mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
