@@ -14,7 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import springJpaBoard.Board.Error.exception.UserException;
-import springJpaBoard.Board.SesstionConst;
+import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
@@ -62,7 +62,7 @@ public class MemberApiControllerTest {
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SesstionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
         // when
         ResultActions actions = mockMvc.perform(get("/api/members/edit/{memberId}", memberId)
@@ -93,7 +93,7 @@ public class MemberApiControllerTest {
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SesstionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
         // when
         ResultActions actions = mockMvc.perform(get("/api/members/edit/{memberId}", memberId)
@@ -127,7 +127,7 @@ public class MemberApiControllerTest {
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SesstionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
         // when
         ResultActions actions = mockMvc.perform(put("/api/members/edit/{memberId}", memberId)
@@ -156,7 +156,7 @@ public class MemberApiControllerTest {
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SesstionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
         // when
         mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
@@ -177,7 +177,7 @@ public class MemberApiControllerTest {
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SesstionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
         // when
         mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
