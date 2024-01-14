@@ -127,7 +127,7 @@ public class MemberLoginTest {
         actions
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.code").value("USER-EX"))
+                .andExpect(jsonPath("$.code").value("UserException"))
                 .andExpect(jsonPath("$.message").value("로그인: 아이디 또는 비밀번호 오류"));
     }
 

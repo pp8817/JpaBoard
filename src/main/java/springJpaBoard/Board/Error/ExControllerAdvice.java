@@ -29,6 +29,7 @@ public class ExControllerAdvice {
      *
      *  유저 관련 오류가 발생한 것을 나타냅니다.
      **/
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
     public ErrorResult userExHandle(UserException e) {
         log.error("[exceptionHandle] ex", e);
