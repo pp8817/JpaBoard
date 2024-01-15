@@ -195,7 +195,7 @@ class BoardApiControllerTest {
 
     @Test
     @DisplayName("[GET] 게시글 수정 - 로그인 세션 유효")
-    public void 게시글_수정_로그인_세션_유효() throws Exception {
+    public void 게시글_수정_페이지_로그인_세션_유효() throws Exception {
         //given
         Long boardId = 1L;
         Member member = getMember();
@@ -205,8 +205,7 @@ class BoardApiControllerTest {
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
-        given(memberService.loginValidation(member, member))
-                .willReturn(TRUE);
+        loginValidation(member, TRUE);
 
         /*로그인 세션*/
         MockHttpSession session = new MockHttpSession();
@@ -230,7 +229,7 @@ class BoardApiControllerTest {
 
     @Test
     @DisplayName("[GET] 게시글 수정 - 로그인 세션 유효하지 않음")
-    public void 게시글_수정_로그인_세션_유효_X() throws Exception {
+    public void 게시글_수정_페이지_로그인_세션_유효_X() throws Exception {
         //given
         Long boardId = 1L;
         Member member = getMember();
@@ -241,8 +240,7 @@ class BoardApiControllerTest {
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
-        given(memberService.loginValidation(member, member))
-                .willReturn(TRUE);
+        loginValidation(member, TRUE);
 
         /*로그인 세션*/
         MockHttpSession session = new MockHttpSession();
@@ -260,19 +258,17 @@ class BoardApiControllerTest {
 
     @Test
     @DisplayName("[GET] 게시글 수정 - 회원 정보 불일치")
-    public void 게시글_수정_회원_정보_불일치() throws Exception {
+    public void 게시글_수정_페이지_회원_정보_불일치() throws Exception {
         //given
         Long boardId = 1L;
         Member member = getMember();
         Board board = getBoard();
         board.setMember(member);
 
-
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
-        given(memberService.loginValidation(member, member))
-                .willReturn(FALSE);
+        loginValidation(member, FALSE);
 
         /*로그인 세션*/
         MockHttpSession session = new MockHttpSession();
@@ -289,7 +285,22 @@ class BoardApiControllerTest {
                 .andExpect(jsonPath("$.message").value("게시글 회원 정보와 로그인 회원 정보가 일치하지 않습니다."));
     }
 
+    @Test
+    @DisplayName("[PUT] 게시글 수정")
+    public void 게시글_수정() throws Exception {
+        //given
+        Member member = getMember();
+        Board board = getBoard();
+        board.setMember(member);
 
+        given(boardApiRepository.findBoardWithMember(any()))
+                .willReturn(board);
+//        given()
+
+        //when
+
+        //then
+    }
 
 
     @NotNull
@@ -313,6 +324,17 @@ class BoardApiControllerTest {
                 .password("1")
                 .address(new Address("1", "1", "1"))
                 .build();
+    }
+
+    private void loginValidation(Member member, Boolean bool) {
+        if (bool) {
+            given(memberService.loginValidation(member, member))
+                    .willReturn(TRUE);
+        }
+        if (!bool) {
+            given(memberService.loginValidation(member, member))
+                    .willReturn(FALSE);
+        }
     }
 
 
