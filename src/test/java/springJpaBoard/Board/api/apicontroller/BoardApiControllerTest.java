@@ -329,7 +329,35 @@ class BoardApiControllerTest {
 
     }
 
+    @Test
+    @DisplayName("[PUT] 게시글 수정 - 회원 정보 불일치")
+    public void 게시글_수정_회원_정보_불일치() throws Exception {
+        //given
+        Member member = getMember();
+        Board board = getBoard();
+        board.setMember(member);
+        ModifyBoardRequest modifyBoardRequest = getModifyBoardRequest();
 
+        given(boardApiRepository.findBoardWithMember(any()))
+                .willReturn(board);
+
+        loginValidation(member, FALSE);
+
+        /*로그인 세션*/
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+
+        //when
+        ResultActions actions = mockMvc.perform(put("/api/boards/edit/{boardId}", 1L)
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(modifyBoardRequest)));
+
+        //then
+        actions
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("게시글 회원 정보와 로그인 회원 정보 불일치"));
+    }
 
     private static ModifyBoardRequest getModifyBoardRequest() {
         return ModifyBoardRequest.builder()
