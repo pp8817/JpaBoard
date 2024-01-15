@@ -24,12 +24,13 @@ import springJpaBoard.Board.service.MemberService;
 
 import java.nio.charset.StandardCharsets;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static springJpaBoard.Board.controller.boarddto.BoardDto.*;
 import static springJpaBoard.Board.controller.boarddto.BoardDto.CreateBoardRequest;
 
 @ExtendWith(SpringExtension.class)
@@ -123,14 +124,17 @@ class BoardApiControllerTest {
                 .content("content")
                 .build();
 
-        /*로그인 세션*/
-
         given(boardService.write(any(), any()))
                 .willReturn(1L);
 
+        /*로그인 세션*/
+        // 로그인 세션 생성
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+
         //when
         ResultActions actions = mockMvc.perform(post("/api/boards")
-//                .session(session)
+                .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
         //then
@@ -194,19 +198,17 @@ class BoardApiControllerTest {
 
     @Test
     @DisplayName("[GET] 게시글 수정 - 로그인 세션 유효")
-    public void 게시글_수정_로그인_세션_유효() throws Exception {
+    public void 게시글_수정_페이지_로그인_세션_유효() throws Exception {
         //given
         Long boardId = 1L;
         Member member = getMember();
         Board board = getBoard();
         board.setMember(member);
 
-
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
-        given(memberService.loginValidation(member, member))
-                .willReturn(TRUE);
+        loginValidation(member, TRUE);
 
         /*로그인 세션*/
         MockHttpSession session = new MockHttpSession();
@@ -230,7 +232,7 @@ class BoardApiControllerTest {
 
     @Test
     @DisplayName("[GET] 게시글 수정 - 로그인 세션 유효하지 않음")
-    public void 게시글_수정_로그인_세션_유효_X() throws Exception {
+    public void 게시글_수정_페이지_로그인_세션_유효_X() throws Exception {
         //given
         Long boardId = 1L;
         Member member = getMember();
@@ -241,8 +243,7 @@ class BoardApiControllerTest {
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
-        given(memberService.loginValidation(member, member))
-                .willReturn(TRUE);
+        loginValidation(member, TRUE);
 
         /*로그인 세션*/
         MockHttpSession session = new MockHttpSession();
@@ -257,6 +258,124 @@ class BoardApiControllerTest {
         actions
                 .andExpect(status().is3xxRedirection());
     }
+
+    @Test
+    @DisplayName("[GET] 게시글 수정 - 회원 정보 불일치")
+    public void 게시글_수정_페이지_회원_정보_불일치() throws Exception {
+        //given
+        Long boardId = 1L;
+        Member member = getMember();
+        Board board = getBoard();
+        board.setMember(member);
+
+        given(boardApiRepository.findBoardWithMember(any()))
+                .willReturn(board);
+
+        loginValidation(member, FALSE);
+
+        /*로그인 세션*/
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+
+        //when
+        ResultActions actions = mockMvc.perform(get("/api/boards/edit/{boardId}", boardId)
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        actions
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("게시글 회원 정보와 로그인 회원 정보가 일치하지 않습니다."));
+    }
+
+    @Test
+    @DisplayName("[PUT] 게시글 수정 - 로그인 세션 유효")
+    public void 게시글_수정_로그인_세션_유효() throws Exception {
+        //given
+        Member member = getMember();
+        Board board = getBoard();
+        board.setMember(member);
+        ModifyBoardRequest modifyBoardRequest = getModifyBoardRequest();
+        ModifyBoardResponse modifyBoardResponse = getModifyBoardResponse();
+
+        given(boardApiRepository.findBoardWithMember(any()))
+                .willReturn(board);
+
+        given(boardService.update(any(), any()))
+                .willReturn(modifyBoardResponse);
+
+        loginValidation(member, TRUE);
+
+        /*로그인 세션*/
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+
+        //when
+        ResultActions actions = mockMvc.perform(put("/api/boards/edit/{boardId}", 1L)
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(modifyBoardRequest)));
+
+        //then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("게시글 수정 성공"))
+                .andExpect(jsonPath("$.data.id").value(1L))
+                .andExpect(jsonPath("$.data.title").value("2"))
+                .andExpect(jsonPath("$.data.writer").value("writer"))
+                .andExpect(jsonPath("$.data.content").value("2"));
+
+    }
+
+    @Test
+    @DisplayName("[PUT] 게시글 수정 - 회원 정보 불일치")
+    public void 게시글_수정_회원_정보_불일치() throws Exception {
+        //given
+        Member member = getMember();
+        Board board = getBoard();
+        board.setMember(member);
+        ModifyBoardRequest modifyBoardRequest = getModifyBoardRequest();
+
+        given(boardApiRepository.findBoardWithMember(any()))
+                .willReturn(board);
+
+        loginValidation(member, FALSE);
+
+        /*로그인 세션*/
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+
+        //when
+        ResultActions actions = mockMvc.perform(put("/api/boards/edit/{boardId}", 1L)
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(modifyBoardRequest)));
+
+        //then
+        actions
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("게시글 회원 정보와 로그인 회원 정보 불일치"));
+    }
+
+    private static ModifyBoardRequest getModifyBoardRequest() {
+        return ModifyBoardRequest.builder()
+                .title("1")
+                .content("1")
+                .build();
+    }
+
+    @NotNull
+    private static ModifyBoardResponse getModifyBoardResponse() {
+        return ModifyBoardResponse.builder()
+                .id(1L)
+                .title("2")
+                .writer("writer")
+                .content("2")
+                .build();
+    }
+
 
     @NotNull
     private static Board getBoard() {
@@ -279,6 +398,17 @@ class BoardApiControllerTest {
                 .password("1")
                 .address(new Address("1", "1", "1"))
                 .build();
+    }
+
+    private void loginValidation(Member member, Boolean bool) {
+        if (bool) {
+            given(memberService.loginValidation(member, member))
+                    .willReturn(TRUE);
+        }
+        if (!bool) {
+            given(memberService.loginValidation(member, member))
+                    .willReturn(FALSE);
+        }
     }
 
 

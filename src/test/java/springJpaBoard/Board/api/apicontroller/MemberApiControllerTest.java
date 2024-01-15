@@ -22,6 +22,7 @@ import springJpaBoard.Board.service.MemberService;
 
 import java.nio.charset.StandardCharsets;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -57,8 +58,7 @@ public class MemberApiControllerTest {
         given(memberService.findOne(any()))
                 .willReturn(member);
 
-        given(memberService.loginValidation(member, member))
-                .willReturn(TRUE);
+        loginValidation(member, TRUE);
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
@@ -116,8 +116,7 @@ public class MemberApiControllerTest {
         given(memberService.findOne(any()))
                 .willReturn(member);
 
-        given(memberService.loginValidation(member, member))
-                .willReturn(TRUE);
+        loginValidation(member, TRUE);
 
         given(memberService.update(any(), any()))
                 .willReturn(updateMember);
@@ -201,11 +200,6 @@ public class MemberApiControllerTest {
                 .andExpect(status().is3xxRedirection()); //로그인이 되어 있지 않다면 로그인 페이지로 Redirect
     }
 
-
-
-
-
-
     @NotNull
     private static Member getMember() {
         return Member.builder()
@@ -227,6 +221,17 @@ public class MemberApiControllerTest {
                 .gender("여성")
                 .address(new Address("2", "2", "2"))
                 .build();
+    }
+
+    private void loginValidation(Member member, Boolean bool) {
+        if (bool) {
+            given(memberService.loginValidation(member, member))
+                    .willReturn(TRUE);
+        }
+        if (!bool) {
+            given(memberService.loginValidation(member, member))
+                    .willReturn(FALSE);
+        }
     }
 
 }
