@@ -28,9 +28,9 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static springJpaBoard.Board.controller.boarddto.BoardDto.*;
 import static springJpaBoard.Board.controller.boarddto.BoardDto.CreateBoardRequest;
 
 @ExtendWith(SpringExtension.class)
@@ -289,23 +289,61 @@ class BoardApiControllerTest {
     }
 
     @Test
-    @DisplayName("[PUT] 게시글 수정")
+    @DisplayName("[PUT] 게시글 수정 - 로그인 세션 유효")
     public void 게시글_수정() throws Exception {
         //given
         Member member = getMember();
         Board board = getBoard();
         board.setMember(member);
+        ModifyBoardRequest modifyBoardRequest = getModifyBoardRequest();
+        ModifyBoardResponse modifyBoardResponse = getModifyBoardResponse();
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
+        given(boardService.update(any(), any()))
+                .willReturn(modifyBoardResponse);
+
         loginValidation(member, TRUE);
 
-        //given()
+        /*로그인 세션*/
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
         //when
+        ResultActions actions = mockMvc.perform(put("/api/boards/edit/{boardId}", 1L)
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(modifyBoardRequest)));
 
         //then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("게시글 수정 성공"))
+                .andExpect(jsonPath("$.data.id").value(1L))
+                .andExpect(jsonPath("$.data.title").value("2"))
+                .andExpect(jsonPath("$.data.writer").value("writer"))
+                .andExpect(jsonPath("$.data.content").value("2"));
+
+    }
+
+    private static ModifyBoardRequest getModifyBoardRequest() {
+        return ModifyBoardRequest.builder()
+                .title("1")
+                .content("1")
+                .build();
+    }
+
+    @NotNull
+    private static ModifyBoardResponse getModifyBoardResponse() {
+        return ModifyBoardResponse.builder()
+                .id(1L)
+                .title("2")
+                .writer("writer")
+                .content("2")
+                .build();
     }
 
 
