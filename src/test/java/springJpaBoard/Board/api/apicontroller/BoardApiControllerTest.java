@@ -124,14 +124,17 @@ class BoardApiControllerTest {
                 .content("content")
                 .build();
 
-        /*로그인 세션*/
-
         given(boardService.write(any(), any()))
                 .willReturn(1L);
 
+        /*로그인 세션*/
+        // 로그인 세션 생성
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+
         //when
         ResultActions actions = mockMvc.perform(post("/api/boards")
-//                .session(session)
+                .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
         //then
@@ -295,7 +298,10 @@ class BoardApiControllerTest {
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
-//        given()
+
+        loginValidation(member, TRUE);
+
+        //given()
 
         //when
 
