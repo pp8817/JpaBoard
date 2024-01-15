@@ -1,7 +1,6 @@
-package springJpaBoard.Board.api.apicontroller;
+package springJpaBoard.Board.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,8 +13,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import springJpaBoard.Board.SessionConst;
+import springJpaBoard.Board.api.apicontroller.BoardApiController;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
-import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
@@ -30,8 +29,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static springJpaBoard.Board.board.BoardTemplate.*;
 import static springJpaBoard.Board.controller.boarddto.BoardDto.*;
-import static springJpaBoard.Board.controller.boarddto.BoardDto.CreateBoardRequest;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(BoardApiController.class)
@@ -357,47 +356,6 @@ class BoardApiControllerTest {
         actions
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("게시글 회원 정보와 로그인 회원 정보 불일치"));
-    }
-
-    private static ModifyBoardRequest getModifyBoardRequest() {
-        return ModifyBoardRequest.builder()
-                .title("1")
-                .content("1")
-                .build();
-    }
-
-    @NotNull
-    private static ModifyBoardResponse getModifyBoardResponse() {
-        return ModifyBoardResponse.builder()
-                .id(1L)
-                .title("2")
-                .writer("writer")
-                .content("2")
-                .build();
-    }
-
-
-    @NotNull
-    private static Board getBoard() {
-        Board board = Board.builder()
-                .title("title")
-                .writer("writer")
-                .content("content")
-                .build();
-        return board;
-    }
-
-
-    @NotNull
-    private static Member getMember() {
-        return Member.builder()
-                .id(1L)
-                .name("1")
-                .gender("남성")
-                .loginId("1")
-                .password("1")
-                .address(new Address("1", "1", "1"))
-                .build();
     }
 
     private void loginValidation(Member member, Boolean bool) {
