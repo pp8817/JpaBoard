@@ -290,7 +290,7 @@ class BoardApiControllerTest {
 
     @Test
     @DisplayName("[PUT] 게시글 수정 - 로그인 세션 유효")
-    public void 게시글_수정() throws Exception {
+    public void 게시글_수정_로그인_세션_유효() throws Exception {
         //given
         Member member = getMember();
         Board board = getBoard();
@@ -328,6 +328,8 @@ class BoardApiControllerTest {
                 .andExpect(jsonPath("$.data.content").value("2"));
 
     }
+
+
 
     private static ModifyBoardRequest getModifyBoardRequest() {
         return ModifyBoardRequest.builder()
