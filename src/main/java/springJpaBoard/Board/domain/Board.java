@@ -13,7 +13,6 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
 @DynamicUpdate //업데이트 쿼리 최적화
 public class Board {
     @Id

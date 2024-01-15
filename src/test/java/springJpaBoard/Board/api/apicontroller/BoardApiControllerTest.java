@@ -24,6 +24,7 @@ import springJpaBoard.Board.service.MemberService;
 
 import java.nio.charset.StandardCharsets;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -201,7 +202,6 @@ class BoardApiControllerTest {
         Board board = getBoard();
         board.setMember(member);
 
-
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
@@ -257,6 +257,40 @@ class BoardApiControllerTest {
         actions
                 .andExpect(status().is3xxRedirection());
     }
+
+    @Test
+    @DisplayName("[GET] 게시글 수정 - 회원 정보 불일치")
+    public void 게시글_수정_회원_정보_불일치() throws Exception {
+        //given
+        Long boardId = 1L;
+        Member member = getMember();
+        Board board = getBoard();
+        board.setMember(member);
+
+
+        given(boardApiRepository.findBoardWithMember(any()))
+                .willReturn(board);
+
+        given(memberService.loginValidation(member, member))
+                .willReturn(FALSE);
+
+        /*로그인 세션*/
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+
+        //when
+        ResultActions actions = mockMvc.perform(get("/api/boards/edit/{boardId}", boardId)
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        actions
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("게시글 회원 정보와 로그인 회원 정보가 일치하지 않습니다."));
+    }
+
+
+
 
     @NotNull
     private static Board getBoard() {
