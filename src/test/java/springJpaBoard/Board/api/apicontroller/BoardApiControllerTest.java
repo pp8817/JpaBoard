@@ -228,6 +228,36 @@ class BoardApiControllerTest {
                 .andExpect(jsonPath("$.data.writer").value("writer"));
     }
 
+    @Test
+    @DisplayName("[GET] 게시글 수정 - 로그인 세션 유효하지 않음")
+    public void 게시글_수정_로그인_세션_유효_X() throws Exception {
+        //given
+        Long boardId = 1L;
+        Member member = getMember();
+        Board board = getBoard();
+        board.setMember(member);
+
+
+        given(boardApiRepository.findBoardWithMember(any()))
+                .willReturn(board);
+
+        given(memberService.loginValidation(member, member))
+                .willReturn(TRUE);
+
+        /*로그인 세션*/
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+
+        //when
+        ResultActions actions = mockMvc.perform(get("/api/boards/edit/{boardId}", boardId)
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        actions
+                .andExpect(status().is3xxRedirection());
+    }
+
     @NotNull
     private static Board getBoard() {
         Board board = Board.builder()

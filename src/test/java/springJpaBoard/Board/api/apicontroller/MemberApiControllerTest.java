@@ -97,7 +97,7 @@ public class MemberApiControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(get("/api/members/edit/{memberId}", memberId)
-                        .session(session)
+                .session(session)
                 .contentType(MediaType.APPLICATION_JSON));
 
         // then
