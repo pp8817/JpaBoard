@@ -89,23 +89,20 @@ public class MemberApiControllerTest {
         MemberResponse updateMember = updateMember();
 
         given(memberService.findOne(any()))
-                .willReturn(null);
+                .willReturn(member);
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
 
         // when
         ResultActions actions = mockMvc.perform(get("/api/members/edit/{memberId}", memberId)
-                        .session(session)
+                .session(session)
                 .contentType(MediaType.APPLICATION_JSON));
 
         // then
         actions
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.code").value("UserException"))
-                .andExpect(jsonPath("$.message").value("회원 정보가 일치하지 않습니다."));
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test

@@ -125,7 +125,7 @@ public class BoardApiController {
 
             ModifyBoardResponse modifyBoardResponse = ModifyBoardResponse.of(board);
 
-            Message message = new Message(StatusEnum.OK, "게시글 수정 페이지", modifyBoardResponse);
+            Message message = new Message(StatusEnum.OK, "게시글 수정 페이지 조회", modifyBoardResponse);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
