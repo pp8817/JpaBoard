@@ -1,6 +1,5 @@
-package springJpaBoard.Board.api.apicontroller;
+package springJpaBoard.Board.user.controller;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +11,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.domain.Address;
+import springJpaBoard.Board.api.apicontroller.MemberApiController;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
@@ -24,6 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static springJpaBoard.Board.user.UserTemplate.*;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MemberApiController.class)
@@ -174,28 +174,5 @@ public class MemberLoginTest {
                         throw new AssertionError("Expected IllegalStateException");
                     }
                 });
-    }
-
-    @NotNull
-    private static Member getMember() {
-        return Member.builder()
-                .name("1")
-                .gender("남성")
-                .loginId("1")
-                .password("1")
-                .address(new Address("1", "1", "1"))
-                .build();
-    }
-
-    @NotNull
-    private static Member updateMember() {
-        return Member.builder()
-                .id(1L)
-                .name("2")
-                .gender("여성")
-                .loginId("1")
-                .password("1")
-                .address(new Address("2", "2", "2"))
-                .build();
     }
 }

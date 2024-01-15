@@ -1,7 +1,6 @@
-package springJpaBoard.Board.api.apicontroller;
+package springJpaBoard.Board.user.controller;
 
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SessionConst;
-import springJpaBoard.Board.domain.Address;
+import springJpaBoard.Board.api.apicontroller.MemberApiController;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
@@ -30,6 +29,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.MemberResponse;
+import static springJpaBoard.Board.user.UserTemplate.*;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MemberApiController.class)
@@ -198,29 +198,6 @@ public class MemberApiControllerTest {
         // when
         mockMvc.perform(delete("/api/members/delete/{memberId}", memberId))
                 .andExpect(status().is3xxRedirection()); //로그인이 되어 있지 않다면 로그인 페이지로 Redirect
-    }
-
-    @NotNull
-    private static Member getMember() {
-        return Member.builder()
-                .id(1L)
-                .name("1")
-                .gender("남성")
-                .loginId("1")
-                .password("1")
-                .address(new Address("1", "1", "1"))
-                .build();
-    }
-
-    @NotNull
-    private static MemberResponse updateMember() {
-
-        return MemberResponse.builder()
-                .id(1L)
-                .name("2")
-                .gender("여성")
-                .address(new Address("2", "2", "2"))
-                .build();
     }
 
     private void loginValidation(Member member, Boolean bool) {
