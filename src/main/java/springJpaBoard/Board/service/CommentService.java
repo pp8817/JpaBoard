@@ -44,7 +44,7 @@ public class CommentService {
         return CommentResponse.of(comment);
     }
 
-    public Comment findById(Long id) {
+    public Comment findOne(Long id) {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("댓글 정보가 없습니다."));
 
         if (comment == null) {

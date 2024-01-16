@@ -21,7 +21,7 @@ import springJpaBoard.Board.service.MemberService;
 import java.nio.charset.StandardCharsets;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static springJpaBoard.Board.comment.CommentTemplate.*;
@@ -92,4 +92,24 @@ public class CommentApiControllerTest {
         actions
                 .andExpect(status().is3xxRedirection());
     }
+
+//    @Test
+//    @DisplayName("[DELETE] 댓글 삭제 - 로그인 세션 유효")
+//    public void 댓글_삭제_로그인_세션_유효() throws Exception {
+//        //given
+//        given(commentService.findOne(any()))
+//                .willReturn(getComment());
+//        MockHttpSession session = new MockHttpSession();
+//        session.setAttribute(SessionConst.LOGIN_MEMBER, getMember());
+//
+//        //when
+//
+//        ResultActions actions = mockMvc.perform(delete("/api/comments/{commentId}", 1L)
+//                .contentType(contentType)
+//                .session(session));
+//
+//        //then
+//        actions
+//                .andExpect(status().isOk());
+//    }
 }

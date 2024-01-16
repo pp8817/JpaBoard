@@ -3,12 +3,21 @@ package springJpaBoard.Board.comment;
 import org.jetbrains.annotations.NotNull;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Board;
+import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
 
 import static springJpaBoard.Board.controller.commentdto.CommentDto.CommentResponse;
 import static springJpaBoard.Board.controller.commentdto.CommentDto.CreateCommentRequest;
 
 public class CommentTemplate {
+
+    public static Comment getComment() {
+        return Comment.builder()
+                .bno(1L)
+                .writer("writer")
+                .content("content")
+                .build();
+    }
 
     public static CreateCommentRequest getCommentRequest() {
         return CreateCommentRequest.builder()
