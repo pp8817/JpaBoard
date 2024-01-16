@@ -176,7 +176,7 @@ public class MemberApiControllerTest {
 
     @Test
     @DisplayName("[DELETE] 회원 삭제 - 회원이 존재하지 않음")
-    public void deleteMember_MemberNotFound() throws Exception {
+    public void 회원_삭제_회원_존재_X() throws Exception {
         // given
         long memberId = 1L;
         Member member = getMember();
@@ -201,8 +201,8 @@ public class MemberApiControllerTest {
     }
 
     @Test
-    @DisplayName("[DELETE] 회원 삭제 - 로그인 되어 있지 않음")
-    public void deleteMember_NotLoggedIn() throws Exception {
+    @DisplayName("[DELETE] 회원 삭제 - 로그인 세션 유효 X")
+    public void 회원_삭제_로그인_세션_유효_X() throws Exception {
         // given
         long memberId = 1L;
 
