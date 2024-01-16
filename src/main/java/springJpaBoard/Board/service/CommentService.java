@@ -8,9 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.repository.BoardRepository;
 import springJpaBoard.Board.repository.CommentRepository;
-import springJpaBoard.Board.repository.MemberRepository;
 
 import java.util.NoSuchElementException;
 
@@ -21,16 +19,14 @@ import static springJpaBoard.Board.controller.commentdto.CommentDto.CreateCommen
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final BoardRepository boardRepository;
-    private final MemberRepository memberRepository;
+    private final BoardService boardService;
+    private final MemberService memberService;
 
     @Transactional
     public CommentResponse save(CreateCommentRequest commentRequestDTO, Long memberId) {
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NoSuchElementException("회원 정보가 없습니다."));
-        Board board = boardRepository.findById(commentRequestDTO.bno())
-                .orElseThrow(() -> new NoSuchElementException("게시글 정보가 없습니다."));
+        Member member = memberService.findOne(memberId);
+        Board board = boardService.findOne(commentRequestDTO.bno());
 
         Comment comment = Comment.builder()
                 .bno(commentRequestDTO.bno())
@@ -49,7 +45,7 @@ public class CommentService {
     }
 
     public Comment findById(Long id) {
-        Comment comment = commentRepository.findById(id).get();
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("댓글 정보가 없습니다."));
 
         if (comment == null) {
             throw new NoSuchElementException();
@@ -69,7 +65,7 @@ public class CommentService {
     @Transactional
     public void delete(Long id, Long bno) {
         commentRepository.deleteById(id);
-        Board board = boardRepository.findById(bno).get();
+        Board board = boardService.findOne(bno);
         board.decreaseComment();
     }
 }
