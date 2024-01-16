@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static springJpaBoard.Board.user.UserTemplate.getMember;
+import static springJpaBoard.Board.UtilsTemplate.getMember;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MemberApiController.class)

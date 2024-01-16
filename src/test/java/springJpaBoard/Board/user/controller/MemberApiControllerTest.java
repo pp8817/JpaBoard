@@ -28,6 +28,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static springJpaBoard.Board.UtilsTemplate.*;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.MemberResponse;
 import static springJpaBoard.Board.user.UserTemplate.*;
 
