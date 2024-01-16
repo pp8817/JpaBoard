@@ -171,10 +171,13 @@ public class MemberApiController {
 
     /* 회원 삭제 */
     @DeleteMapping("/delete/{memberId}")
-    public ResponseEntity deleteMember(@PathVariable Long memberId) {
-        memberService.delete(memberId);
-
-        return ResponseEntity.status(HttpStatus.OK).body("회원 삭제 성공");
+    public ResponseEntity deleteMember(@PathVariable Long memberId, @Login Member loginMember) {
+        Member member = memberService.findOne(memberId);
+        if (memberService.loginValidation(member, loginMember)) {
+            memberService.delete(memberId);
+            return ResponseEntity.status(HttpStatus.OK).body("회원 삭제 성공");
+        }
+        throw new UserException("회원 정보 불일치");
     }
 
     /**
