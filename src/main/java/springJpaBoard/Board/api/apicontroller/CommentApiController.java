@@ -18,7 +18,6 @@ import springJpaBoard.Board.service.CommentService;
 import springJpaBoard.Board.service.MemberService;
 
 import java.nio.charset.Charset;
-import java.util.NoSuchElementException;
 
 import static springJpaBoard.Board.controller.commentdto.CommentDto.CommentResponse;
 import static springJpaBoard.Board.controller.commentdto.CommentDto.CreateCommentRequest;
@@ -39,8 +38,6 @@ public class CommentApiController {
     @PostMapping
     public ResponseEntity saveComment(@RequestBody CreateCommentRequest commentRequestDTO, BindingResult result, @Login Member loginMember) {
 
-        Long bno = commentRequestDTO.bno();
-
         if (result.hasErrors()) {
             throw new IllegalStateException("양식 불일치 오류");
         }
@@ -57,19 +54,14 @@ public class CommentApiController {
 
     @DeleteMapping("/delete/{commentId}")
     public ResponseEntity deleteComment(@PathVariable Long commentId) {
-        try {
 
-            Comment comment = commentService.findById(commentId);
-            commentService.delete(commentId, comment.getBno());
+        Comment comment = commentService.findOne(commentId); // 해당 댓글이 존재하지 않는 경우 여기서 Exception 발생
+        commentService.delete(commentId, comment.getBno());
 
-            Message message = new Message(StatusEnum.OK, "댓글 삭제 성공", commentId);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        Message message = new Message(StatusEnum.OK, "댓글 삭제 성공", commentId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            Message message = new Message(StatusEnum.OK, "해당 ID에 대한 댓글을 찾을 수 없습니다.", commentId);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 }

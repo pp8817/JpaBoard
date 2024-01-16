@@ -45,7 +45,7 @@ public class CommentController {
 
     @GetMapping("/comment/{id}/delete")
     public String deleteComment(@PathVariable Long id) {
-        Long bno = commentService.findById(id).getBno();
+        Long bno = commentService.findOne(id).getBno();
         commentService.delete(id, bno);
         return "redirect:/boards/" + bno + "/detail";
     }
