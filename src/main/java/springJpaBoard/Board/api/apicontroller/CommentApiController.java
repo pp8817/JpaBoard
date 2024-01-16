@@ -39,8 +39,6 @@ public class CommentApiController {
     @PostMapping
     public ResponseEntity saveComment(@RequestBody CreateCommentRequest commentRequestDTO, BindingResult result, @Login Member loginMember) {
 
-        Long bno = commentRequestDTO.bno();
-
         if (result.hasErrors()) {
             throw new IllegalStateException("양식 불일치 오류");
         }
