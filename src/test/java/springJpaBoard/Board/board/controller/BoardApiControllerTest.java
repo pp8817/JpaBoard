@@ -12,7 +12,6 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.api.apicontroller.BoardApiController;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
@@ -23,6 +22,7 @@ import springJpaBoard.Board.service.CommentService;
 import springJpaBoard.Board.service.MemberService;
 
 import java.nio.charset.StandardCharsets;
+import java.util.NoSuchElementException;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -416,7 +416,7 @@ class BoardApiControllerTest {
         Long boardId = 1L;
         Member member = getMember();
         Board board = getBoard();
-        doThrow(new UserException("게시글을 찾을 수 없습니다.")).when(boardService).delete(boardId);
+        doThrow(new NoSuchElementException("게시글을 찾을 수 없습니다.")).when(boardService).delete(boardId);
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
@@ -430,7 +430,7 @@ class BoardApiControllerTest {
         mockMvc.perform(delete("/api/boards/delete/{boardId}", boardId)
                 .session(session)
                 .contentType(contentType))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().is5xxServerError());
 
         // then
         verify(boardService, times(1)).delete(boardId);
