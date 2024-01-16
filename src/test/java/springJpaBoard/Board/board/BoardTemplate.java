@@ -31,12 +31,11 @@ public class BoardTemplate {
 
     @NotNull
     public static Board getBoard() {
-        Board board = Board.builder()
+        return Board.builder()
                 .title("title")
                 .writer("writer")
                 .content("content")
                 .build();
-        return board;
     }
 
 
