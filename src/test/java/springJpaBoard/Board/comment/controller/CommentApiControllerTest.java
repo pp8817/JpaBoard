@@ -50,7 +50,7 @@ public class CommentApiControllerTest {
 
     @Test
     @DisplayName("[POST] 댓글 작성 - 로그인 세션 유효")
-    public void 댓글_작성() throws Exception {
+    public void 댓글_작성_로그인_세션_유효() throws Exception {
         //given
         given(commentService.save(any(), any()))
                 .willReturn(getCommentResponse());
@@ -73,5 +73,23 @@ public class CommentApiControllerTest {
                 .andExpect(jsonPath("$.data.bno").value(1L))
                 .andExpect(jsonPath("$.data.writer").value("writer"))
                 .andExpect(jsonPath("$.data.content").value("content"));
+    }
+
+    @Test
+    @DisplayName("[POST] 댓글 작성 - 로그인 세션 유효 X")
+    public void 댓글_작성_로그인_세션_유효_X() throws Exception {
+        //given
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+
+        //when
+        ResultActions actions = mockMvc.perform(post("/api/comments")
+                .contentType(contentType)
+                .session(session)
+                .content(objectMapper.writeValueAsString(getCommentRequest())));
+
+        //then
+        actions
+                .andExpect(status().is3xxRedirection());
     }
 }
