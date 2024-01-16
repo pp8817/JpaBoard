@@ -14,17 +14,22 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.api.apicontroller.CommentApiController;
+import springJpaBoard.Board.domain.Comment;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.CommentService;
 import springJpaBoard.Board.service.MemberService;
 
 import java.nio.charset.StandardCharsets;
+import java.util.NoSuchElementException;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static springJpaBoard.Board.UtilsTemplate.*;
+import static springJpaBoard.Board.UtilsTemplate.getMember;
 import static springJpaBoard.Board.comment.CommentTemplate.*;
 
 @ExtendWith(SpringExtension.class)
@@ -94,23 +99,71 @@ public class CommentApiControllerTest {
                 .andExpect(status().is3xxRedirection());
     }
 
-//    @Test
-//    @DisplayName("[DELETE] 댓글 삭제 - 로그인 세션 유효")
-//    public void 댓글_삭제_로그인_세션_유효() throws Exception {
-//        //given
-//        given(commentService.findOne(any()))
-//                .willReturn(getComment());
-//        MockHttpSession session = new MockHttpSession();
-//        session.setAttribute(SessionConst.LOGIN_MEMBER, getMember());
-//
-//        //when
-//
-//        ResultActions actions = mockMvc.perform(delete("/api/comments/{commentId}", 1L)
-//                .contentType(contentType)
-//                .session(session));
-//
-//        //then
-//        actions
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    @DisplayName("[DELETE] 댓글 삭제 - 로그인 세션 유효")
+    public void 댓글_삭제_로그인_세션_유효() throws Exception {
+        //given
+        Long commentId = 1L;
+        Comment comment = getComment();
+        given(commentService.findOne(commentId))
+                .willReturn(comment);
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, getMember());
+
+        //when
+
+        mockMvc.perform(delete("/api/comments/delete/{commentId}", 1L)
+                .contentType(contentType)
+                .session(session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("댓글 삭제 성공"))
+                .andExpect(jsonPath("$.data").value(commentId));
+
+        //then
+        verify(commentService, times(1)).delete(eq(commentId), eq(comment.getBno()));
+    }
+
+    @Test
+    @DisplayName("[DELETE] 댓글 삭제 - 로그인 세션 유효 X")
+    public void 댓글_삭제_로그인_세션_유효_X() throws Exception {
+        //given
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+
+        //when
+        ResultActions actions = mockMvc.perform(delete("/api/comments/delete/{commentId}", 1L)
+                .contentType(contentType)
+                .session(session));
+
+        //then
+        actions
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    @DisplayName("[DELETE] 댓글 삭제 - 댓글이 존재하지 않는 경우")
+    public void 댓글_삭제_댓글_정보_X() throws Exception {
+        //given
+        Long commentId = 1L;
+        Comment comment = getComment();
+        doThrow(new NoSuchElementException("댓글을 찾을 수 없습니다.")).when(commentService).delete(commentId, comment.getBno());
+
+        given(commentService.findOne(commentId))
+                .willReturn(comment);
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, getMember());
+
+        //when
+
+        mockMvc.perform(delete("/api/comments/delete/{commentId}", 1L)
+                        .contentType(contentType)
+                        .session(session))
+                .andExpect(status().is5xxServerError());
+
+        //then
+        verify(commentService, times(1)).delete(eq(commentId), eq(comment.getBno()));
+    }
 }
