@@ -150,11 +150,15 @@ public class MemberApiControllerTest {
     }
 
     @Test
-    @DisplayName("[DELETE] 회원 삭제 - 성공")
-    public void deleteMember_Success() throws Exception {
+    @DisplayName("[DELETE] 회원 삭제 - 로그인 세션 유효")
+    public void 회원_삭제_로그인_세션_유효() throws Exception {
         // given
         long memberId = 1L;
         Member member = getMember();
+
+        given(memberService.findOne(any()))
+                .willReturn(member);
+        loginValidation(member, TRUE);
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
@@ -177,6 +181,10 @@ public class MemberApiControllerTest {
         long memberId = 1L;
         Member member = getMember();
         doThrow(new UserException("회원을 찾을 수 없습니다.")).when(memberService).delete(memberId);
+
+        given(memberService.findOne(any()))
+                .willReturn(member);
+        loginValidation(member, TRUE);
 
         // 로그인 세션 생성
         MockHttpSession session = new MockHttpSession();
