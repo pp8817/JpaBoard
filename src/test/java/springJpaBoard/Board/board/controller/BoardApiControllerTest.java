@@ -71,12 +71,12 @@ class BoardApiControllerTest {
         //when
         ResultActions actions = mockMvc.perform(get("/api/boards")
                 .session(session)
-                .contentType(MediaType.APPLICATION_JSON));
+                .contentType(contentType));
 
         //then
         actions
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$").value(1L));
     }
 
@@ -101,12 +101,12 @@ class BoardApiControllerTest {
         //when
         ResultActions actions = mockMvc.perform(post("/api/boards")
                 .session(session)
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(contentType)
                 .content(objectMapper.writeValueAsString(request)));
         //then
         actions
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("게시글 작성 성공"))
                 .andExpect(jsonPath("$.data").value(1));
@@ -134,7 +134,7 @@ class BoardApiControllerTest {
         //when
         ResultActions actions = mockMvc.perform(post("/api/boards")
                 .session(session)
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(contentType)
                 .content(objectMapper.writeValueAsString(request)));
         //then
         actions
@@ -162,7 +162,7 @@ class BoardApiControllerTest {
         //when
         ResultActions actions = mockMvc.perform(post("/api/boards")
                 .session(session)
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(contentType)
                 .content(objectMapper.writeValueAsString(request)));
         //then
         actions
@@ -181,12 +181,12 @@ class BoardApiControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(get("/api/boards/detail/{boardId}", boardId)
-                .contentType(MediaType.APPLICATION_JSON));
+                .contentType(contentType));
 
         //then
         actions
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("게시글 상세 페이지 조회 성공"))
                 .andExpect(jsonPath("$.data.title").value("title"))
@@ -216,12 +216,12 @@ class BoardApiControllerTest {
         //when
         ResultActions actions = mockMvc.perform(get("/api/boards/edit/{boardId}", boardId)
                         .session(session)
-                .contentType(MediaType.APPLICATION_JSON));
+                .contentType(contentType));
 
         //then
         actions
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("게시글 수정 페이지 조회"))
                 .andExpect(jsonPath("$.data.title").value("title"))
@@ -251,7 +251,7 @@ class BoardApiControllerTest {
         //when
         ResultActions actions = mockMvc.perform(get("/api/boards/edit/{boardId}", boardId)
                 .session(session)
-                .contentType(MediaType.APPLICATION_JSON));
+                .contentType(contentType));
 
         //then
         actions
@@ -279,7 +279,7 @@ class BoardApiControllerTest {
         //when
         ResultActions actions = mockMvc.perform(get("/api/boards/edit/{boardId}", boardId)
                 .session(session)
-                .contentType(MediaType.APPLICATION_JSON));
+                .contentType(contentType));
 
         //then
         actions
@@ -312,13 +312,13 @@ class BoardApiControllerTest {
         //when
         ResultActions actions = mockMvc.perform(put("/api/boards/edit/{boardId}", 1L)
                 .session(session)
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(contentType)
                 .content(objectMapper.writeValueAsString(modifyBoardRequest)));
 
         //then
         actions
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("게시글 수정 성공"))
                 .andExpect(jsonPath("$.data.id").value(1L))
@@ -349,7 +349,7 @@ class BoardApiControllerTest {
         //when
         ResultActions actions = mockMvc.perform(put("/api/boards/edit/{boardId}", 1L)
                 .session(session)
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(contentType)
                 .content(objectMapper.writeValueAsString(modifyBoardRequest)));
 
         //then
