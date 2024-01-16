@@ -12,6 +12,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.api.apicontroller.BoardApiController;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
@@ -27,10 +28,13 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static springJpaBoard.Board.UtilsTemplate.*;
-import static springJpaBoard.Board.board.BoardTemplate.*;
+import static springJpaBoard.Board.UtilsTemplate.getBoard;
+import static springJpaBoard.Board.UtilsTemplate.getMember;
+import static springJpaBoard.Board.board.BoardTemplate.getModifyBoardRequest;
+import static springJpaBoard.Board.board.BoardTemplate.getModifyBoardResponse;
 import static springJpaBoard.Board.controller.boarddto.BoardDto.*;
 
 @ExtendWith(SpringExtension.class)
@@ -208,7 +212,7 @@ class BoardApiControllerTest {
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
-        loginValidation(member, TRUE);
+        loginValidation(TRUE);
 
         /*로그인 세션*/
         MockHttpSession session = new MockHttpSession();
@@ -243,7 +247,7 @@ class BoardApiControllerTest {
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
-        loginValidation(member, TRUE);
+        loginValidation(TRUE);
 
         /*로그인 세션*/
         MockHttpSession session = new MockHttpSession();
@@ -271,7 +275,7 @@ class BoardApiControllerTest {
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
-        loginValidation(member, FALSE);
+        loginValidation(FALSE);
 
         /*로그인 세션*/
         MockHttpSession session = new MockHttpSession();
@@ -304,7 +308,7 @@ class BoardApiControllerTest {
         given(boardService.update(any(), any()))
                 .willReturn(modifyBoardResponse);
 
-        loginValidation(member, TRUE);
+        loginValidation(TRUE);
 
         /*로그인 세션*/
         MockHttpSession session = new MockHttpSession();
@@ -341,7 +345,7 @@ class BoardApiControllerTest {
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
-        loginValidation(member, FALSE);
+        loginValidation(FALSE);
 
         /*로그인 세션*/
         MockHttpSession session = new MockHttpSession();
@@ -359,13 +363,87 @@ class BoardApiControllerTest {
                 .andExpect(jsonPath("$.message").value("게시글 회원 정보와 로그인 회원 정보 불일치"));
     }
 
-    private void loginValidation(Member member, Boolean bool) {
+    @Test
+    @DisplayName("[DELETE] 게시글 삭제 - 로그인 세션 유효")
+    public void 게시글_삭제_로그인_세션_유효() throws Exception {
+        // given
+        Long boardId = 1L;
+        Member member = getMember();
+        Board board = getBoard();
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+
+        given(boardApiRepository.findBoardWithMember(any()))
+                .willReturn(board);
+        loginValidation(TRUE);
+
+        // when
+        mockMvc.perform(delete("/api/boards/delete/{boardId}", boardId)
+                        .session(session)
+                        .contentType(contentType))
+                .andExpect(status().isOk());
+
+        // then
+        verify(boardService, times(1)).delete(boardId);
+    }
+
+    @Test
+    @DisplayName("[DELETE] 게시글 삭제 - 로그인 세션 유효_X")
+    public void 게시글_삭제_로그인_세션_유효_X() throws Exception {
+        // given
+        Long boardId = 1L;
+        Member member = getMember();
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+
+
+        // when
+        ResultActions actions = mockMvc.perform(delete("/api/boards/delete/{boardId}", boardId)
+                .session(session)
+                .contentType(contentType));
+
+        // then
+        actions
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    @DisplayName("[DELETE] 게시글 삭제 - 게시글이 존재하지 않음")
+    public void 게시글_삭제_게시글_존재_X() throws Exception {
+        // given
+        Long boardId = 1L;
+        Member member = getMember();
+        Board board = getBoard();
+        doThrow(new UserException("게시글을 찾을 수 없습니다.")).when(boardService).delete(boardId);
+
+        given(boardApiRepository.findBoardWithMember(any()))
+                .willReturn(board);
+        loginValidation(TRUE);
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+
+
+        // when
+        mockMvc.perform(delete("/api/boards/delete/{boardId}", boardId)
+                .session(session)
+                .contentType(contentType))
+                .andExpect(status().isBadRequest());
+
+        // then
+        verify(boardService, times(1)).delete(boardId);
+    }
+
+
+    private void loginValidation(Boolean bool) {
         if (bool) {
-            given(memberService.loginValidation(member, member))
+            given(memberService.loginValidation(any(), any()))
                     .willReturn(TRUE);
         }
         if (!bool) {
-            given(memberService.loginValidation(member, member))
+            given(memberService.loginValidation(any(), any()))
                     .willReturn(FALSE);
         }
     }
