@@ -11,24 +11,24 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.api.apicontroller.MemberApiController;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
 
-import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static springJpaBoard.Board.user.UserTemplate.*;
+import static springJpaBoard.Board.user.UserTemplate.getMember;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MemberApiController.class)
 @DisplayName("회원가입, 로그인 테스트")
-public class MemberLoginTest {
+public class MemberApiAuthTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -53,8 +53,7 @@ public class MemberLoginTest {
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/members")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
+                .contentType(contentType)
                 .characterEncoding("UTF-8")
                 .content("{" +
                         "   \"loginId\" : \"1\"," +
@@ -69,7 +68,7 @@ public class MemberLoginTest {
         //then
         actions
                 .andExpect(status().isCreated())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.status").value("CREATED"))
                 .andExpect(jsonPath("$.message").value("회원 가입 성공"))
                 .andExpect(jsonPath("$.data").value("1"));
@@ -87,8 +86,7 @@ public class MemberLoginTest {
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/members/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
+                .contentType(contentType)
                 .characterEncoding("UTF-8")
                 .content("{" +
                         "   \"loginId\" : \"1\"," +
@@ -98,7 +96,7 @@ public class MemberLoginTest {
         //then
         actions
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("로그인 성공"))
                 .andExpect(jsonPath("$.data").value("1"));
@@ -116,8 +114,7 @@ public class MemberLoginTest {
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/members/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
+                .contentType(contentType)
                 .characterEncoding("UTF-8")
                 .content("{" +
                         "    \"password\" : \"1\"" +
@@ -126,7 +123,7 @@ public class MemberLoginTest {
         //then
         actions
                 .andExpect(status().isBadRequest())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.code").value("UserException"))
                 .andExpect(jsonPath("$.message").value("로그인: 아이디 또는 비밀번호 오류"));
     }
@@ -137,24 +134,18 @@ public class MemberLoginTest {
         //given
         Member member = getMember();
 
-        given(memberService.login("1", "1"))
-                .willReturn(member);
-
-        HttpSession session = mockMvc.perform(post("/api/members/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"loginId\":\"1\",\"password\":\"1\"}"))
-                .andExpect(status().isOk())
-                .andReturn().getRequest().getSession();
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
 
         // when
         ResultActions actions = mockMvc.perform(post("/api/members/logout")
-                .session((MockHttpSession) session)
-                .contentType(MediaType.APPLICATION_JSON));
+                .session(session)
+                .contentType(contentType));
 
         // then
         actions
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("회원 로그아웃 성공"));
     }
@@ -162,17 +153,17 @@ public class MemberLoginTest {
     @Test
     @DisplayName("[POST] 로그아웃 - 세션이 없는 경우")
     void logoutWithoutSession() throws Exception {
+        //given
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+
         // when
         ResultActions actions = mockMvc.perform(post("/api/members/logout")
-                .contentType(MediaType.APPLICATION_JSON));
+                .contentType(contentType));
 
         // then
         actions
                 .andExpect(status().isBadRequest())
-                .andExpect(result -> {
-                    if (!(result.getResolvedException() instanceof IllegalStateException)) {
-                        throw new AssertionError("Expected IllegalStateException");
-                    }
-                });
+                .andExpect(jsonPath("$.message").value("세션이 존재하지 않습니다."));
     }
 }

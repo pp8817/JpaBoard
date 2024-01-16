@@ -67,12 +67,12 @@ public class MemberApiControllerTest {
         // when
         ResultActions actions = mockMvc.perform(get("/api/members/edit/{memberId}", memberId)
                 .session(session)
-                .contentType(MediaType.APPLICATION_JSON));
+                .contentType(contentType));
 
         // then
         actions
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("회원 데이터 조회 성공"))
                 .andExpect(jsonPath("$.data.id").value("1"))
@@ -98,7 +98,7 @@ public class MemberApiControllerTest {
         // when
         ResultActions actions = mockMvc.perform(get("/api/members/edit/{memberId}", memberId)
                 .session(session)
-                .contentType(MediaType.APPLICATION_JSON));
+                .contentType(contentType));
 
         // then
         actions
@@ -128,7 +128,7 @@ public class MemberApiControllerTest {
         // when
         ResultActions actions = mockMvc.perform(put("/api/members/edit/{memberId}", memberId)
                 .session(session)
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(contentType)
                 .content("{ " +
                         "\"id\": 1," +
                         " \"name\": \"2\"," +
@@ -140,7 +140,7 @@ public class MemberApiControllerTest {
         // then
         actions
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("회원 정보 수정 성공"))
                 .andExpect(jsonPath("$.data.id").value("1"))
@@ -161,7 +161,8 @@ public class MemberApiControllerTest {
 
         // when
         mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
-                .session(session))
+                        .contentType(contentType)
+                        .session(session))
                 .andExpect(status().isOk());
 
         // then
@@ -182,6 +183,7 @@ public class MemberApiControllerTest {
 
         // when
         mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
+                        .contentType(contentType)
                         .session(session))
                 .andExpect(status().isBadRequest());
 
@@ -195,8 +197,13 @@ public class MemberApiControllerTest {
         // given
         long memberId = 1L;
 
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+
         // when
-        mockMvc.perform(delete("/api/members/delete/{memberId}", memberId))
+        mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
+                        .session(session)
+                        .contentType(contentType))
                 .andExpect(status().is3xxRedirection()); //로그인이 되어 있지 않다면 로그인 페이지로 Redirect
     }
 

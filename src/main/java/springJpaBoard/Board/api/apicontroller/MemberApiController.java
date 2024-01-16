@@ -108,7 +108,7 @@ public class MemberApiController {
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
 
-        throw new IllegalStateException("로그아웃: 세션 오류");
+        throw new IllegalStateException("세션이 존재하지 않습니다.");
     }
 
     /* 회원 목록 */
