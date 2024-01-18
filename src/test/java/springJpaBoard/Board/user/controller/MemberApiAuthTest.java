@@ -1,8 +1,11 @@
 package springJpaBoard.Board.user.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -11,7 +14,6 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.api.apicontroller.MemberApiController;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
@@ -24,6 +26,10 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static springJpaBoard.Board.UtilsTemplate.getMember;
+import static springJpaBoard.Board.UtilsTemplate.getSession;
+import static springJpaBoard.Board.controller.memberdto.AuthDto.LoginRequest;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
+import static springJpaBoard.Board.user.UserTemplate.getCreateMemberRequest;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MemberApiController.class)
@@ -33,15 +39,25 @@ public class MemberApiAuthTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     @MockBean
     private MemberService memberService;
 
     @MockBean
     private BoardService boardService;
 
+    @Mock
+    private Member member;
+
     protected MediaType contentType =
             new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
 
+    @BeforeEach
+    public void setUp() throws Exception {
+        member = getMember();
+    }
 
 
     @Test
@@ -51,19 +67,13 @@ public class MemberApiAuthTest {
         given(memberService.join(any()))
                 .willReturn(1L);
 
+        final CreateMemberRequest createMemberRequest = getCreateMemberRequest();
+
         //when
         ResultActions actions = mockMvc.perform(post("/api/members")
                 .contentType(contentType)
                 .characterEncoding("UTF-8")
-                .content("{" +
-                        "   \"loginId\" : \"1\"," +
-                        "    \"password\" : \"1\"," +
-                        "    \"name\": \"1\"," +
-                        "    \"gender\": \"남성\"," +
-                        "    \"city\": \"1\"," +
-                        "    \"street\": \"1\"," +
-                        "    \"zipcode\": \"1\"" +
-                        "}")
+                .content(objectMapper.writeValueAsString(createMemberRequest))
         );
         //then
         actions
@@ -78,20 +88,19 @@ public class MemberApiAuthTest {
     @Test
     @DisplayName("[POST] 로그인")
     public void 로그인() throws Exception {
-        Member member = getMember();
-
         //given
         given(memberService.login("1", "1"))
                 .willReturn(member);
 
+        final LoginRequest loginRequest = LoginRequest.builder()
+                .loginId("1")
+                .password("1")
+                .build();
         //when
         ResultActions actions = mockMvc.perform(post("/api/members/login")
                 .contentType(contentType)
                 .characterEncoding("UTF-8")
-                .content("{" +
-                        "   \"loginId\" : \"1\"," +
-                        "    \"password\" : \"1\"" +
-                        "}")
+                .content(objectMapper.writeValueAsString(loginRequest))
         );
         //then
         actions
@@ -100,14 +109,11 @@ public class MemberApiAuthTest {
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("로그인 성공"))
                 .andExpect(jsonPath("$.data").value("1"));
-
     }
 
     @Test
     @DisplayName("[POST] 로그인 실패 - 검증")
     public void 로그인_실패_검증() throws Exception {
-        Member member = getMember();
-
         //given
         given(memberService.login("1", "1"))
                 .willReturn(member);
@@ -132,10 +138,7 @@ public class MemberApiAuthTest {
     @DisplayName("[POST] 로그아웃 - 세션이 있는 경우")
     void logoutWithSession() throws Exception {
         //given
-        Member member = getMember();
-
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+        MockHttpSession session = getSession(member);
 
         // when
         ResultActions actions = mockMvc.perform(post("/api/members/logout")
@@ -154,8 +157,7 @@ public class MemberApiAuthTest {
     @DisplayName("[POST] 로그아웃 - 세션이 없는 경우")
     void logoutWithoutSession() throws Exception {
         //given
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+        MockHttpSession session = getSession(null);
 
         // when
         ResultActions actions = mockMvc.perform(post("/api/members/logout")

@@ -1,6 +1,7 @@
 package springJpaBoard.Board.board;
 
 import org.jetbrains.annotations.NotNull;
+import springJpaBoard.Board.controller.boarddto.BoardDto;
 
 import static springJpaBoard.Board.controller.boarddto.BoardDto.ModifyBoardRequest;
 import static springJpaBoard.Board.controller.boarddto.BoardDto.ModifyBoardResponse;
@@ -22,6 +23,15 @@ public class BoardTemplate {
                 .title("2")
                 .writer("writer")
                 .content("2")
+                .build();
+    }
+
+    @NotNull
+    public static BoardDto.CreateBoardRequest getCreateBoardRequest() {
+        return BoardDto.CreateBoardRequest.builder()
+                .title("title")
+                .writer("username")
+                .content("content")
                 .build();
     }
 }

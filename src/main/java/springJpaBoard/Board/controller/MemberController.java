@@ -25,7 +25,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static springJpaBoard.Board.controller.boarddto.BoardDto.BoardDetailResponse;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
-import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMember;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMemberRequest;
 
 @Controller
 @RequiredArgsConstructor
@@ -153,14 +153,14 @@ public class MemberController {
     public String updateMemberForm(@PathVariable("memberId") Long memberId, Model model) {
         Member member = memberService.findOne(memberId);
 
-        ModifyMember form = ModifyMember.of(member);
+        ModifyMemberRequest form = ModifyMemberRequest.of(member);
 
         model.addAttribute("form", form);
         return "members/updateMemberForm";
     }
 
     @PostMapping("{memberId}/edit")
-    public String updateMember(@Validated @ModelAttribute("form") ModifyMember form,
+    public String updateMember(@Validated @ModelAttribute("form") ModifyMemberRequest form,
                                BindingResult result) {
         if (result.hasErrors()) {
             return "redirect:/";

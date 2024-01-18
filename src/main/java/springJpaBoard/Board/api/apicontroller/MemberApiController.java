@@ -137,7 +137,7 @@ public class MemberApiController {
 
         if (memberService.loginValidation(loginMember, member)) {
 
-            Message message = new Message(StatusEnum.OK, "회원 데이터 조회 성공", ModifyMember.of(member));
+            Message message = new Message(StatusEnum.OK, "회원 데이터 조회 성공", ModifyMemberRequest.of(member));
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -148,7 +148,7 @@ public class MemberApiController {
     }
 
     @PutMapping("/edit/{memberId}")
-    public ResponseEntity updateMember(@RequestBody @Validated ModifyMember form, @Login Member loginMember, BindingResult result) {
+    public ResponseEntity updateMember(@RequestBody @Validated ModifyMemberRequest form, @Login Member loginMember, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new UserException("회원 수정 오류");
