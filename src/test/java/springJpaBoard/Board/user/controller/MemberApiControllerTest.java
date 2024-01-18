@@ -2,8 +2,8 @@ package springJpaBoard.Board.user.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.aspectj.lang.annotation.Before;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -61,7 +61,7 @@ public class MemberApiControllerTest {
     @Mock
     private Member member;
 
-    @Before("")
+    @BeforeEach
     public void setUp() throws Exception {
         member = getMember();
     }
