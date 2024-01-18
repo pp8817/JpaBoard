@@ -1,9 +1,11 @@
 package springJpaBoard.Board.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -31,10 +33,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static springJpaBoard.Board.UtilsTemplate.getBoard;
-import static springJpaBoard.Board.UtilsTemplate.getMember;
-import static springJpaBoard.Board.board.BoardTemplate.getModifyBoardRequest;
-import static springJpaBoard.Board.board.BoardTemplate.getModifyBoardResponse;
+import static springJpaBoard.Board.UtilsTemplate.*;
+import static springJpaBoard.Board.board.BoardTemplate.*;
 import static springJpaBoard.Board.controller.boarddto.BoardDto.*;
 
 @ExtendWith(SpringExtension.class)
@@ -44,6 +44,9 @@ class BoardApiControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private MemberService memberService;
@@ -57,21 +60,25 @@ class BoardApiControllerTest {
     @MockBean
     private BoardApiRepository boardApiRepository;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     protected MediaType contentType =
             new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
+
+    @Mock
+    private Member member;
+    @Mock
+    private Board board;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        member = getMember();
+        board = getBoard();
+    }
 
     @Test
     @DisplayName("[GET] 게시글 작성")
     public void 게시글_작성_GET() throws Exception {
         //given
-        Member member = getMember();
-
-        /*로그인 세션*/
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        final MockHttpSession session = getSession(member);
 
         //when
         ResultActions actions = mockMvc.perform(get("/api/boards")
@@ -89,16 +96,10 @@ class BoardApiControllerTest {
     @DisplayName("[POST] 게시글 작성 - 로그인 세션이 유효한 경우")
     public void 게시글_작성_POST() throws Exception {
         //given
-        Member member = getMember();
-        CreateBoardRequest request = CreateBoardRequest.builder()
-                .title("title")
-                .writer("username")
-                .content("content")
-                .build();
+        final CreateBoardRequest createBoardRequest = getCreateBoardRequest();
 
         /*로그인 세션*/
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        final MockHttpSession session = getSession(member);
 
         given(boardService.write(any(), any()))
                 .willReturn(1L);
@@ -107,7 +108,7 @@ class BoardApiControllerTest {
         ResultActions actions = mockMvc.perform(post("/api/boards")
                 .session(session)
                 .contentType(contentType)
-                .content(objectMapper.writeValueAsString(request)));
+                .content(objectMapper.writeValueAsString(createBoardRequest)));
 
         //then
         actions
@@ -122,26 +123,20 @@ class BoardApiControllerTest {
     @DisplayName("[POST] 게시글 작성 - 로그인 세션이 유효하지 않은 경우")
     public void 게시글_작성_로그인_세션_X() throws Exception {
         //given
-        Member member = getMember();
-        CreateBoardRequest request = CreateBoardRequest.builder()
-                .title("title")
-                .writer("username")
-                .content("content")
-                .build();
+        final CreateBoardRequest createBoardRequest = getCreateBoardRequest();
 
         given(boardService.write(any(), any()))
                 .willReturn(1L);
 
         /*로그인 세션*/
         // 로그인 세션 생성
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+        final MockHttpSession session = getSession(null);
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/boards")
                 .session(session)
                 .contentType(contentType)
-                .content(objectMapper.writeValueAsString(request)));
+                .content(objectMapper.writeValueAsString(createBoardRequest)));
         //then
         actions
                 .andExpect(status().is3xxRedirection());
@@ -151,16 +146,14 @@ class BoardApiControllerTest {
     @DisplayName("[POST] 게시글 작성 - 양식 오류")
     public void 게시글_작성_검증_오류() throws Exception {
         //given
-        Member member = getMember();
-        CreateBoardRequest request = CreateBoardRequest.builder()
+        final CreateBoardRequest request = CreateBoardRequest.builder()
                 .title("")
                 .writer("username")
                 .content("content")
                 .build();
 
         /*로그인 세션*/
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        final MockHttpSession session = getSession(member);
 
         given(boardService.write(any(), any()))
                 .willReturn(1L);
