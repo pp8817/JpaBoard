@@ -41,14 +41,14 @@ public class MemberDto {
     }
 
     @Builder
-    public record ModifyMember(
+    public record ModifyMemberRequest(
             Long id,
             String name,
             String gender,
             Address address
     ) {
-        public static ModifyMember of(Member member) {
-            return ModifyMember.builder()
+        public static ModifyMemberRequest of(Member member) {
+            return ModifyMemberRequest.builder()
                     .id(member.getId())
                     .name(member.getName())
                     .gender(member.getGender())

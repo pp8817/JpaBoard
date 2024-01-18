@@ -108,6 +108,7 @@ class BoardApiControllerTest {
                 .session(session)
                 .contentType(contentType)
                 .content(objectMapper.writeValueAsString(request)));
+
         //then
         actions
                 .andExpect(status().isOk())

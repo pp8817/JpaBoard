@@ -1,9 +1,13 @@
 package springJpaBoard.Board.user.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.aspectj.lang.annotation.Before;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,6 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.api.apicontroller.MemberApiController;
+import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
@@ -28,9 +33,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static springJpaBoard.Board.UtilsTemplate.*;
+import static springJpaBoard.Board.UtilsTemplate.getMember;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.MemberResponse;
-import static springJpaBoard.Board.user.UserTemplate.*;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMemberRequest;
+import static springJpaBoard.Board.user.UserTemplate.updateMember;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MemberApiController.class)
@@ -39,6 +45,9 @@ public class MemberApiControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @MockBean
     private MemberService memberService;
@@ -49,21 +58,26 @@ public class MemberApiControllerTest {
     protected MediaType contentType =
             new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
 
+    @Mock
+    private Member member;
+
+    @Before("")
+    public void setUp() throws Exception {
+        member = getMember();
+    }
+
     @Test
     @DisplayName("[GET] 회원 수정 - 로그인 세션이 유요한 경우")
     public void 회원수정_GET() throws Exception {
         // given
-        long memberId = 1L;
-        Member member = getMember();
+        Long memberId = member.getId();
 
         given(memberService.findOne(any()))
                 .willReturn(member);
 
         loginValidation(member, TRUE);
 
-        // 로그인 세션 생성
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        MockHttpSession session = getSession(member);
 
         // when
         ResultActions actions = mockMvc.perform(get("/api/members/edit/{memberId}", memberId)
@@ -76,25 +90,22 @@ public class MemberApiControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("회원 데이터 조회 성공"))
-                .andExpect(jsonPath("$.data.id").value("1"))
-                .andExpect(jsonPath("$.data.name").value("1"))
-                .andExpect(jsonPath("$.data.gender").value("남성"));
+                .andExpect(jsonPath("$.data.id").value(memberId))
+                .andExpect(jsonPath("$.data.name").value(member.getName()))
+                .andExpect(jsonPath("$.data.gender").value(member.getGender()));
     }
 
     @Test
     @DisplayName("[GET] 회원 수정 - 로그인 세션이 유효하지 않은 경우")
     public void 회원수정_GET_회원_정보_불일치() throws Exception {
         // given
-        long memberId = 1L;
-        Member member = getMember();
-        MemberResponse updateMember = updateMember();
+        final Long memberId = member.getId();
 
         given(memberService.findOne(any()))
                 .willReturn(member);
 
         // 로그인 세션 생성
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+        final MockHttpSession session = getSession(null);
 
         // when
         ResultActions actions = mockMvc.perform(get("/api/members/edit/{memberId}", memberId)
@@ -106,37 +117,39 @@ public class MemberApiControllerTest {
                 .andExpect(status().is3xxRedirection());
     }
 
+
     @Test
     @DisplayName("[PUT] 회원 수정")
     public void 회원수정_POST() throws Exception {
         // given
-        long memberId = 1L;
         Member member = getMember();
         MemberResponse updateMember = updateMember();
+
+        final Long memberId = member.getId();
 
         given(memberService.findOne(any()))
                 .willReturn(member);
 
-        loginValidation(member, TRUE);
-
         given(memberService.update(any(), any()))
                 .willReturn(updateMember);
 
+        loginValidation(member, TRUE);
+
+        ModifyMemberRequest modifyMemberRequest = ModifyMemberRequest.builder()
+                .id(1L)
+                .name("2")
+                .gender("여성")
+                .address(new Address("2", "2", "2"))
+                .build();
+
         // 로그인 세션 생성
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        MockHttpSession session = getSession(member);
 
         // when
         ResultActions actions = mockMvc.perform(put("/api/members/edit/{memberId}", memberId)
                 .session(session)
                 .contentType(contentType)
-                .content("{ " +
-                        "\"id\": 1," +
-                        " \"name\": \"2\"," +
-                        " \"gender\": \"여성\", " +
-                        "\"city\": \"2\"," +
-                        " \"street\": \"2\"," +
-                        " \"zipcode\": \"2\" }"));
+                .content(objectMapper.writeValueAsString(modifyMemberRequest)));
 
         // then
         actions
@@ -144,9 +157,12 @@ public class MemberApiControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("회원 정보 수정 성공"))
-                .andExpect(jsonPath("$.data.id").value("1"))
-                .andExpect(jsonPath("$.data.name").value("2"))
-                .andExpect(jsonPath("$.data.gender").value("여성"));
+                .andExpect(jsonPath("$.data.id").value(modifyMemberRequest.id()))
+                .andExpect(jsonPath("$.data.name").value(modifyMemberRequest.name()))
+                .andExpect(jsonPath("$.data.gender").value(modifyMemberRequest.gender()))
+                .andExpect(jsonPath("$.data.address.city").value(modifyMemberRequest.address().getCity()))
+                .andExpect(jsonPath("$.data.address.street").value(modifyMemberRequest.address().getStreet()))
+                .andExpect(jsonPath("$.data.address.zipcode").value(modifyMemberRequest.address().getZipcode()));
     }
 
     @Test
@@ -227,4 +243,10 @@ public class MemberApiControllerTest {
         }
     }
 
+    @NotNull
+    private static MockHttpSession getSession(Member member) {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        return session;
+    }
 }

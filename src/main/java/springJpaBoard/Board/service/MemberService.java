@@ -118,7 +118,7 @@ public class MemberService {
      * 회원 정보 수정
      */
     @Transactional
-    public MemberResponse update(Long memberId, ModifyMember memberDto) {
+    public MemberResponse update(Long memberId, ModifyMemberRequest memberDto) {
         /*
         Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현
          */
