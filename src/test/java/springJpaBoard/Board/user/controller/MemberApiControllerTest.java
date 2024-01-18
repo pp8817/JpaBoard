@@ -70,14 +70,14 @@ public class MemberApiControllerTest {
     @DisplayName("[GET] 회원 수정 - 로그인 세션이 유요한 경우")
     public void 회원수정_GET() throws Exception {
         // given
-        Long memberId = member.getId();
+        final Long memberId = member.getId();
 
         given(memberService.findOne(any()))
                 .willReturn(member);
 
         loginValidation(member, TRUE);
 
-        MockHttpSession session = getSession(member);
+        final MockHttpSession session = getSession(member);
 
         // when
         ResultActions actions = mockMvc.perform(get("/api/members/edit/{memberId}", memberId)
@@ -122,8 +122,7 @@ public class MemberApiControllerTest {
     @DisplayName("[PUT] 회원 수정")
     public void 회원수정_POST() throws Exception {
         // given
-        Member member = getMember();
-        MemberResponse updateMember = updateMember();
+        final MemberResponse updateMember = updateMember();
 
         final Long memberId = member.getId();
 
@@ -135,7 +134,7 @@ public class MemberApiControllerTest {
 
         loginValidation(member, TRUE);
 
-        ModifyMemberRequest modifyMemberRequest = ModifyMemberRequest.builder()
+        final ModifyMemberRequest modifyMemberRequest = ModifyMemberRequest.builder()
                 .id(1L)
                 .name("2")
                 .gender("여성")
@@ -143,7 +142,7 @@ public class MemberApiControllerTest {
                 .build();
 
         // 로그인 세션 생성
-        MockHttpSession session = getSession(member);
+        final MockHttpSession session = getSession(member);
 
         // when
         ResultActions actions = mockMvc.perform(put("/api/members/edit/{memberId}", memberId)
@@ -176,7 +175,7 @@ public class MemberApiControllerTest {
         loginValidation(member, TRUE);
 
         // 로그인 세션 생성
-        MockHttpSession session = getSession(member);
+        final MockHttpSession session = getSession(member);
 
         // when
         mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
@@ -201,7 +200,7 @@ public class MemberApiControllerTest {
         loginValidation(member, TRUE);
 
         // 로그인 세션 생성
-        MockHttpSession session = getSession(member);
+        final MockHttpSession session = getSession(member);
 
         // when
         mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
@@ -219,7 +218,7 @@ public class MemberApiControllerTest {
         // given
         final Long memberId = member.getId();
 
-        MockHttpSession session = getSession(null);
+        final MockHttpSession session = getSession(null);
 
         // when
         mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
