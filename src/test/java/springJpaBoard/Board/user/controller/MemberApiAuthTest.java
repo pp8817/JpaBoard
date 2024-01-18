@@ -14,7 +14,6 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.api.apicontroller.MemberApiController;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
@@ -27,6 +26,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static springJpaBoard.Board.UtilsTemplate.getMember;
+import static springJpaBoard.Board.UtilsTemplate.getSession;
 import static springJpaBoard.Board.controller.memberdto.AuthDto.LoginRequest;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
 import static springJpaBoard.Board.user.UserTemplate.getCreateMemberRequest;
@@ -92,7 +92,7 @@ public class MemberApiAuthTest {
         given(memberService.login("1", "1"))
                 .willReturn(member);
 
-        LoginRequest loginRequest = LoginRequest.builder()
+        final LoginRequest loginRequest = LoginRequest.builder()
                 .loginId("1")
                 .password("1")
                 .build();
@@ -114,8 +114,6 @@ public class MemberApiAuthTest {
     @Test
     @DisplayName("[POST] 로그인 실패 - 검증")
     public void 로그인_실패_검증() throws Exception {
-        Member member = getMember();
-
         //given
         given(memberService.login("1", "1"))
                 .willReturn(member);
@@ -140,10 +138,7 @@ public class MemberApiAuthTest {
     @DisplayName("[POST] 로그아웃 - 세션이 있는 경우")
     void logoutWithSession() throws Exception {
         //given
-        Member member = getMember();
-
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+        MockHttpSession session = getSession(member);
 
         // when
         ResultActions actions = mockMvc.perform(post("/api/members/logout")
@@ -162,8 +157,7 @@ public class MemberApiAuthTest {
     @DisplayName("[POST] 로그아웃 - 세션이 없는 경우")
     void logoutWithoutSession() throws Exception {
         //given
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+        MockHttpSession session = getSession(null);
 
         // when
         ResultActions actions = mockMvc.perform(post("/api/members/logout")
