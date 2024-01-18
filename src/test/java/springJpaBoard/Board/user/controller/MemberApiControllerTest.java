@@ -2,7 +2,6 @@ package springJpaBoard.Board.user.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import springJpaBoard.Board.Error.exception.UserException;
-import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.api.apicontroller.MemberApiController;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
@@ -33,6 +31,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static springJpaBoard.Board.UtilsTemplate.getMember;
+import static springJpaBoard.Board.UtilsTemplate.getSession;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.MemberResponse;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMemberRequest;
 import static springJpaBoard.Board.user.UserTemplate.getModifyMemberRequest;
@@ -231,12 +230,5 @@ public class MemberApiControllerTest {
             given(memberService.loginValidation(member, member))
                     .willReturn(FALSE);
         }
-    }
-
-    @NotNull
-    private static MockHttpSession getSession(Member member) {
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
-        return session;
     }
 }

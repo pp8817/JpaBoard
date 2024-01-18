@@ -1,11 +1,19 @@
 package springJpaBoard.Board;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.mock.web.MockHttpSession;
 import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Board;
 import springJpaBoard.Board.domain.Member;
 
 public class UtilsTemplate {
+    @NotNull
+    public static MockHttpSession getSession(Member member) {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        return session;
+    }
+
     @NotNull
     public static Board getBoard() {
         return Board.builder()
