@@ -1,8 +1,11 @@
 package springJpaBoard.Board.user.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,6 +27,8 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static springJpaBoard.Board.UtilsTemplate.getMember;
+import static springJpaBoard.Board.controller.memberdto.AuthDto.LoginRequest;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MemberApiController.class)
@@ -33,15 +38,25 @@ public class MemberApiAuthTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     @MockBean
     private MemberService memberService;
 
     @MockBean
     private BoardService boardService;
 
+    @Mock
+    private Member member;
+
     protected MediaType contentType =
             new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
 
+    @Before("")
+    public void setUp() throws Exception {
+        member = getMember();
+    }
 
 
     @Test
@@ -51,19 +66,21 @@ public class MemberApiAuthTest {
         given(memberService.join(any()))
                 .willReturn(1L);
 
+        CreateMemberRequest createMemberRequest = CreateMemberRequest.builder()
+                .loginId("1")
+                .password("1")
+                .name("1")
+                .gender("남성")
+                .city("1")
+                .street("1")
+                .zipcode("1")
+                .build();
+
         //when
         ResultActions actions = mockMvc.perform(post("/api/members")
                 .contentType(contentType)
                 .characterEncoding("UTF-8")
-                .content("{" +
-                        "   \"loginId\" : \"1\"," +
-                        "    \"password\" : \"1\"," +
-                        "    \"name\": \"1\"," +
-                        "    \"gender\": \"남성\"," +
-                        "    \"city\": \"1\"," +
-                        "    \"street\": \"1\"," +
-                        "    \"zipcode\": \"1\"" +
-                        "}")
+                .content(objectMapper.writeValueAsString(createMemberRequest))
         );
         //then
         actions
@@ -78,20 +95,19 @@ public class MemberApiAuthTest {
     @Test
     @DisplayName("[POST] 로그인")
     public void 로그인() throws Exception {
-        Member member = getMember();
-
         //given
         given(memberService.login("1", "1"))
                 .willReturn(member);
 
+        LoginRequest loginRequest = LoginRequest.builder()
+                .loginId("1")
+                .password("1")
+                .build();
         //when
         ResultActions actions = mockMvc.perform(post("/api/members/login")
                 .contentType(contentType)
                 .characterEncoding("UTF-8")
-                .content("{" +
-                        "   \"loginId\" : \"1\"," +
-                        "    \"password\" : \"1\"" +
-                        "}")
+                .content(objectMapper.writeValueAsString(loginRequest))
         );
         //then
         actions

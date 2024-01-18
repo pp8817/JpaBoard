@@ -28,13 +28,6 @@ public class MemberService {
     @Transactional(readOnly = false)
     public Long join(CreateMemberRequest memberRequestDTO) {
 
-
-//        Address address = Address.builder()
-//                .city(memberRequestDTO.city())
-//                .street(memberRequestDTO.street())
-//                .zipcode(memberRequestDTO.zipcode())
-//                .build();
-
         Member member = memberRequestDTO.toEntity();
 
         validateDuplicateMember(member);
