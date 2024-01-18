@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.api.apicontroller.MemberApiController;
-import springJpaBoard.Board.domain.Address;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
@@ -36,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static springJpaBoard.Board.UtilsTemplate.getMember;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.MemberResponse;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMemberRequest;
+import static springJpaBoard.Board.user.UserTemplate.getModifyMemberRequest;
 import static springJpaBoard.Board.user.UserTemplate.updateMember;
 
 @ExtendWith(SpringExtension.class)
@@ -134,12 +134,7 @@ public class MemberApiControllerTest {
 
         loginValidation(member, TRUE);
 
-        final ModifyMemberRequest modifyMemberRequest = ModifyMemberRequest.builder()
-                .id(1L)
-                .name("2")
-                .gender("여성")
-                .address(new Address("2", "2", "2"))
-                .build();
+        final ModifyMemberRequest modifyMemberRequest = getModifyMemberRequest();
 
         // 로그인 세션 생성
         final MockHttpSession session = getSession(member);

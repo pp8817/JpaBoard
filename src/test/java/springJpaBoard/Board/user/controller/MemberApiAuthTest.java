@@ -1,7 +1,7 @@
 package springJpaBoard.Board.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static springJpaBoard.Board.UtilsTemplate.getMember;
 import static springJpaBoard.Board.controller.memberdto.AuthDto.LoginRequest;
 import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
+import static springJpaBoard.Board.user.UserTemplate.getCreateMemberRequest;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MemberApiController.class)
@@ -53,7 +54,7 @@ public class MemberApiAuthTest {
     protected MediaType contentType =
             new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
 
-    @Before("")
+    @BeforeEach
     public void setUp() throws Exception {
         member = getMember();
     }
@@ -66,15 +67,7 @@ public class MemberApiAuthTest {
         given(memberService.join(any()))
                 .willReturn(1L);
 
-        CreateMemberRequest createMemberRequest = CreateMemberRequest.builder()
-                .loginId("1")
-                .password("1")
-                .name("1")
-                .gender("남성")
-                .city("1")
-                .street("1")
-                .zipcode("1")
-                .build();
+        final CreateMemberRequest createMemberRequest = getCreateMemberRequest();
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/members")
@@ -116,7 +109,6 @@ public class MemberApiAuthTest {
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("로그인 성공"))
                 .andExpect(jsonPath("$.data").value("1"));
-
     }
 
     @Test
