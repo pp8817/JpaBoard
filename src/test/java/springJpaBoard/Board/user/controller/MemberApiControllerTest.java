@@ -169,16 +169,14 @@ public class MemberApiControllerTest {
     @DisplayName("[DELETE] 회원 삭제 - 로그인 세션 유효")
     public void 회원_삭제_로그인_세션_유효() throws Exception {
         // given
-        long memberId = 1L;
-        Member member = getMember();
+        final Long memberId = member.getId();
 
         given(memberService.findOne(any()))
                 .willReturn(member);
         loginValidation(member, TRUE);
 
         // 로그인 세션 생성
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        MockHttpSession session = getSession(member);
 
         // when
         mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
@@ -194,8 +192,8 @@ public class MemberApiControllerTest {
     @DisplayName("[DELETE] 회원 삭제 - 회원이 존재하지 않음")
     public void 회원_삭제_회원_존재_X() throws Exception {
         // given
-        long memberId = 1L;
-        Member member = getMember();
+        final Long memberId = member.getId();
+
         doThrow(new UserException("회원을 찾을 수 없습니다.")).when(memberService).delete(memberId);
 
         given(memberService.findOne(any()))
@@ -203,8 +201,7 @@ public class MemberApiControllerTest {
         loginValidation(member, TRUE);
 
         // 로그인 세션 생성
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        MockHttpSession session = getSession(member);
 
         // when
         mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
@@ -220,10 +217,9 @@ public class MemberApiControllerTest {
     @DisplayName("[DELETE] 회원 삭제 - 로그인 세션 유효 X")
     public void 회원_삭제_로그인_세션_유효_X() throws Exception {
         // given
-        long memberId = 1L;
+        final Long memberId = member.getId();
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+        MockHttpSession session = getSession(null);
 
         // when
         mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
