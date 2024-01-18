@@ -206,8 +206,7 @@ class BoardApiControllerTest {
         loginValidation(TRUE);
 
         /*로그인 세션*/
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        final MockHttpSession session = getSession(member);
 
         //when
         ResultActions actions = mockMvc.perform(get("/api/boards/edit/{boardId}", boardId)
@@ -220,20 +219,17 @@ class BoardApiControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("게시글 수정 페이지 조회"))
-                .andExpect(jsonPath("$.data.title").value("title"))
-                .andExpect(jsonPath("$.data.content").value("content"))
-                .andExpect(jsonPath("$.data.writer").value("writer"));
+                .andExpect(jsonPath("$.data.title").value(board.getTitle()))
+                .andExpect(jsonPath("$.data.content").value(board.getContent()))
+                .andExpect(jsonPath("$.data.writer").value(board.getWriter()));
     }
 
     @Test
     @DisplayName("[GET] 게시글 수정 - 로그인 세션 유효하지 않음")
     public void 게시글_수정_페이지_로그인_세션_유효_X() throws Exception {
         //given
-        Long boardId = 1L;
-        Member member = getMember();
-        Board board = getBoard();
+        final Long boardId = 1L;
         board.setMember(member);
-
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
@@ -241,8 +237,7 @@ class BoardApiControllerTest {
         loginValidation(TRUE);
 
         /*로그인 세션*/
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
+        MockHttpSession session = getSession(null);
 
         //when
         ResultActions actions = mockMvc.perform(get("/api/boards/edit/{boardId}", boardId)
@@ -258,9 +253,7 @@ class BoardApiControllerTest {
     @DisplayName("[GET] 게시글 수정 - 회원 정보 불일치")
     public void 게시글_수정_페이지_회원_정보_불일치() throws Exception {
         //given
-        Long boardId = 1L;
-        Member member = getMember();
-        Board board = getBoard();
+        final Long boardId = 1L;
         board.setMember(member);
 
         given(boardApiRepository.findBoardWithMember(any()))
@@ -269,8 +262,7 @@ class BoardApiControllerTest {
         loginValidation(FALSE);
 
         /*로그인 세션*/
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        final MockHttpSession session = getSession(member);
 
         //when
         ResultActions actions = mockMvc.perform(get("/api/boards/edit/{boardId}", boardId)
@@ -287,11 +279,9 @@ class BoardApiControllerTest {
     @DisplayName("[PUT] 게시글 수정 - 로그인 세션 유효")
     public void 게시글_수정_로그인_세션_유효() throws Exception {
         //given
-        Member member = getMember();
-        Board board = getBoard();
         board.setMember(member);
-        ModifyBoardRequest modifyBoardRequest = getModifyBoardRequest();
-        ModifyBoardResponse modifyBoardResponse = getModifyBoardResponse();
+        final ModifyBoardRequest modifyBoardRequest = getModifyBoardRequest();
+        final ModifyBoardResponse modifyBoardResponse = getModifyBoardResponse();
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
@@ -302,8 +292,7 @@ class BoardApiControllerTest {
         loginValidation(TRUE);
 
         /*로그인 세션*/
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        final MockHttpSession session = getSession(member);
 
         //when
         ResultActions actions = mockMvc.perform(put("/api/boards/edit/{boardId}", 1L)
@@ -318,20 +307,17 @@ class BoardApiControllerTest {
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("게시글 수정 성공"))
                 .andExpect(jsonPath("$.data.id").value(1L))
-                .andExpect(jsonPath("$.data.title").value("2"))
-                .andExpect(jsonPath("$.data.writer").value("writer"))
-                .andExpect(jsonPath("$.data.content").value("2"));
-
+                .andExpect(jsonPath("$.data.title").value(modifyBoardResponse.title()))
+                .andExpect(jsonPath("$.data.writer").value(modifyBoardResponse.writer()))
+                .andExpect(jsonPath("$.data.content").value(modifyBoardResponse.content()));
     }
 
     @Test
     @DisplayName("[PUT] 게시글 수정 - 회원 정보 불일치")
     public void 게시글_수정_회원_정보_불일치() throws Exception {
         //given
-        Member member = getMember();
-        Board board = getBoard();
         board.setMember(member);
-        ModifyBoardRequest modifyBoardRequest = getModifyBoardRequest();
+        final ModifyBoardRequest modifyBoardRequest = getModifyBoardRequest();
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
@@ -339,8 +325,7 @@ class BoardApiControllerTest {
         loginValidation(FALSE);
 
         /*로그인 세션*/
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        MockHttpSession session = getSession(member);
 
         //when
         ResultActions actions = mockMvc.perform(put("/api/boards/edit/{boardId}", 1L)
