@@ -172,8 +172,7 @@ class BoardApiControllerTest {
     @DisplayName("[GET] 게시글 상세")
     public void 게시글_상세() throws Exception {
         //given
-        Long boardId = 1L;
-        Board board = getBoard();
+        final Long boardId = 1L;
 
         given(boardService.findOne(any()))
                 .willReturn(board);
@@ -188,9 +187,9 @@ class BoardApiControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(contentType))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("게시글 상세 페이지 조회 성공"))
-                .andExpect(jsonPath("$.data.title").value("title"))
-                .andExpect(jsonPath("$.data.content").value("content"))
-                .andExpect(jsonPath("$.data.writer").value("writer"))
+                .andExpect(jsonPath("$.data.title").value(board.getTitle()))
+                .andExpect(jsonPath("$.data.content").value(board.getContent()))
+                .andExpect(jsonPath("$.data.writer").value(board.getWriter()))
                 .andExpect(jsonPath("$.data.likes").value(0));
     }
 
@@ -198,9 +197,7 @@ class BoardApiControllerTest {
     @DisplayName("[GET] 게시글 수정 - 로그인 세션 유효")
     public void 게시글_수정_페이지_로그인_세션_유효() throws Exception {
         //given
-        Long boardId = 1L;
-        Member member = getMember();
-        Board board = getBoard();
+        final Long boardId = 1L;
         board.setMember(member);
 
         given(boardApiRepository.findBoardWithMember(any()))
