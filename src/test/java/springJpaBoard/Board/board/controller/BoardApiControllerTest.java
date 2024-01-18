@@ -14,7 +14,6 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.SessionConst;
 import springJpaBoard.Board.api.apicontroller.BoardApiController;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
 import springJpaBoard.Board.domain.Board;
@@ -325,7 +324,7 @@ class BoardApiControllerTest {
         loginValidation(FALSE);
 
         /*로그인 세션*/
-        MockHttpSession session = getSession(member);
+        final MockHttpSession session = getSession(member);
 
         //when
         ResultActions actions = mockMvc.perform(put("/api/boards/edit/{boardId}", 1L)
@@ -343,12 +342,9 @@ class BoardApiControllerTest {
     @DisplayName("[DELETE] 게시글 삭제 - 로그인 세션 유효")
     public void 게시글_삭제_로그인_세션_유효() throws Exception {
         // given
-        Long boardId = 1L;
-        Member member = getMember();
-        Board board = getBoard();
+        final Long boardId = 1L;
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        final MockHttpSession session = getSession(member);
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
@@ -368,12 +364,9 @@ class BoardApiControllerTest {
     @DisplayName("[DELETE] 게시글 삭제 - 로그인 세션 유효_X")
     public void 게시글_삭제_로그인_세션_유효_X() throws Exception {
         // given
-        Long boardId = 1L;
-        Member member = getMember();
+        final Long boardId = 1L;
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, null);
-
+        final MockHttpSession session = getSession(null);
 
         // when
         ResultActions actions = mockMvc.perform(delete("/api/boards/delete/{boardId}", boardId)
@@ -390,16 +383,14 @@ class BoardApiControllerTest {
     public void 게시글_삭제_게시글_존재_X() throws Exception {
         // given
         Long boardId = 1L;
-        Member member = getMember();
-        Board board = getBoard();
+
         doThrow(new NoSuchElementException("게시글을 찾을 수 없습니다.")).when(boardService).delete(boardId);
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
         loginValidation(TRUE);
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        final MockHttpSession session = getSession(member);
 
 
         // when
