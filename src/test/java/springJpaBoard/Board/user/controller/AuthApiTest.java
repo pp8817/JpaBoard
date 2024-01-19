@@ -14,9 +14,8 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.api.apicontroller.MemberApiController;
+import springJpaBoard.Board.api.apicontroller.AuthApi;
 import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.service.BoardService;
 import springJpaBoard.Board.service.MemberService;
 
 import java.nio.charset.StandardCharsets;
@@ -32,9 +31,9 @@ import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRe
 import static springJpaBoard.Board.user.UserTemplate.getCreateMemberRequest;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(MemberApiController.class)
+@WebMvcTest(AuthApi.class)
 @DisplayName("회원가입, 로그인 테스트")
-public class MemberApiAuthTest {
+public class AuthApiTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,9 +43,6 @@ public class MemberApiAuthTest {
 
     @MockBean
     private MemberService memberService;
-
-    @MockBean
-    private BoardService boardService;
 
     @Mock
     private Member member;
