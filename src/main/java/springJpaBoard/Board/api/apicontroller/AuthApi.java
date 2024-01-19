@@ -13,8 +13,6 @@ import springJpaBoard.Board.Error.Message;
 import springJpaBoard.Board.Error.StatusEnum;
 import springJpaBoard.Board.Error.exception.UserException;
 import springJpaBoard.Board.SessionConst;
-import springJpaBoard.Board.controller.memberdto.AuthDto;
-import springJpaBoard.Board.controller.memberdto.MemberDto;
 import springJpaBoard.Board.domain.Member;
 import springJpaBoard.Board.service.MemberService;
 
@@ -22,6 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.nio.charset.Charset;
+
+import static springJpaBoard.Board.controller.memberdto.AuthDto.LoginRequest;
+import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,17 +34,16 @@ public class AuthApi {
 
     /* 회원가입 */
     @PostMapping
-    public ResponseEntity join(@RequestBody @Validated MemberDto.CreateMemberRequest memberRequestDTO, BindingResult result) {
+    public ResponseEntity join(@RequestBody @Validated final CreateMemberRequest memberRequestDTO, BindingResult result) {
         if (result.hasErrors()) {
             throw new UserException("회원가입: 회원 정보 입력 오류");
         }
 
-        Long id = memberService.join(memberRequestDTO);
+        final Long id = memberService.join(memberRequestDTO);
 
-        Message message = new Message(StatusEnum.CREATED, "회원 가입 성공", id);
+        final Message message = new Message(StatusEnum.CREATED, "회원 가입 성공", id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
 
         return new ResponseEntity<>(message, headers, HttpStatus.CREATED);
     }
@@ -52,13 +52,13 @@ public class AuthApi {
     // TODO - redirectURL 해결
     // 현재 생각한 방법: Result 타입에 redirectURL을 추가해서 같이 반환
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthDto.LoginRequest loginRequest, BindingResult result,
-                                @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
+    public ResponseEntity login(@RequestBody @Valid final LoginRequest loginRequest, BindingResult result,
+                                @RequestParam(defaultValue = "/") final String redirectURL, HttpServletRequest request) {
         if (result.hasErrors()) {
             throw new UserException("로그인: 아이디 또는 비밀번호 오류");
         }
 
-        Member loginMember = memberService.login(loginRequest.loginId(), loginRequest.password());
+        final Member loginMember = memberService.login(loginRequest.loginId(), loginRequest.password());
 
         if (loginMember == null) {
             result.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
@@ -71,7 +71,7 @@ public class AuthApi {
         /*세션에 로그인 회원 정보 보관*/
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-        Message message = new Message(StatusEnum.OK, "로그인 성공", loginMember.getLoginId());
+        final Message message = new Message(StatusEnum.OK, "로그인 성공", loginMember.getLoginId());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -87,7 +87,7 @@ public class AuthApi {
         if (session != null) {
             session.invalidate(); //세션 강제 종료
 
-            Message message = new Message(StatusEnum.OK, "회원 로그아웃 성공");
+            final Message message = new Message(StatusEnum.OK, "회원 로그아웃 성공");
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
