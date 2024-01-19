@@ -43,15 +43,15 @@ public class MemberApiController {
 
     /* 회원 목록 */
     @GetMapping
-    public ResponseEntity<Message> members(@RequestBody MemberSearch memberSearch, @PageableDefault(page = 0, size=9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<Message> members(@RequestBody final MemberSearch memberSearch, @PageableDefault(page = 0, size=9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<Member> memberList = memberListSearch(memberSearch, pageable);
+        final Page<Member> memberList = memberListSearch(memberSearch, pageable);
 
-        List<MemberResponse> members = memberList.stream().
+        final List<MemberResponse> members = memberList.stream().
                 map(MemberResponse::of).
                 collect(toList());
 
-        Message message = new Message(StatusEnum.OK, "회원 목록 조회 성공", members);
+        final Message message = new Message(StatusEnum.OK, "회원 목록 조회 성공", members);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -60,13 +60,13 @@ public class MemberApiController {
 
 
     /* 회원 수정 */@GetMapping("/edit/{memberId}")
-    public ResponseEntity updateForm(@PathVariable Long memberId, @Login Member loginMember) {
+    public ResponseEntity updateForm(@PathVariable final Long memberId, @Login final Member loginMember) {
 
-        Member member = memberService.findOne(memberId);
+        final Member member = memberService.findOne(memberId);
 
         if (memberService.loginValidation(loginMember, member)) {
 
-            Message message = new Message(StatusEnum.OK, "회원 데이터 조회 성공", ModifyMemberRequest.of(member));
+            final Message message = new Message(StatusEnum.OK, "회원 데이터 조회 성공", ModifyMemberRequest.of(member));
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -77,16 +77,17 @@ public class MemberApiController {
     }
 
     @PutMapping("/edit/{memberId}")
-    public ResponseEntity updateMember(@RequestBody @Validated ModifyMemberRequest form, @Login Member loginMember, BindingResult result) {
+    public ResponseEntity updateMember(@RequestBody @Validated final ModifyMemberRequest modifyMemberRequest, @Login final Member loginMember,
+                                       @PathVariable final Long memberId, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new UserException("회원 수정 오류");
         }
 
-        Member member = memberService.findOne(form.id());
+        Member member = memberService.findOne(memberId);
 
         if (memberService.loginValidation(loginMember, member)) {
-            MemberResponse updateMember = memberService.update(form.id(), form);
+            MemberResponse updateMember = memberService.update(memberId, modifyMemberRequest);
 
             Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공", updateMember);
             HttpHeaders headers = new HttpHeaders();
