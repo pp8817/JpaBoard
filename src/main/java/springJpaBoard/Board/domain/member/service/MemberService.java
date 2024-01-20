@@ -14,8 +14,6 @@ import springJpaBoard.Board.global.Error.exception.ErrorCode;
 import java.util.List;
 import java.util.Objects;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
 import static springJpaBoard.Board.domain.member.dto.MemberDto.*;
 
 @Service
@@ -38,17 +36,9 @@ public class MemberService {
         return member.getId();
     }
 
-
     /**
      * 회원 로그인
-     * loginId와 password 정보가 정확하다면 회원 객체 반환
-     * 틀리다면 null 반환
      */
-//    public Member login(String loginId, String password) {
-//        return memberRepository.findByLoginId(loginId)
-//                .filter(m -> m.getPassword().equals(password))
-//                .orElse(null);
-//    }
 
     public Member login(String loginId, String password) {
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(() -> new UserException(ErrorCode.NOT_FOUND_USER));
@@ -62,13 +52,19 @@ public class MemberService {
         }
     }
 
-    public Boolean loginValidation(Member loginMember, Member BoardMember) {
-
-        if ((loginMember.getLoginId().equals(BoardMember.getLoginId()) && (loginMember.getPassword().equals(BoardMember.getPassword())))) {
-            return TRUE;
+    public void loginValidation(Member loginMember, Member boardMember) {
+        if ((!Objects.equals(loginMember.getLoginId(), boardMember.getLoginId()))||(!Objects.equals(loginMember.getPassword(), boardMember.getPassword()))) {
+            throw new UserException(ErrorCode.USER_MISMATCH);
         }
-        return FALSE;
     }
+
+//    public Boolean loginValidation(Member loginMember, Member BoardMember) {
+//
+//        if ((loginMember.getLoginId().equals(BoardMember.getLoginId()) && (loginMember.getPassword().equals(BoardMember.getPassword())))) {
+//            return TRUE;
+//        }
+//        return FALSE;
+//    }
 
     /**
      * 중복 회원 검사

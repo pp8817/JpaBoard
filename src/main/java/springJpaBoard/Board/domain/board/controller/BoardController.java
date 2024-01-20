@@ -152,15 +152,13 @@ public class BoardController {
         Member boardMember = board.getMember();
 
 
-        if (memberService.loginValidation(loginMember, boardMember)) {
+        memberService.loginValidation(loginMember, boardMember)
 
-            ModifyBoardResponse modifyBoardResponse = ModifyBoardResponse.of(board);
-            model.addAttribute("boardForm", modifyBoardResponse);
+        ModifyBoardResponse modifyBoardResponse = ModifyBoardResponse.of(board);
+        model.addAttribute("boardForm", modifyBoardResponse);
 
-            return "/boards/updateBoardForm";
-        }
+        return "/boards/updateBoardForm";
 
-        return "redirect:/boards/"+boardId+"/detail";
     }
 
     @PostMapping("/{boardId}/edit")
@@ -170,12 +168,9 @@ public class BoardController {
         Board board = boardApiRepository.findBoardWithMember(boardId);
         Member boardMember = board.getMember();
 
-        if (memberService.loginValidation(loginMember, boardMember)) {
-            boardService.update(board, boardRequestDTO);
-            return "redirect:/boards/" + boardId + "/detail"; //게시글 수정 후 게시글 목록으로 이동
-        }
-
-        return "redirect:/"; //잘못된 요청인 경우 홈으로
+        memberService.loginValidation(loginMember, boardMember);
+        boardService.update(board, boardRequestDTO);
+        return "redirect:/boards/" + boardId + "/detail"; //게시글 수정 후 게시글 목록으로 이동
     }
 
     /**
@@ -186,12 +181,11 @@ public class BoardController {
         //세션에 회원 데이터가 없으면 home
         Board board = boardService.findOne(boardId);
         Member boardMember = board.getMember();
-        if (memberService.loginValidation(loginMember, boardMember)) {
-            boardService.delete(boardId);
-            return "redirect:/boards";
-        }
 
-        return "redirect:/boards/" + boardId + "/detail";
+        memberService.loginValidation(loginMember, boardMember);
+        boardService.delete(boardId);
+
+        return "redirect:/boards";
     }
 
     /**

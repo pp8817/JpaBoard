@@ -17,8 +17,9 @@ public enum ErrorCode {
 
     //Login, Join
     UNAUTHORIZED_USER(401, "A001", "로그인이 필요합니다."),
-    USER_ALREADY_EXISTS(400, "A004", "이미 가입된 유저입니다."),
-    NEED_TO_JOIN(400, "A005", "회원가입이 필요합니다."),
+    USER_ALREADY_EXISTS(400, "A002", "이미 가입된 유저입니다."),
+    NEED_TO_JOIN(400, "A003", "회원가입이 필요합니다."),
+    USER_MISMATCH(401, "A004", "회원 정보가 불일치합니다."),
 
     //Member
     NICKNAME_DUPLICATION(409, "U001", "중복되는 닉네임입니다."),

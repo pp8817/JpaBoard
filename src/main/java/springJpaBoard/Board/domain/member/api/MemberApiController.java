@@ -12,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.domain.board.service.BoardService;
@@ -21,7 +20,6 @@ import springJpaBoard.Board.domain.member.model.MemberSearch;
 import springJpaBoard.Board.domain.member.service.MemberService;
 import springJpaBoard.Board.global.Error.Message;
 import springJpaBoard.Board.global.Error.StatusEnum;
-import springJpaBoard.Board.global.Error.exception.UserException;
 import springJpaBoard.Board.global.argumenresolver.Login;
 
 import java.nio.charset.Charset;
@@ -64,50 +62,40 @@ public class MemberApiController {
 
         final Member member = memberService.findOne(memberId);
 
-        if (memberService.loginValidation(loginMember, member)) {
+        memberService.loginValidation(loginMember, member);
 
-            final Message message = new Message(StatusEnum.OK, "회원 데이터 조회 성공", ModifyMemberRequest.of(member));
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        final Message message = new Message(StatusEnum.OK, "회원 데이터 조회 성공", ModifyMemberRequest.of(member));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        }
-
-        throw new UserException("회원 정보가 일치하지 않습니다.");
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     @PutMapping("/edit/{memberId}")
     public ResponseEntity updateMember(@RequestBody @Validated final ModifyMemberRequest modifyMemberRequest, @Login final Member loginMember,
-                                       @PathVariable final Long memberId, BindingResult result) {
-
-        if (result.hasErrors()) {
-            throw new UserException("회원 수정 오류");
-        }
+                                       @PathVariable final Long memberId) {
 
         final Member member = memberService.findOne(memberId);
 
-        if (memberService.loginValidation(loginMember, member)) {
-            final MemberResponse memberResponse = memberService.update(memberId, modifyMemberRequest);
+        memberService.loginValidation(loginMember, member);
+        final MemberResponse memberResponse = memberService.update(memberId, modifyMemberRequest);
 
-            final Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공", memberResponse);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        final Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공", memberResponse);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        }
-
-        throw new UserException("회원 정보가 일치하지 않습니다.");
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     /* 회원 삭제 */
     @DeleteMapping("/delete/{memberId}")
     public ResponseEntity deleteMember(@PathVariable final Long memberId, @Login final Member loginMember) {
         final Member member = memberService.findOne(memberId);
-        if (memberService.loginValidation(member, loginMember)) {
-            memberService.delete(memberId);
-            return ResponseEntity.status(HttpStatus.OK).body("회원 삭제 성공");
-        }
-        throw new UserException("회원 정보 불일치");
+
+        memberService.loginValidation(member, loginMember);
+        memberService.delete(memberId);
+
+        return ResponseEntity.status(HttpStatus.OK).body("회원 삭제 성공");
     }
 
     /**
@@ -116,7 +104,7 @@ public class MemberApiController {
     @GetMapping("/myPosts")
     public ResponseEntity boardList(@Login final Member loginMember) {
 
-        final Member member = memberService.findOne(loginMember.getId()); // 1
+        final Member member = memberService.findOne(loginMember.getId());
 
         final List<MyPostsResponse> myPostsResponses = member.getBoardList().stream()
                 .map(MyPostsResponse::of)

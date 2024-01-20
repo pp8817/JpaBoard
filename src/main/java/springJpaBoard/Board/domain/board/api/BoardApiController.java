@@ -24,7 +24,6 @@ import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.domain.member.service.MemberService;
 import springJpaBoard.Board.global.Error.Message;
 import springJpaBoard.Board.global.Error.StatusEnum;
-import springJpaBoard.Board.global.Error.exception.UserException;
 import springJpaBoard.Board.global.argumenresolver.Login;
 
 import java.nio.charset.Charset;
@@ -112,20 +111,14 @@ public class BoardApiController {
     public ResponseEntity updateBoardForm(@PathVariable("boardId") final Long boardId,
                                                    @Login final Member loginMember) {
         final Board board = boardApiRepository.findBoardWithMember(boardId); //쿼리 최적화를 위해서 사용
-        final Member boardMember = board.getMember();
 
-        if (memberService.loginValidation(loginMember, boardMember)) {
+        memberService.loginValidation(loginMember, board.getMember());
 
-            final ModifyBoardResponse modifyBoardResponse = ModifyBoardResponse.of(board);
+        final Message message = new Message(StatusEnum.OK, "게시글 수정 페이지 조회", ModifyBoardResponse.of(board));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-            final Message message = new Message(StatusEnum.OK, "게시글 수정 페이지 조회", modifyBoardResponse);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        }
-
-        throw new UserException("게시글 회원 정보와 로그인 회원 정보가 일치하지 않습니다.");
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     @PutMapping("/edit/{boardId}")
@@ -139,17 +132,14 @@ public class BoardApiController {
         final Board board = boardApiRepository.findBoardWithMember(boardId);
         final Member boardMember = board.getMember();
 
-        if (memberService.loginValidation(loginMember, boardMember)) {
-            final ModifyBoardResponse modifyBoardResponse = boardService.update(board, boardRequestDTO);
+        memberService.loginValidation(loginMember, boardMember);
+        final ModifyBoardResponse modifyBoardResponse = boardService.update(board, boardRequestDTO);
 
-            final Message message = new Message(StatusEnum.OK, "게시글 수정 성공", modifyBoardResponse);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        final Message message = new Message(StatusEnum.OK, "게시글 수정 성공", modifyBoardResponse);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        }
-
-        throw new UserException("게시글 회원 정보와 로그인 회원 정보 불일치");
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     /**
@@ -159,18 +149,15 @@ public class BoardApiController {
     public ResponseEntity deleteBoard(@PathVariable final Long boardId, @Login final Member loginMember){
         //세션에 회원 데이터가 없으면 home
         final Board board = boardApiRepository.findBoardWithMember(boardId);
-        final Member boardMember = board.getMember();
-        if (memberService.loginValidation(loginMember, boardMember)) {
-            boardService.delete(boardId);
 
-            final Message message = new Message(StatusEnum.OK, "게시글 삭제 성공", boardId);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        memberService.loginValidation(loginMember, board.getMember());
+        boardService.delete(boardId);
 
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        }
+        final Message message = new Message(StatusEnum.OK, "게시글 삭제 성공", boardId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        throw new UserException("게시글 회원 정보와 로그인 회원 정보 불일치");
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
 
