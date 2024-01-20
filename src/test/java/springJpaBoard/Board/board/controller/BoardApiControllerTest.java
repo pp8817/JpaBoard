@@ -25,8 +25,6 @@ import springJpaBoard.Board.domain.member.service.MemberService;
 import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -205,8 +203,6 @@ class BoardApiControllerTest {
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
-        loginValidation(TRUE);
-
         /*로그인 세션*/
         final MockHttpSession session = getSession(member);
 
@@ -236,8 +232,6 @@ class BoardApiControllerTest {
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
-        loginValidation(TRUE);
-
         /*로그인 세션*/
         MockHttpSession session = getSession(null);
 
@@ -260,8 +254,6 @@ class BoardApiControllerTest {
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
-
-        loginValidation(FALSE);
 
         /*로그인 세션*/
         final MockHttpSession session = getSession(member);
@@ -290,8 +282,6 @@ class BoardApiControllerTest {
 
         given(boardService.update(any(), any()))
                 .willReturn(modifyBoardResponse);
-
-        loginValidation(TRUE);
 
         /*로그인 세션*/
         final MockHttpSession session = getSession(member);
@@ -324,8 +314,6 @@ class BoardApiControllerTest {
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
-        loginValidation(FALSE);
-
         /*로그인 세션*/
         final MockHttpSession session = getSession(member);
 
@@ -351,7 +339,6 @@ class BoardApiControllerTest {
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
-        loginValidation(TRUE);
 
         // when
         mockMvc.perform(delete("/api/boards/delete/{boardId}", boardId)
@@ -391,7 +378,6 @@ class BoardApiControllerTest {
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
-        loginValidation(TRUE);
 
         final MockHttpSession session = getSession(member);
 
@@ -405,18 +391,4 @@ class BoardApiControllerTest {
         // then
         verify(boardService, times(1)).delete(boardId);
     }
-
-
-    private void loginValidation(Boolean bool) {
-        if (bool) {
-            given(memberService.loginValidation(any(), any()))
-                    .willReturn(TRUE);
-        }
-        if (!bool) {
-            given(memberService.loginValidation(any(), any()))
-                    .willReturn(FALSE);
-        }
-    }
-
-
 }

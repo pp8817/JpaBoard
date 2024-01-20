@@ -152,7 +152,7 @@ public class BoardController {
         Member boardMember = board.getMember();
 
 
-        memberService.loginValidation(loginMember, boardMember)
+        memberService.loginValidation(loginMember, boardMember);
 
         ModifyBoardResponse modifyBoardResponse = ModifyBoardResponse.of(board);
         model.addAttribute("boardForm", modifyBoardResponse);

@@ -8,10 +8,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springJpaBoard.Board.domain.member.exception.UserException;
 import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.domain.member.service.MemberService;
 import springJpaBoard.Board.global.Error.Message;
 import springJpaBoard.Board.global.Error.StatusEnum;
+import springJpaBoard.Board.global.Error.exception.ErrorCode;
 import springJpaBoard.Board.global.constans.SessionConst;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,6 +80,6 @@ public class AuthApi {
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
 
-        throw new IllegalStateException("세션이 존재하지 않습니다.");
+        throw new UserException(ErrorCode.HANDLE_ACCESS_DENIED);
     }
 }

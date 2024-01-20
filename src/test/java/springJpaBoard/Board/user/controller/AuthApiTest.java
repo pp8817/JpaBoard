@@ -162,7 +162,7 @@ public class AuthApiTest {
 
         // then
         actions
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("세션이 존재하지 않습니다."));
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.message").value("접근이 금지됐습니다."));
     }
 }
