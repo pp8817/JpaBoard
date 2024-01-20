@@ -84,12 +84,12 @@ public class MemberApiController {
             throw new UserException("회원 수정 오류");
         }
 
-        Member member = memberService.findOne(memberId);
+        final Member member = memberService.findOne(memberId);
 
         if (memberService.loginValidation(loginMember, member)) {
-            MemberResponse updateMember = memberService.update(memberId, modifyMemberRequest);
+            final MemberResponse memberResponse = memberService.update(memberId, modifyMemberRequest);
 
-            Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공", updateMember);
+            final Message message = new Message(StatusEnum.OK, "회원 정보 수정 성공", memberResponse);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -101,8 +101,8 @@ public class MemberApiController {
 
     /* 회원 삭제 */
     @DeleteMapping("/delete/{memberId}")
-    public ResponseEntity deleteMember(@PathVariable Long memberId, @Login Member loginMember) {
-        Member member = memberService.findOne(memberId);
+    public ResponseEntity deleteMember(@PathVariable final Long memberId, @Login final Member loginMember) {
+        final Member member = memberService.findOne(memberId);
         if (memberService.loginValidation(member, loginMember)) {
             memberService.delete(memberId);
             return ResponseEntity.status(HttpStatus.OK).body("회원 삭제 성공");
@@ -114,22 +114,22 @@ public class MemberApiController {
      * 회원이 작성한 게시글 리스트
      */
     @GetMapping("/myPosts")
-    public ResponseEntity boardList(@Login Member loginMember) {
+    public ResponseEntity boardList(@Login final Member loginMember) {
 
-        Member member = memberService.findOne(loginMember.getId()); // 1
+        final Member member = memberService.findOne(loginMember.getId()); // 1
 
-        List<MyPostsResponse> boards = member.getBoardList().stream()
+        final List<MyPostsResponse> myPostsResponses = member.getBoardList().stream()
                 .map(MyPostsResponse::of)
                 .collect(toList());
 
-        Message message = new Message(StatusEnum.OK, "회원이 작성한 게시글 조회 성공", boards);
+        final Message message = new Message(StatusEnum.OK, "회원이 작성한 게시글 조회 성공", myPostsResponses);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
-    private Page<Member> memberListSearch(MemberSearch memberSearch, Pageable pageable) {
+    private Page<Member> memberListSearch(final MemberSearch memberSearch, Pageable pageable) {
         Page<Member> memberList = null;
         if (memberSearch.searchIsEmpty()) {
             memberList = memberService.memberList(pageable);

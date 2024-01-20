@@ -36,15 +36,15 @@ public class CommentApiController {
      * 댓글 작성
      */
     @PostMapping
-    public ResponseEntity saveComment(@RequestBody CreateCommentRequest commentRequestDTO, BindingResult result, @Login Member loginMember) {
+    public ResponseEntity saveComment(@RequestBody final CreateCommentRequest commentRequestDTO, BindingResult result, @Login final Member loginMember) {
 
         if (result.hasErrors()) {
             throw new IllegalStateException("양식 불일치 오류");
         }
 
-        CommentResponse commentDto = commentService.save(commentRequestDTO, loginMember.getId());
+        final CommentResponse commentDto = commentService.save(commentRequestDTO, loginMember.getId());
 
-        Message message = new Message(StatusEnum.OK, "댓글 작성 성공", commentDto);
+        final Message message = new Message(StatusEnum.OK, "댓글 작성 성공", commentDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -53,12 +53,12 @@ public class CommentApiController {
     }
 
     @DeleteMapping("/delete/{commentId}")
-    public ResponseEntity deleteComment(@PathVariable Long commentId) {
+    public ResponseEntity deleteComment(@PathVariable final Long commentId) {
 
-        Comment comment = commentService.findOne(commentId); // 해당 댓글이 존재하지 않는 경우 여기서 Exception 발생
+        final Comment comment = commentService.findOne(commentId); // 해당 댓글이 존재하지 않는 경우 여기서 Exception 발생
         commentService.delete(commentId, comment.getBno());
 
-        Message message = new Message(StatusEnum.OK, "댓글 삭제 성공", commentId);
+        final Message message = new Message(StatusEnum.OK, "댓글 삭제 성공", commentId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
