@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import springJpaBoard.Board.domain.member.model.Member;
-import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.domain.member.repository.MemberRepository;
+import springJpaBoard.Board.global.argumenresolver.Login;
 
 import static springJpaBoard.Board.domain.member.dto.MemberDto.MemberResponse;
 

@@ -5,11 +5,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springJpaBoard.Board.domain.member.exception.UserException;
 import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.domain.member.repository.MemberRepository;
+import springJpaBoard.Board.global.Error.exception.ErrorCode;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -41,10 +43,22 @@ public class MemberService {
      * loginId와 password 정보가 정확하다면 회원 객체 반환
      * 틀리다면 null 반환
      */
+//    public Member login(String loginId, String password) {
+//        return memberRepository.findByLoginId(loginId)
+//                .filter(m -> m.getPassword().equals(password))
+//                .orElse(null);
+//    }
+
     public Member login(String loginId, String password) {
-        return memberRepository.findByLoginId(loginId)
-                .filter(m -> m.getPassword().equals(password))
-                .orElse(null);
+        Member member = memberRepository.findByLoginId(loginId).orElseThrow(() -> new UserException(ErrorCode.NOT_FOUND_USER));
+        validationPassword(member, password);
+        return member;
+    }
+
+    private static void validationPassword(Member member, String password) {
+        if (!Objects.equals(member.getPassword(), password)) {
+            throw new UserException(ErrorCode.INVALID_INPUT_ID_PASSWORD);
+        }
     }
 
     public Boolean loginValidation(Member loginMember, Member BoardMember) {
@@ -63,7 +77,7 @@ public class MemberService {
         List<Member> findMembers = memberRepository.findAllByName(member.getName());
         List<Member> findLoginId = memberRepository.findAllByLoginId(member.getLoginId());
         if (!findMembers.isEmpty() || !findLoginId.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+            throw new UserException(ErrorCode.USER_ALREADY_EXISTS);
         }
     }
 
@@ -104,7 +118,7 @@ public class MemberService {
      */
     public Member findOne(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new NoSuchElementException("회원 정보가 없습니다."));
+                .orElseThrow(() -> new UserException(ErrorCode.NOT_FOUND_USER));
     }
 
     /**
@@ -115,8 +129,7 @@ public class MemberService {
         /*
         Dirty Checking 발생, 가능하다면 Setter는 사용하지 않는 방법으로 구현
          */
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NoSuchElementException("회원 정보가 없습니다."));;
+        Member member = findOne(memberId);
         member.editMember(memberDto);
 
         return MemberResponse.of(member);
@@ -129,7 +142,5 @@ public class MemberService {
     public void delete(Long memberId) {
         memberRepository.deleteById(memberId);
     }
-
-
 
 }

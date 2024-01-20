@@ -18,9 +18,9 @@ import java.nio.file.AccessDeniedException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     /**
-     *  javax.validation.Valid or @Validated 으로 binding error 발생시 발생한다.
-     *  HttpMessageConverter 에서 등록한 HttpMessageConverter binding 못할경우 발생
-     *  주로 @RequestBody, @RequestPart 어노테이션에서 발생
+     * javax.validation.Valid or @Validated 으로 binding error 발생시 발생한다.
+     * HttpMessageConverter 에서 등록한 HttpMessageConverter binding 못할경우 발생
+     * 주로 @RequestBody, @RequestPart 어노테이션에서 발생
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Authentication 객체가 필요한 권한을 보유하지 않은 경우 발생합니다.
+     * Authentication 객체가 필요한 권한을 보유하지 않은 경우 발생합
      */
     @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e) {

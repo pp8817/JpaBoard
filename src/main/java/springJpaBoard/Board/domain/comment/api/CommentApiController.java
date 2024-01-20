@@ -8,14 +8,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import springJpaBoard.Board.domain.board.service.BoardService;
+import springJpaBoard.Board.domain.comment.model.Comment;
+import springJpaBoard.Board.domain.comment.service.CommentService;
+import springJpaBoard.Board.domain.member.model.Member;
+import springJpaBoard.Board.domain.member.service.MemberService;
 import springJpaBoard.Board.global.Error.Message;
 import springJpaBoard.Board.global.Error.StatusEnum;
-import springJpaBoard.Board.domain.comment.model.Comment;
-import springJpaBoard.Board.domain.member.model.Member;
-import springJpaBoard.Board.domain.argumenresolver.Login;
-import springJpaBoard.Board.domain.board.service.BoardService;
-import springJpaBoard.Board.domain.comment.service.CommentService;
-import springJpaBoard.Board.domain.member.service.MemberService;
+import springJpaBoard.Board.global.argumenresolver.Login;
 
 import java.nio.charset.Charset;
 

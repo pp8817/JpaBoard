@@ -22,7 +22,8 @@ public enum ErrorCode {
 
     //Member
     NICKNAME_DUPLICATION(409, "U001", "중복되는 닉네임입니다."),
-    NOT_FOUND_USER(404, "U002", "존재하지 않는 회원입니다.");
+    NOT_FOUND_USER(404, "U002", "존재하지 않는 회원입니다."),
+    INVALID_INPUT_ID_PASSWORD(400, "U003", "Id와 Password가 일치하지 않습니다."),;
 
     //Board
 

@@ -12,14 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springJpaBoard.Board.api.apirepository.BoardApiRepository;
 import springJpaBoard.Board.domain.board.model.Board;
-import springJpaBoard.Board.domain.member.model.Member;
-import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.domain.board.model.BoardSearch;
+import springJpaBoard.Board.domain.board.repository.BoardApiRepository;
 import springJpaBoard.Board.domain.board.service.BoardService;
 import springJpaBoard.Board.domain.comment.service.CommentService;
+import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.domain.member.service.MemberService;
+import springJpaBoard.Board.global.argumenresolver.Login;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;

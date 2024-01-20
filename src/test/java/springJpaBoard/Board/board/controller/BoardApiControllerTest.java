@@ -15,11 +15,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import springJpaBoard.Board.domain.board.api.BoardApiController;
-import springJpaBoard.Board.api.apirepository.BoardApiRepository;
 import springJpaBoard.Board.domain.board.model.Board;
-import springJpaBoard.Board.domain.member.model.Member;
+import springJpaBoard.Board.domain.board.repository.BoardApiRepository;
 import springJpaBoard.Board.domain.board.service.BoardService;
 import springJpaBoard.Board.domain.comment.service.CommentService;
+import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.domain.member.service.MemberService;
 
 import java.nio.charset.StandardCharsets;
@@ -164,7 +164,10 @@ class BoardApiControllerTest {
                 .content(objectMapper.writeValueAsString(request)));
         //then
         actions
-                .andExpect(status().is5xxServerError());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.code").value("C001"))
+                .andExpect(jsonPath("$.message").value("잘못된 입력값입니다."));
     }
 
     @Test

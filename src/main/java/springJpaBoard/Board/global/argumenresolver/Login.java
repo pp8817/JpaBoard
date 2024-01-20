@@ -1,4 +1,4 @@
-package springJpaBoard.Board.domain.argumenresolver;
+package springJpaBoard.Board.global.argumenresolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

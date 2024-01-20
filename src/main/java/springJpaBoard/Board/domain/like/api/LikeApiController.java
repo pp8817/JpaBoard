@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springJpaBoard.Board.domain.board.model.Board;
-import springJpaBoard.Board.domain.member.model.Member;
-import springJpaBoard.Board.domain.argumenresolver.Login;
 import springJpaBoard.Board.domain.board.service.BoardService;
 import springJpaBoard.Board.domain.like.service.LikeService;
+import springJpaBoard.Board.domain.member.model.Member;
+import springJpaBoard.Board.global.argumenresolver.Login;
 
 @Slf4j
 @RestController

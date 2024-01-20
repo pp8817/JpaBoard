@@ -6,19 +6,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springJpaBoard.Board.global.Error.Message;
-import springJpaBoard.Board.global.Error.StatusEnum;
-import springJpaBoard.Board.global.Error.exception.UserException;
-import springJpaBoard.Board.global.constans.SessionConst;
 import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.domain.member.service.MemberService;
+import springJpaBoard.Board.global.Error.Message;
+import springJpaBoard.Board.global.Error.StatusEnum;
+import springJpaBoard.Board.global.constans.SessionConst;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.nio.charset.Charset;
 
 import static springJpaBoard.Board.domain.member.dto.AuthDto.LoginRequest;
@@ -34,10 +31,7 @@ public class AuthApi {
 
     /* 회원가입 */
     @PostMapping
-    public ResponseEntity join(@RequestBody @Validated final CreateMemberRequest memberRequestDTO, BindingResult result) {
-        if (result.hasErrors()) {
-            throw new UserException("회원가입: 회원 정보 입력 오류");
-        }
+    public ResponseEntity join(@RequestBody @Validated final CreateMemberRequest memberRequestDTO) {
 
         final Long id = memberService.join(memberRequestDTO);
 
@@ -52,19 +46,10 @@ public class AuthApi {
     // TODO - redirectURL 해결
     // 현재 생각한 방법: Result 타입에 redirectURL을 추가해서 같이 반환
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid final LoginRequest loginRequest, BindingResult result,
+    public ResponseEntity login(@RequestBody @Validated final LoginRequest loginRequest,
                                 @RequestParam(defaultValue = "/") final String redirectURL, HttpServletRequest request) {
-        if (result.hasErrors()) {
-            throw new UserException("로그인: 아이디 또는 비밀번호 오류");
-        }
 
         final Member loginMember = memberService.login(loginRequest.loginId(), loginRequest.password());
-
-        if (loginMember == null) {
-            result.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
-            throw new UserException("로그인: 아이디 또는 비밀번호 오류");
-        }
-
 
         /*세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성*/
         HttpSession session = request.getSession();
