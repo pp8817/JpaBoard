@@ -14,13 +14,13 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.api.apicontroller.BoardApiController;
+import springJpaBoard.Board.domain.board.api.BoardApiController;
 import springJpaBoard.Board.api.apirepository.BoardApiRepository;
-import springJpaBoard.Board.domain.Board;
-import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.service.BoardService;
-import springJpaBoard.Board.service.CommentService;
-import springJpaBoard.Board.service.MemberService;
+import springJpaBoard.Board.domain.board.model.Board;
+import springJpaBoard.Board.domain.member.model.Member;
+import springJpaBoard.Board.domain.board.service.BoardService;
+import springJpaBoard.Board.domain.comment.service.CommentService;
+import springJpaBoard.Board.domain.member.service.MemberService;
 
 import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static springJpaBoard.Board.UtilsTemplate.*;
 import static springJpaBoard.Board.board.BoardTemplate.*;
-import static springJpaBoard.Board.controller.boarddto.BoardDto.*;
+import static springJpaBoard.Board.domain.board.dto.BoardDto.*;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(BoardApiController.class)

@@ -15,11 +15,11 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.Error.exception.UserException;
-import springJpaBoard.Board.api.apicontroller.MemberApiController;
-import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.service.BoardService;
-import springJpaBoard.Board.service.MemberService;
+import springJpaBoard.Board.global.Error.exception.UserException;
+import springJpaBoard.Board.domain.member.api.MemberApiController;
+import springJpaBoard.Board.domain.member.model.Member;
+import springJpaBoard.Board.domain.board.service.BoardService;
+import springJpaBoard.Board.domain.member.service.MemberService;
 
 import java.nio.charset.StandardCharsets;
 
@@ -32,8 +32,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static springJpaBoard.Board.UtilsTemplate.getMember;
 import static springJpaBoard.Board.UtilsTemplate.getSession;
-import static springJpaBoard.Board.controller.memberdto.MemberDto.MemberResponse;
-import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMemberRequest;
+import static springJpaBoard.Board.domain.member.dto.MemberDto.MemberResponse;
+import static springJpaBoard.Board.domain.member.dto.MemberDto.ModifyMemberRequest;
 import static springJpaBoard.Board.user.UserTemplate.getModifyMemberRequest;
 import static springJpaBoard.Board.user.UserTemplate.updateMember;
 

@@ -14,13 +14,13 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.api.apicontroller.CommentApiController;
-import springJpaBoard.Board.domain.Board;
-import springJpaBoard.Board.domain.Comment;
-import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.service.BoardService;
-import springJpaBoard.Board.service.CommentService;
-import springJpaBoard.Board.service.MemberService;
+import springJpaBoard.Board.domain.comment.api.CommentApiController;
+import springJpaBoard.Board.domain.board.model.Board;
+import springJpaBoard.Board.domain.comment.model.Comment;
+import springJpaBoard.Board.domain.member.model.Member;
+import springJpaBoard.Board.domain.board.service.BoardService;
+import springJpaBoard.Board.domain.comment.service.CommentService;
+import springJpaBoard.Board.domain.member.service.MemberService;
 
 import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
@@ -34,8 +34,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static springJpaBoard.Board.UtilsTemplate.*;
 import static springJpaBoard.Board.comment.CommentTemplate.*;
-import static springJpaBoard.Board.controller.commentdto.CommentDto.CommentResponse;
-import static springJpaBoard.Board.controller.commentdto.CommentDto.CreateCommentRequest;
+import static springJpaBoard.Board.domain.comment.dto.CommentDto.CommentResponse;
+import static springJpaBoard.Board.domain.comment.dto.CommentDto.CreateCommentRequest;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(CommentApiController.class)

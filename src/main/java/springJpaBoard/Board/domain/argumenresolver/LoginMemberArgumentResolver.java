@@ -6,8 +6,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import springJpaBoard.Board.SessionConst;
-import springJpaBoard.Board.domain.Member;
+import springJpaBoard.Board.global.constans.SessionConst;
+import springJpaBoard.Board.domain.member.model.Member;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
