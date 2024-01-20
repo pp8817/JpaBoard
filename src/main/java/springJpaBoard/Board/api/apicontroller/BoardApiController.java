@@ -48,16 +48,16 @@ public class BoardApiController {
 
     /* 게시글 작성 */
     @GetMapping
-    public ResponseEntity writeForm(@Login Member loginMember) {
+    public ResponseEntity writeForm(@Login final Member loginMember) {
 
-        MemberResponse member = MemberResponse.of(loginMember);
+        final MemberResponse memberResponse = MemberResponse.of(loginMember);
 
-        return ResponseEntity.status(HttpStatus.OK).body(member.id());
+        return ResponseEntity.status(HttpStatus.OK).body(memberResponse.id());
     }
 
 
     @PostMapping
-    public ResponseEntity<Message> write(@RequestBody @Validated CreateBoardRequest boardRequestDTO, @Login Member loginMember, BindingResult result) {
+    public ResponseEntity<Message> write(@RequestBody @Validated final CreateBoardRequest boardRequestDTO, @Login final Member loginMember, BindingResult result) {
 
         /*
         오류 발생시(@Valid 에서 발생)
@@ -66,9 +66,9 @@ public class BoardApiController {
             throw new IllegalStateException("게시글 양식에 맞지 않습니다.");
         }
 
-        Long boardId = boardService.write(boardRequestDTO, loginMember.getId());
+        final Long boardId = boardService.write(boardRequestDTO, loginMember.getId());
 
-        Message message = new Message(StatusEnum.OK, "게시글 작성 성공", boardId);
+        final Message message = new Message(StatusEnum.OK, "게시글 작성 성공", boardId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -77,15 +77,15 @@ public class BoardApiController {
 
     /* 게시글 목록 */
     @GetMapping("/list")
-    public ResponseEntity<Message> boardLost(@RequestBody BoardSearch boardSearch, @PageableDefault(page = 0, size = 9, sort = "id", direction = Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Message> boardLost(@RequestBody final BoardSearch boardSearch, @PageableDefault(page = 0, size = 9, sort = "id", direction = Direction.ASC) Pageable pageable) {
 
-        Page<Board> boardList = searchBoardList(boardSearch, pageable);
+        final Page<Board> boardList = searchBoardList(boardSearch, pageable);
 
-        List<BoardListResponse> boards = boardList.stream()
+        final List<BoardListResponse> boards = boardList.stream()
                 .map(BoardListResponse::of)
                 .collect(toList());
 
-        Message message = new Message(StatusEnum.OK, "게시글 목록 조회 성공", boards);
+        final Message message = new Message(StatusEnum.OK, "게시글 목록 조회 성공", boards);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -95,19 +95,19 @@ public class BoardApiController {
 
     /* 게시글 상세 */
     @GetMapping("/detail/{boardId}")
-    public ResponseEntity<Message> detail(@PathVariable Long boardId, @PageableDefault(page = 0, size = 10, sort = "id",
+    public ResponseEntity<Message> detail(@PathVariable final Long boardId, @PageableDefault(page = 0, size = 10, sort = "id",
             direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Board board = boardService.findOne(boardId);
+        final Board board = boardService.findOne(boardId);
         boardService.updateView(boardId); // views ++
 
-        List<CommentResponse> comments = board.getCommentList().stream()
+        final List<CommentResponse> comments = board.getCommentList().stream()
                 .map(CommentResponse::of)
                 .toList();
 
-        BoardResponse boardDto = BoardResponse.of(board, comments);
+        final BoardResponse boardDto = BoardResponse.of(board, comments);
 
-        Message message = new Message(StatusEnum.OK, "게시글 상세 페이지 조회 성공", boardDto);
+        final Message message = new Message(StatusEnum.OK, "게시글 상세 페이지 조회 성공", boardDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -116,16 +116,16 @@ public class BoardApiController {
 
     /* 게시글 수정 */
     @GetMapping("/edit/{boardId}")
-    public ResponseEntity updateBoardForm(@PathVariable("boardId") Long boardId,
-                                                   @Login Member loginMember) {
-        Board board = boardApiRepository.findBoardWithMember(boardId); //쿼리 최적화를 위해서 사용
-        Member boardMember = board.getMember();
+    public ResponseEntity updateBoardForm(@PathVariable("boardId") final Long boardId,
+                                                   @Login final Member loginMember) {
+        final Board board = boardApiRepository.findBoardWithMember(boardId); //쿼리 최적화를 위해서 사용
+        final Member boardMember = board.getMember();
 
         if (memberService.loginValidation(loginMember, boardMember)) {
 
-            ModifyBoardResponse modifyBoardResponse = ModifyBoardResponse.of(board);
+            final ModifyBoardResponse modifyBoardResponse = ModifyBoardResponse.of(board);
 
-            Message message = new Message(StatusEnum.OK, "게시글 수정 페이지 조회", modifyBoardResponse);
+            final Message message = new Message(StatusEnum.OK, "게시글 수정 페이지 조회", modifyBoardResponse);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -136,20 +136,20 @@ public class BoardApiController {
     }
 
     @PutMapping("/edit/{boardId}")
-    public ResponseEntity updateBoard(@RequestBody ModifyBoardRequest boardRequestDTO, BindingResult result,
-                                      @PathVariable Long boardId, @Login Member loginMember) {
+    public ResponseEntity updateBoard(@RequestBody final ModifyBoardRequest boardRequestDTO, BindingResult result,
+                                      @PathVariable final Long boardId, @Login final Member loginMember) {
 
         if (result.hasErrors()) {
             throw new IllegalStateException("양식을 지켜주세요.");
         }
 
-        Board board = boardApiRepository.findBoardWithMember(boardId);
-        Member boardMember = board.getMember();
+        final Board board = boardApiRepository.findBoardWithMember(boardId);
+        final Member boardMember = board.getMember();
 
         if (memberService.loginValidation(loginMember, boardMember)) {
-            ModifyBoardResponse modifyBoardResponse = boardService.update(board, boardRequestDTO);
+            final ModifyBoardResponse modifyBoardResponse = boardService.update(board, boardRequestDTO);
 
-            Message message = new Message(StatusEnum.OK, "게시글 수정 성공", modifyBoardResponse);
+            final Message message = new Message(StatusEnum.OK, "게시글 수정 성공", modifyBoardResponse);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -163,14 +163,14 @@ public class BoardApiController {
      * 게시글 삭제
      */
     @DeleteMapping("/delete/{boardId}")
-    public ResponseEntity deleteBoard(@PathVariable Long boardId, @Login Member loginMember){
+    public ResponseEntity deleteBoard(@PathVariable final Long boardId, @Login final Member loginMember){
         //세션에 회원 데이터가 없으면 home
-        Board board = boardApiRepository.findBoardWithMember(boardId);
-        Member boardMember = board.getMember();
+        final Board board = boardApiRepository.findBoardWithMember(boardId);
+        final Member boardMember = board.getMember();
         if (memberService.loginValidation(loginMember, boardMember)) {
             boardService.delete(boardId);
 
-            Message message = new Message(StatusEnum.OK, "게시글 삭제 성공", boardId);
+            final Message message = new Message(StatusEnum.OK, "게시글 삭제 성공", boardId);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -187,13 +187,13 @@ public class BoardApiController {
         private T data;
     }
 
-    private Page<Board> searchBoardList(BoardSearch boardSearch, Pageable pageable) {
-        Page<Board> boardList;
+    private Page<Board> searchBoardList(final BoardSearch boardSearch, Pageable pageable) {
+        Page<Board> boardList = null;
         if (boardSearch.searchIsEmpty()) {
             boardList = boardService.boardList(pageable);
         } else {
-            String boardTitle = boardSearch.getBoardTitle();
-            String memberGender = boardSearch.getMemberGender();
+            final String boardTitle = boardSearch.getBoardTitle();
+            final String memberGender = boardSearch.getMemberGender();
 
             if (memberGender == null) {
                 boardList = boardService.searchTitle(boardTitle, pageable);
