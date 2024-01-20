@@ -23,9 +23,9 @@ public class LikeApiController {
     private final BoardService boardService;
 
     @GetMapping(value = "/up/{boardId}")
-    public ResponseEntity addLike(@PathVariable Long boardId, @Login Member loginMember) {
+    public ResponseEntity addLike(@PathVariable final Long boardId, @Login final Member loginMember) {
 
-        Board board = boardService.findOne(boardId);
+        final Board board = boardService.findOne(boardId);
         likeService.addLike(loginMember, board);
 
         return ResponseEntity.status(HttpStatus.OK).body("게시글 좋아요 +1");
