@@ -43,8 +43,7 @@ public class AuthApi {
     }
 
     /* 회원 로그인 */
-    // TODO - redirectURL 해결
-    // 현재 생각한 방법: Result 타입에 redirectURL을 추가해서 같이 반환
+    // TODO - redirectURL 해결, 현재 로그인한 사용자는 로그인 기능 사용 불가하도록 변경
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Validated final LoginRequest loginRequest,
                                 @RequestParam(defaultValue = "/") final String redirectURL, HttpServletRequest request) {

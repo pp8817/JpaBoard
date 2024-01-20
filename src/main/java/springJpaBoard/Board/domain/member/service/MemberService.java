@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springJpaBoard.Board.domain.member.exception.MemberNotFoundException;
 import springJpaBoard.Board.domain.member.exception.UserException;
 import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.domain.member.repository.MemberRepository;
@@ -118,7 +119,7 @@ public class MemberService {
      */
     public Member findOne(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new UserException(ErrorCode.NOT_FOUND_USER));
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
     }
 
     /**
