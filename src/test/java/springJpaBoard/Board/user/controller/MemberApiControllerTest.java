@@ -15,16 +15,16 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.Error.exception.UserException;
-import springJpaBoard.Board.api.apicontroller.MemberApiController;
-import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.service.BoardService;
-import springJpaBoard.Board.service.MemberService;
+import springJpaBoard.Board.domain.board.service.BoardService;
+import springJpaBoard.Board.domain.member.api.MemberApiController;
+import springJpaBoard.Board.domain.member.exception.MemberNotFoundException;
+import springJpaBoard.Board.domain.member.exception.UserException;
+import springJpaBoard.Board.domain.member.model.Member;
+import springJpaBoard.Board.domain.member.service.MemberService;
+import springJpaBoard.Board.global.Error.exception.ErrorCode;
 
 import java.nio.charset.StandardCharsets;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -32,8 +32,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static springJpaBoard.Board.UtilsTemplate.getMember;
 import static springJpaBoard.Board.UtilsTemplate.getSession;
-import static springJpaBoard.Board.controller.memberdto.MemberDto.MemberResponse;
-import static springJpaBoard.Board.controller.memberdto.MemberDto.ModifyMemberRequest;
+import static springJpaBoard.Board.domain.member.dto.MemberDto.MemberResponse;
+import static springJpaBoard.Board.domain.member.dto.MemberDto.ModifyMemberRequest;
 import static springJpaBoard.Board.user.UserTemplate.getModifyMemberRequest;
 import static springJpaBoard.Board.user.UserTemplate.updateMember;
 
@@ -73,8 +73,6 @@ public class MemberApiControllerTest {
 
         given(memberService.findOne(any()))
                 .willReturn(member);
-
-        loginValidation(member, TRUE);
 
         final MockHttpSession session = getSession(member);
 
@@ -131,8 +129,6 @@ public class MemberApiControllerTest {
         given(memberService.update(any(), any()))
                 .willReturn(updateMember);
 
-        loginValidation(member, TRUE);
-
         final ModifyMemberRequest modifyMemberRequest = getModifyMemberRequest();
 
         // 로그인 세션 생성
@@ -166,7 +162,6 @@ public class MemberApiControllerTest {
 
         given(memberService.findOne(any()))
                 .willReturn(member);
-        loginValidation(member, TRUE);
 
         // 로그인 세션 생성
         final MockHttpSession session = getSession(member);
@@ -187,11 +182,10 @@ public class MemberApiControllerTest {
         // given
         final Long memberId = member.getId();
 
-        doThrow(new UserException("회원을 찾을 수 없습니다.")).when(memberService).delete(memberId);
+        doThrow(new MemberNotFoundException(memberId)).when(memberService).delete(memberId);
 
         given(memberService.findOne(any()))
                 .willReturn(member);
-        loginValidation(member, TRUE);
 
         // 로그인 세션 생성
         final MockHttpSession session = getSession(member);
@@ -207,7 +201,7 @@ public class MemberApiControllerTest {
     }
 
     @Test
-    @DisplayName("[DELETE] 회원 삭제 - 로그인 세션 유효 X")
+    @DisplayName("[DELETE] 회원 삭제 - 로그인 X")
     public void 회원_삭제_로그인_세션_유효_X() throws Exception {
         // given
         final Long memberId = member.getId();
@@ -221,14 +215,30 @@ public class MemberApiControllerTest {
                 .andExpect(status().is3xxRedirection()); //로그인이 되어 있지 않다면 로그인 페이지로 Redirect
     }
 
-    private void loginValidation(Member member, Boolean bool) {
-        if (bool) {
-            given(memberService.loginValidation(member, member))
-                    .willReturn(TRUE);
-        }
-        if (!bool) {
-            given(memberService.loginValidation(member, member))
-                    .willReturn(FALSE);
-        }
+    @Test
+    @DisplayName("[DELETE] 회원 삭제 - 회원 정보 불일치")
+    public void 회원_삭제_회원_정보_불일치() throws Exception {
+        final Long memberId = member.getId();
+
+        doThrow(new UserException(ErrorCode.USER_MISMATCH)).when(memberService).loginValidation(any(), any());
+
+        given(memberService.findOne(any()))
+                .willReturn(member);
+
+        // 로그인 세션 생성
+        final MockHttpSession session = getSession(member);
+
+        // when
+        ResultActions actions = mockMvc.perform(delete("/api/members/delete/{memberId}", memberId)
+                .contentType(contentType)
+                .session(session));
+
+        // then
+        actions
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value("회원 정보가 불일치합니다."))
+                .andExpect(jsonPath("$.status").value(401))
+                .andExpect(jsonPath("$.code").value("A004"));
+        verify(memberService, times(1)).loginValidation(any(), any());
     }
 }

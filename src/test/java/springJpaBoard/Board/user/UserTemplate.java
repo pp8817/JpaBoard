@@ -1,9 +1,9 @@
 package springJpaBoard.Board.user;
 
 import org.jetbrains.annotations.NotNull;
-import springJpaBoard.Board.domain.Address;
+import springJpaBoard.Board.domain.etc.Address;
 
-import static springJpaBoard.Board.controller.memberdto.MemberDto.*;
+import static springJpaBoard.Board.domain.member.dto.MemberDto.*;
 
 public class UserTemplate {
 

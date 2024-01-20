@@ -13,12 +13,12 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.api.apicontroller.LikeApiController;
-import springJpaBoard.Board.domain.Board;
-import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.repository.LikeRepository;
-import springJpaBoard.Board.service.BoardService;
-import springJpaBoard.Board.service.LikeService;
+import springJpaBoard.Board.domain.like.api.LikeApiController;
+import springJpaBoard.Board.domain.board.model.Board;
+import springJpaBoard.Board.domain.member.model.Member;
+import springJpaBoard.Board.domain.like.repository.LikeRepository;
+import springJpaBoard.Board.domain.board.service.BoardService;
+import springJpaBoard.Board.domain.like.service.LikeService;
 
 import java.nio.charset.StandardCharsets;
 

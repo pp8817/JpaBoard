@@ -14,9 +14,9 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.api.apicontroller.AuthApi;
-import springJpaBoard.Board.domain.Member;
-import springJpaBoard.Board.service.MemberService;
+import springJpaBoard.Board.domain.member.api.AuthApi;
+import springJpaBoard.Board.domain.member.model.Member;
+import springJpaBoard.Board.domain.member.service.MemberService;
 
 import java.nio.charset.StandardCharsets;
 
@@ -26,8 +26,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static springJpaBoard.Board.UtilsTemplate.getMember;
 import static springJpaBoard.Board.UtilsTemplate.getSession;
-import static springJpaBoard.Board.controller.memberdto.AuthDto.LoginRequest;
-import static springJpaBoard.Board.controller.memberdto.MemberDto.CreateMemberRequest;
+import static springJpaBoard.Board.domain.member.dto.AuthDto.LoginRequest;
+import static springJpaBoard.Board.domain.member.dto.MemberDto.CreateMemberRequest;
 import static springJpaBoard.Board.user.UserTemplate.getCreateMemberRequest;
 
 @ExtendWith(SpringExtension.class)
@@ -126,8 +126,9 @@ public class AuthApiTest {
         actions
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentTypeCompatibleWith(contentType))
-                .andExpect(jsonPath("$.code").value("UserException"))
-                .andExpect(jsonPath("$.message").value("로그인: 아이디 또는 비밀번호 오류"));
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.code").value("C001"))
+                .andExpect(jsonPath("$.message").value("잘못된 입력값입니다."));
     }
 
     @Test
@@ -161,7 +162,7 @@ public class AuthApiTest {
 
         // then
         actions
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("세션이 존재하지 않습니다."));
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.message").value("접근이 금지됐습니다."));
     }
 }

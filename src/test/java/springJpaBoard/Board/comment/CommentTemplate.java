@@ -1,9 +1,9 @@
 package springJpaBoard.Board.comment;
 
-import springJpaBoard.Board.domain.Comment;
+import springJpaBoard.Board.domain.comment.model.Comment;
 
-import static springJpaBoard.Board.controller.commentdto.CommentDto.CommentResponse;
-import static springJpaBoard.Board.controller.commentdto.CommentDto.CreateCommentRequest;
+import static springJpaBoard.Board.domain.comment.dto.CommentDto.CommentResponse;
+import static springJpaBoard.Board.domain.comment.dto.CommentDto.CreateCommentRequest;
 
 public class CommentTemplate {
 

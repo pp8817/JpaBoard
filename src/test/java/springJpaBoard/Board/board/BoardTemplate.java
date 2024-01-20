@@ -1,10 +1,10 @@
 package springJpaBoard.Board.board;
 
 import org.jetbrains.annotations.NotNull;
-import springJpaBoard.Board.controller.boarddto.BoardDto;
+import springJpaBoard.Board.domain.board.dto.BoardDto;
 
-import static springJpaBoard.Board.controller.boarddto.BoardDto.ModifyBoardRequest;
-import static springJpaBoard.Board.controller.boarddto.BoardDto.ModifyBoardResponse;
+import static springJpaBoard.Board.domain.board.dto.BoardDto.ModifyBoardRequest;
+import static springJpaBoard.Board.domain.board.dto.BoardDto.ModifyBoardResponse;
 
 public class BoardTemplate {
 
