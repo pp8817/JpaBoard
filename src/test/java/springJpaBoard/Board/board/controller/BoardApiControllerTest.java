@@ -19,8 +19,10 @@ import springJpaBoard.Board.domain.board.model.Board;
 import springJpaBoard.Board.domain.board.repository.BoardApiRepository;
 import springJpaBoard.Board.domain.board.service.BoardService;
 import springJpaBoard.Board.domain.comment.service.CommentService;
+import springJpaBoard.Board.domain.member.exception.UserException;
 import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.domain.member.service.MemberService;
+import springJpaBoard.Board.global.Error.exception.ErrorCode;
 
 import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
@@ -251,6 +253,7 @@ class BoardApiControllerTest {
         //given
         final Long boardId = 1L;
         board.setMember(member);
+        doThrow(new UserException(ErrorCode.USER_MISMATCH)).when(memberService).loginValidation(any(), any());
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
@@ -265,8 +268,11 @@ class BoardApiControllerTest {
 
         //then
         actions
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("게시글 회원 정보와 로그인 회원 정보가 일치하지 않습니다."));
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value("회원 정보가 불일치합니다."))
+                .andExpect(jsonPath("$.status").value(401))
+                .andExpect(jsonPath("$.code").value("A004"));
+        verify(memberService, times(1)).loginValidation(any(), any());
     }
 
     @Test
@@ -311,6 +317,8 @@ class BoardApiControllerTest {
         board.setMember(member);
         final ModifyBoardRequest modifyBoardRequest = getModifyBoardRequest();
 
+        doThrow(new UserException(ErrorCode.USER_MISMATCH)).when(memberService).loginValidation(any(), any());
+
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
@@ -325,8 +333,11 @@ class BoardApiControllerTest {
 
         //then
         actions
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("게시글 회원 정보와 로그인 회원 정보 불일치"));
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value("회원 정보가 불일치합니다."))
+                .andExpect(jsonPath("$.status").value(401))
+                .andExpect(jsonPath("$.code").value("A004"));
+        verify(memberService, times(1)).loginValidation(any(), any());
     }
 
     @Test

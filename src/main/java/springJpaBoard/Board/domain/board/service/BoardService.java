@@ -5,12 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springJpaBoard.Board.domain.board.exception.BoardNotFoundException;
 import springJpaBoard.Board.domain.board.model.Board;
-import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.domain.board.repository.BoardRepository;
-import springJpaBoard.Board.domain.member.repository.MemberRepository;
-
-import java.util.NoSuchElementException;
+import springJpaBoard.Board.domain.member.model.Member;
+import springJpaBoard.Board.domain.member.service.MemberService;
 
 import static springJpaBoard.Board.domain.board.dto.BoardDto.*;
 
@@ -20,7 +19,7 @@ import static springJpaBoard.Board.domain.board.dto.BoardDto.*;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     /**
      * 게시글 작성
@@ -30,7 +29,7 @@ public class BoardService {
 
         Board board = boardRequestDTO.toEntity();
         //엔티티 조회
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberService.findOne(memberId);
 
         //연관 관계 생성
         board.setMember(member);
@@ -65,7 +64,7 @@ public class BoardService {
      */
     public Board findOne(Long boardId) {
         return boardRepository.findById(boardId)
-                .orElseThrow(() -> new NoSuchElementException("게시글 정보가 없습니다"));
+                .orElseThrow(() -> new BoardNotFoundException(boardId));
     }
 
     /**
@@ -73,7 +72,6 @@ public class BoardService {
      */
     @Transactional
     public ModifyBoardResponse update(Board board, ModifyBoardRequest boardDto) {
-//        Board findBoard = boardRepository.findById(id).get();
         /*
         Dirty Checking 발생
          */

@@ -12,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springJpaBoard.Board.domain.board.model.Board;
@@ -122,12 +121,8 @@ public class BoardApiController {
     }
 
     @PutMapping("/edit/{boardId}")
-    public ResponseEntity updateBoard(@RequestBody final ModifyBoardRequest boardRequestDTO, BindingResult result,
+    public ResponseEntity updateBoard(@RequestBody final ModifyBoardRequest boardRequestDTO,
                                       @PathVariable final Long boardId, @Login final Member loginMember) {
-
-        if (result.hasErrors()) {
-            throw new IllegalStateException("양식을 지켜주세요.");
-        }
 
         final Board board = boardApiRepository.findBoardWithMember(boardId);
         final Member boardMember = board.getMember();
