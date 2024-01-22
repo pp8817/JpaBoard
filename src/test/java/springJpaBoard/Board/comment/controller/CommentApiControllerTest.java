@@ -14,12 +14,12 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.domain.comment.api.CommentApiController;
 import springJpaBoard.Board.domain.board.model.Board;
-import springJpaBoard.Board.domain.comment.model.Comment;
-import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.domain.board.service.BoardService;
+import springJpaBoard.Board.domain.comment.api.CommentApiController;
+import springJpaBoard.Board.domain.comment.model.Comment;
 import springJpaBoard.Board.domain.comment.service.CommentService;
+import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.domain.member.service.MemberService;
 
 import java.nio.charset.StandardCharsets;
