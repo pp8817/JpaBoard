@@ -126,9 +126,8 @@ public class AuthApiTest {
         actions
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentTypeCompatibleWith(contentType))
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.code").value("C001"))
-                .andExpect(jsonPath("$.message").value("잘못된 입력값입니다."));
+                .andExpect(jsonPath("$.code").value("UserException"))
+                .andExpect(jsonPath("$.message").value("로그인: 아이디 또는 비밀번호 오류"));
     }
 
     @Test
@@ -162,7 +161,7 @@ public class AuthApiTest {
 
         // then
         actions
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.message").value("접근이 금지됐습니다."));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("세션이 존재하지 않습니다."));
     }
 }

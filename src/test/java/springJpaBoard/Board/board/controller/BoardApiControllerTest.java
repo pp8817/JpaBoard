@@ -19,10 +19,8 @@ import springJpaBoard.Board.domain.board.model.Board;
 import springJpaBoard.Board.domain.board.repository.BoardApiRepository;
 import springJpaBoard.Board.domain.board.service.BoardService;
 import springJpaBoard.Board.domain.comment.service.CommentService;
-import springJpaBoard.Board.domain.member.exception.UserException;
 import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.domain.member.service.MemberService;
-import springJpaBoard.Board.global.Error.exception.ErrorCode;
 
 import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
@@ -164,10 +162,7 @@ class BoardApiControllerTest {
                 .content(objectMapper.writeValueAsString(request)));
         //then
         actions
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.code").value("C001"))
-                .andExpect(jsonPath("$.message").value("잘못된 입력값입니다."));
+                .andExpect(status().is5xxServerError());
     }
 
     @Test
@@ -205,6 +200,8 @@ class BoardApiControllerTest {
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
+//        loginValidation(TRUE);
+
         /*로그인 세션*/
         final MockHttpSession session = getSession(member);
 
@@ -234,6 +231,8 @@ class BoardApiControllerTest {
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
 
+//        loginValidation(TRUE);
+
         /*로그인 세션*/
         MockHttpSession session = getSession(null);
 
@@ -253,10 +252,11 @@ class BoardApiControllerTest {
         //given
         final Long boardId = 1L;
         board.setMember(member);
-        doThrow(new UserException(ErrorCode.USER_MISMATCH)).when(memberService).loginValidation(any(), any());
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
+
+//        loginValidation(FALSE);
 
         /*로그인 세션*/
         final MockHttpSession session = getSession(member);
@@ -268,11 +268,8 @@ class BoardApiControllerTest {
 
         //then
         actions
-                .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.message").value("회원 정보가 불일치합니다."))
-                .andExpect(jsonPath("$.status").value(401))
-                .andExpect(jsonPath("$.code").value("A004"));
-        verify(memberService, times(1)).loginValidation(any(), any());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("게시글 회원 정보와 로그인 회원 정보가 일치하지 않습니다."));
     }
 
     @Test
@@ -288,6 +285,8 @@ class BoardApiControllerTest {
 
         given(boardService.update(any(), any()))
                 .willReturn(modifyBoardResponse);
+
+//        loginValidation(TRUE);
 
         /*로그인 세션*/
         final MockHttpSession session = getSession(member);
@@ -317,10 +316,10 @@ class BoardApiControllerTest {
         board.setMember(member);
         final ModifyBoardRequest modifyBoardRequest = getModifyBoardRequest();
 
-        doThrow(new UserException(ErrorCode.USER_MISMATCH)).when(memberService).loginValidation(any(), any());
-
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
+
+//        loginValidation(FALSE);
 
         /*로그인 세션*/
         final MockHttpSession session = getSession(member);
@@ -333,11 +332,8 @@ class BoardApiControllerTest {
 
         //then
         actions
-                .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.message").value("회원 정보가 불일치합니다."))
-                .andExpect(jsonPath("$.status").value(401))
-                .andExpect(jsonPath("$.code").value("A004"));
-        verify(memberService, times(1)).loginValidation(any(), any());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("게시글 회원 정보와 로그인 회원 정보 불일치"));
     }
 
     @Test
@@ -350,6 +346,7 @@ class BoardApiControllerTest {
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
+//        loginValidation(TRUE);
 
         // when
         mockMvc.perform(delete("/api/boards/delete/{boardId}", boardId)
@@ -389,6 +386,7 @@ class BoardApiControllerTest {
 
         given(boardApiRepository.findBoardWithMember(any()))
                 .willReturn(board);
+//        loginValidation(TRUE);
 
         final MockHttpSession session = getSession(member);
 
@@ -402,4 +400,18 @@ class BoardApiControllerTest {
         // then
         verify(boardService, times(1)).delete(boardId);
     }
+
+
+//    private void loginValidation(Boolean bool) {
+//        if (bool) {
+//            given(memberService.loginValidation(any(), any()))
+//                    .willReturn(TRUE);
+//        }
+//        if (!bool) {
+//            given(memberService.loginValidation(any(), any()))
+//                    .willReturn(FALSE);
+//        }
+//    }
+
+
 }

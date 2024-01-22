@@ -1,10 +1,8 @@
 package springJpaBoard.Board.board;
 
 import org.jetbrains.annotations.NotNull;
-import springJpaBoard.Board.domain.board.dto.BoardDto;
 
-import static springJpaBoard.Board.domain.board.dto.BoardDto.ModifyBoardRequest;
-import static springJpaBoard.Board.domain.board.dto.BoardDto.ModifyBoardResponse;
+import static springJpaBoard.Board.domain.board.dto.BoardDto.*;
 
 public class BoardTemplate {
 
@@ -27,8 +25,8 @@ public class BoardTemplate {
     }
 
     @NotNull
-    public static BoardDto.CreateBoardRequest getCreateBoardRequest() {
-        return BoardDto.CreateBoardRequest.builder()
+    public static CreateBoardRequest getCreateBoardRequest() {
+        return CreateBoardRequest.builder()
                 .title("title")
                 .writer("username")
                 .content("content")

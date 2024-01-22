@@ -2,8 +2,8 @@ package springJpaBoard.Board;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.mock.web.MockHttpSession;
-import springJpaBoard.Board.domain.etc.Address;
 import springJpaBoard.Board.domain.board.model.Board;
+import springJpaBoard.Board.domain.etc.Address;
 import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.global.constans.SessionConst;
 

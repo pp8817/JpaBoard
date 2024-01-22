@@ -13,12 +13,12 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import springJpaBoard.Board.domain.like.api.LikeApiController;
 import springJpaBoard.Board.domain.board.model.Board;
-import springJpaBoard.Board.domain.member.model.Member;
-import springJpaBoard.Board.domain.like.repository.LikeRepository;
 import springJpaBoard.Board.domain.board.service.BoardService;
+import springJpaBoard.Board.domain.like.controller.LikeController;
+import springJpaBoard.Board.domain.like.repository.LikeRepository;
 import springJpaBoard.Board.domain.like.service.LikeService;
+import springJpaBoard.Board.domain.member.model.Member;
 
 import java.nio.charset.StandardCharsets;
 
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static springJpaBoard.Board.UtilsTemplate.*;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(LikeApiController.class)
+@WebMvcTest(LikeController.class)
 @DisplayName("LikeApiController 테스트")
 public class LikeApiControllerTest {
     @Autowired
