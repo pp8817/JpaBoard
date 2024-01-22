@@ -1,0 +1,32 @@
+Index: src/main/java/springJpaBoard/Board/domain/argumenresolver/Login.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/springJpaBoard/Board/domain/argumenresolver/Login.java b/src/main/java/springJpaBoard/Board/global/argumenresolver/Login.java
+rename from src/main/java/springJpaBoard/Board/domain/argumenresolver/Login.java
+rename to src/main/java/springJpaBoard/Board/global/argumenresolver/Login.java
+--- a/src/main/java/springJpaBoard/Board/domain/argumenresolver/Login.java	
++++ b/src/main/java/springJpaBoard/Board/global/argumenresolver/Login.java	
+@@ -1,4 +1,4 @@
+-package springJpaBoard.Board.domain.argumenresolver;
++package springJpaBoard.Board.global.argumenresolver;
+ 
+ import java.lang.annotation.ElementType;
+ import java.lang.annotation.Retention;
+Index: src/main/java/springJpaBoard/Board/domain/argumenresolver/LoginMemberArgumentResolver.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/springJpaBoard/Board/domain/argumenresolver/LoginMemberArgumentResolver.java b/src/main/java/springJpaBoard/Board/global/argumenresolver/LoginMemberArgumentResolver.java
+rename from src/main/java/springJpaBoard/Board/domain/argumenresolver/LoginMemberArgumentResolver.java
+rename to src/main/java/springJpaBoard/Board/global/argumenresolver/LoginMemberArgumentResolver.java
+--- a/src/main/java/springJpaBoard/Board/domain/argumenresolver/LoginMemberArgumentResolver.java	
++++ b/src/main/java/springJpaBoard/Board/global/argumenresolver/LoginMemberArgumentResolver.java	
+@@ -1,4 +1,4 @@
+-package springJpaBoard.Board.domain.argumenresolver;
++package springJpaBoard.Board.global.argumenresolver;
+ 
+ import lombok.extern.slf4j.Slf4j;
+ import org.springframework.core.MethodParameter;
