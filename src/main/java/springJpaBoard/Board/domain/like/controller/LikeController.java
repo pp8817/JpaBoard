@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import springJpaBoard.Board.global.constans.SessionConst;
 import springJpaBoard.Board.domain.board.model.Board;
@@ -15,6 +16,7 @@ import springJpaBoard.Board.domain.like.service.LikeService;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/api/likes/")
 public class LikeController {
     private final LikeService likeService;
     private final BoardService boardService;
