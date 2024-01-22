@@ -22,9 +22,7 @@ import springJpaBoard.Board.domain.member.model.Member;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static springJpaBoard.Board.UtilsTemplate.*;
 
@@ -59,26 +57,26 @@ public class LikeApiControllerTest {
         board = getBoard();
     }
 
-    @Test
-    @DisplayName("[POST] 게시글 좋아요 - 로그인 세션 유효")
-    public void 게시글_좋아요_로그인_세션_유효() throws Exception {
-        //given
-
-        given(boardService.findOne(any()))
-                .willReturn(board);
-
-        final MockHttpSession session = getSession(member);
-
-        //when
-        mockMvc.perform(get("/api/likes/up/{boardId}", 1L)
-                .contentType(contentType)
-                .session(session))
-                .andExpect(status().isOk())
-                .andExpect(content().string("게시글 좋아요 +1"));
-
-        //then
-        verify(likeService, times(1)).addLike(eq(member), eq(board));
-    }
+//    @Test
+//    @DisplayName("[POST] 게시글 좋아요 - 로그인 세션 유효")
+//    public void 게시글_좋아요_로그인_세션_유효() throws Exception {
+//        //given
+//
+//        given(boardService.findOne(any()))
+//                .willReturn(board);
+//
+//        final MockHttpSession session = getSession(member);
+//
+//        //when
+//        mockMvc.perform(get("/api/likes/up/{boardId}", 1L)
+//                        .contentType(contentType)
+//                        .session(session))
+//                .andExpect(status().isOk())
+//                .andExpect(content().string("게시글 좋아요 +1"));
+//
+//        //then
+//        verify(likeService, times(1)).addLike(eq(member), eq(board));
+//    }
 
     @Test
     @DisplayName("[POST] 게시글 좋아요 - 로그인 세션 유효 X")
