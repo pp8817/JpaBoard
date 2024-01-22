@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="98e1f7c2-d8e0-4343-b868-8e1e5acb7fd3" name="Changes" comment=" ...">
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__ch_qos_logback_logback_classic_1_2_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_classmate_1_5_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_annotations_2_13_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_core_2_13_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_databind_2_13_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_datatype_jackson_datatype_jsr310_2_13_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_h2database_h2_2_2_224.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_jayway_jsonpath_json_path_2_7_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_sun_activation_jakarta_activation_1_2_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_sun_istack_istack_commons_runtime_3_0_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_vaadin_external_google_android_json_0_0_20131108_vaadin1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__jakarta_activation_jakarta_activation_api_1_2_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__jakarta_transaction_jakarta_transaction_api_1_3_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__jakarta_validation_jakarta_validation_api_2_0_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__net_bytebuddy_byte_buddy_1_12_23.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__net_bytebuddy_byte_buddy_agent_1_12_23.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__net_minidev_json_smart_2_4_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_api_2_17_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_to_slf4j_2_17_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_tomcat_embed_tomcat_embed_el_9_0_82.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_tomcat_embed_tomcat_embed_websocket_9_0_82.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apiguardian_apiguardian_api_1_1_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_aspectj_aspectjweaver_1_9_7.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_assertj_assertj_core_3_22_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_attoparser_attoparser_2_0_5_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_glassfish_jaxb_jaxb_runtime_2_3_8.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hamcrest_hamcrest_2_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hibernate_common_hibernate_commons_annotations_5_1_2_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hibernate_validator_hibernate_validator_6_2_5_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jboss_logging_jboss_logging_3_4_3_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_annotations_24_0_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_platform_junit_platform_commons_1_8_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_platform_junit_platform_engine_1_8_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_opentest4j_opentest4j_1_2_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_ow2_asm_asm_9_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_projectlombok_lombok_1_18_30.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_skyscreamer_jsonassert_1_5_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_slf4j_slf4j_api_1_7_36.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_autoconfigure_2_7_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_devtools_2_7_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_data_jpa_2_7_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_jdbc_2_7_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_json_2_7_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_logging_2_7_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_test_2_7_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_tomcat_2_7_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_validation_2_7_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_test_autoconfigure_2_7_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_data_spring_data_jpa_2_7_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_aop_5_3_30.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_aspects_5_3_30.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_context_5_3_30.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_core_5_3_30.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_jcl_5_3_30.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_jdbc_5_3_30.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_orm_5_3_30.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_test_5_3_30.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_web_5_3_30.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_thymeleaf_thymeleaf_3_0_15_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_unbescape_unbescape_1_1_6_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_xmlunit_xmlunit_core_2_9_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_20_24,_16_10_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_20_24,_16_10_[Changes]1/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_20_24,_16_11_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_20_24__16_10__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_20_24__16_10__Changes_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_20_24__16_11__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_01_01_[Changes]/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_01_01_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]/buildOutputCleanup.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]/executionHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]/file-system.probe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]/resourceHashesCache.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]1/buildOutputCleanup.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]1/executionHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]1/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]1/file-system.probe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]1/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]1/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]1/resourceHashesCache.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_17_[Changes]1/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_19_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]/buildOutputCleanup.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]/executionHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]/outputFiles.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]/resourceHashesCache.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]1/buildOutputCleanup.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]1/executionHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]1/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]1/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]1/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]1/outputFiles.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]1/resourceHashesCache.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24,_02_26_[Changes]1/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24__01_01__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24__02_17__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_23_24__02_17__Changes_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/springJpaBoard/Board/like/controller/LikeApiControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/springJpaBoard/Board/like/controller/LikeApiControllerTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package-info" />
+        <option value="Kotlin Class" />
+        <option value="HTML File" />
+        <option value="JUnit4 Test Class" />
+        <option value="JUnit5 Test Class" />
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="refactor/dto" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="PUSH_AUTO_UPDATE" value="true" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="MIXED" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="recentNewPullRequestHead">
+      <RepoCoordinatesHolder>
+        <option name="owner" value="pp8817" />
+        <option name="repository" value="JpaBoard" />
+      </RepoCoordinatesHolder>
+    </option>
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="5fbb4180-8952-451f-a2e9-ff95c289e25c" />
+        <option name="url" value="https://github.com/pp8817/JpaBoard.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2Y1WyKbMHVv1JrHckfJc266ANfC" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4&quot;: &quot;&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/sangmin8817/Desktop/Board/src/main/java/springJpaBoard/Board/domain&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;226160abf295f1e4df3fa7af26b90864&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="springJpaBoard.Board.api" />
+      <recent name="springJpaBoard.Board.domain" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/springJpaBoard/Board/domain" />
+      <recent name="$PROJECT_DIR$/src/main/resources/templates/members" />
+      <recent name="$PROJECT_DIR$/src/main/resources/templates/error" />
+      <recent name="$PROJECT_DIR$/src/main/resources/templates/boards" />
+      <recent name="$PROJECT_DIR$/src/main/resources/templates" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/springJpaBoard/Board/domain/member/service" />
+      <recent name="$PROJECT_DIR$/src/main/java/springJpaBoard/Board/domain/board/service" />
+      <recent name="$PROJECT_DIR$/src/main/java/springJpaBoard/Board/domain/board/repository" />
+      <recent name="$PROJECT_DIR$/src/main/java/springJpaBoard/Board/domain/member/repository" />
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="springJpaBoard.Board" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="springJpaBoard.Board.api.apicontroller" />
+      <recent name="springJpaBoard.Board.service" />
+      <recent name="springJpaBoard.Board.repository" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="springJpaBoard.Board.domain.board.exception" />
+      <recent name="springJpaBoard.Board.api.apicontroller" />
+      <recent name="springJpaBoard.Board.controller.requestdto" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.Tests in 'springJpaBoard.Board'">
+    <configuration name="BoardApiControllerTest.게시글_수정_회원_정보_불일치" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;springJpaBoard.Board.board.controller.BoardApiControllerTest.게시글_수정_회원_정보_불일치&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="BoardApiControllerTest.게시글_수정_페이지_회원_정보_불일치" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;springJpaBoard.Board.board.controller.BoardApiControllerTest.게시글_수정_페이지_회원_정보_불일치&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="LikeApiControllerTest.게시글_좋아요_로그인_세션_유효" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;springJpaBoard.Board.like.controller.LikeApiControllerTest.게시글_좋아요_로그인_세션_유효&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="MemberApiControllerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;springJpaBoard.Board.user.controller.MemberApiControllerTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="Tests in 'springJpaBoard.Board'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;springJpaBoard.Board.*&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Board" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Board" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="Board.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="springJpaBoard.Board.BoardApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="Board.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.springJpaBoard.Board.BoardApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.Tests in 'springJpaBoard.Board'" />
+        <item itemvalue="Gradle.LikeApiControllerTest.게시글_좋아요_로그인_세션_유효" />
+        <item itemvalue="Gradle.MemberApiControllerTest" />
+        <item itemvalue="Gradle.BoardApiControllerTest.게시글_수정_회원_정보_불일치" />
+        <item itemvalue="Gradle.BoardApiControllerTest.게시글_수정_페이지_회원_정보_불일치" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="98e1f7c2-d8e0-4343-b868-8e1e5acb7fd3" name="Changes" comment="" />
+      <created>1699693819017</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1699693819017</updated>
+      <workItem from="1699693820168" duration="1283000" />
+      <workItem from="1699695246979" duration="295000" />
+      <workItem from="1699695725751" duration="1349000" />
+      <workItem from="1699697080509" duration="3207000" />
+      <workItem from="1699782392064" duration="731000" />
+      <workItem from="1699789724753" duration="77000" />
+      <workItem from="1699789821835" duration="2651000" />
+      <workItem from="1699792484293" duration="1484000" />
+      <workItem from="1699794013978" duration="9281000" />
+      <workItem from="1699836146428" duration="64000" />
+      <workItem from="1699845649812" duration="9344000" />
+      <workItem from="1699890685323" duration="68000" />
+      <workItem from="1699950261186" duration="2377000" />
+      <workItem from="1699952647229" duration="1292000" />
+      <workItem from="1699954041416" duration="817000" />
+      <workItem from="1699954862268" duration="234000" />
+      <workItem from="1699955099534" duration="112000" />
+      <workItem from="1700048804973" duration="81000" />
+      <workItem from="1700048932785" duration="3621000" />
+      <workItem from="1700054601342" duration="4350000" />
+      <workItem from="1700059309643" duration="5129000" />
+      <workItem from="1700066536792" duration="4816000" />
+      <workItem from="1700132882352" duration="7902000" />
+      <workItem from="1700140813282" duration="3145000" />
+      <workItem from="1700145065318" duration="2194000" />
+      <workItem from="1700147267912" duration="3495000" />
+      <workItem from="1700237293089" duration="2953000" />
+      <workItem from="1700240257305" duration="289000" />
+      <workItem from="1700240550985" duration="2684000" />
+      <workItem from="1700243245056" duration="171000" />
+      <workItem from="1700243721621" duration="88000" />
+      <workItem from="1700297189569" duration="2138000" />
+      <workItem from="1700493409092" duration="3540000" />
+      <workItem from="1700561227859" duration="14175000" />
+      <workItem from="1700661247985" duration="8323000" />
+      <workItem from="1700669602715" duration="6581000" />
+      <workItem from="1700721426538" duration="977000" />
+      <workItem from="1700749077382" duration="13638000" />
+      <workItem from="1700841736262" duration="561000" />
+      <workItem from="1700890372889" duration="7496000" />
+      <workItem from="1700897895531" duration="796000" />
+      <workItem from="1700898703494" duration="548000" />
+      <workItem from="1700899255420" duration="398000" />
+      <workItem from="1700899657796" duration="41000" />
+      <workItem from="1700899708075" duration="666000" />
+      <workItem from="1700900389797" duration="609000" />
+      <workItem from="1700901009348" duration="326000" />
+      <workItem from="1700901339244" duration="85000" />
+      <workItem from="1700901432964" duration="136000" />
+      <workItem from="1700901572490" duration="940000" />
+      <workItem from="1700902517261" duration="60000" />
+      <workItem from="1700902587220" duration="373000" />
+      <workItem from="1700902963776" duration="10588000" />
+      <workItem from="1700979208526" duration="640000" />
+      <workItem from="1700980895736" duration="640000" />
+      <workItem from="1701238005788" duration="65000" />
+      <workItem from="1701922589436" duration="265000" />
+      <workItem from="1701922857609" duration="468000" />
+      <workItem from="1702713078513" duration="6000" />
+      <workItem from="1702733823655" duration="10318000" />
+      <workItem from="1702810334502" duration="8265000" />
+      <workItem from="1702996027737" duration="3137000" />
+      <workItem from="1703000325754" duration="1688000" />
+      <workItem from="1703233148756" duration="5589000" />
+      <workItem from="1703304004802" duration="6150000" />
+      <workItem from="1703312309274" duration="18000" />
+      <workItem from="1703347531789" duration="5612000" />
+      <workItem from="1703400505853" duration="6000" />
+      <workItem from="1703589565454" duration="26000" />
+      <workItem from="1703603071051" duration="3523000" />
+      <workItem from="1703649339828" duration="4118000" />
+      <workItem from="1703653885125" duration="60000" />
+      <workItem from="1703653987286" duration="3589000" />
+      <workItem from="1703663633464" duration="1000" />
+      <workItem from="1703678414323" duration="92000" />
+      <workItem from="1703737474381" duration="159000" />
+      <workItem from="1703740339500" duration="1571000" />
+      <workItem from="1703749267185" duration="3337000" />
+      <workItem from="1703769620757" duration="8982000" />
+      <workItem from="1703779059522" duration="296000" />
+      <workItem from="1703831948367" duration="2013000" />
+      <workItem from="1703846482329" duration="10858000" />
+      <workItem from="1703864563367" duration="1583000" />
+      <workItem from="1703912759761" duration="138000" />
+      <workItem from="1703913282718" duration="2223000" />
+      <workItem from="1703920803442" duration="2000" />
+      <workItem from="1703924906911" duration="119000" />
+      <workItem from="1703940543935" duration="9008000" />
+      <workItem from="1704010027239" duration="6575000" />
+      <workItem from="1704018693493" duration="345000" />
+      <workItem from="1704092463113" duration="2281000" />
+      <workItem from="1704096362875" duration="36000" />
+      <workItem from="1704118735614" duration="8255000" />
+      <workItem from="1704127022060" duration="225000" />
+      <workItem from="1704127261578" duration="2395000" />
+      <workItem from="1704197091341" duration="10509000" />
+      <workItem from="1704544608929" duration="1573000" />
+      <workItem from="1704546190240" duration="345000" />
+      <workItem from="1704550774192" duration="3246000" />
+      <workItem from="1704562389235" duration="7022000" />
+      <workItem from="1704609783105" duration="10407000" />
+      <workItem from="1704809843462" duration="10047000" />
+      <workItem from="1704861833290" duration="5122000" />
+      <workItem from="1704866990397" duration="5171000" />
+      <workItem from="1704945280849" duration="60000" />
+      <workItem from="1704969827336" duration="4604000" />
+      <workItem from="1704974450885" duration="44000" />
+      <workItem from="1704974499223" duration="680000" />
+      <workItem from="1704978589239" duration="28000" />
+      <workItem from="1705033450244" duration="2767000" />
+      <workItem from="1705228545374" duration="9459000" />
+      <workItem from="1705291648311" duration="1716000" />
+      <workItem from="1705327192735" duration="4253000" />
+      <workItem from="1705379300705" duration="2907000" />
+      <workItem from="1705382218261" duration="8753000" />
+      <workItem from="1705560955364" duration="2493000" />
+      <workItem from="1705563703293" duration="4931000" />
+      <workItem from="1705578423418" duration="953000" />
+      <workItem from="1705645683746" duration="2865000" />
+      <workItem from="1705728341696" duration="7198000" />
+      <workItem from="1705735845068" duration="11038000" />
+      <workItem from="1705841691363" duration="12000" />
+      <workItem from="1705926627719" duration="27000" />
+      <workItem from="1705939143818" duration="639000" />
+      <workItem from="1705939787853" duration="1119000" />
+      <workItem from="1705941001042" duration="2135000" />
+      <workItem from="1705943142425" duration="718000" />
+    </task>
+    <task id="LOCAL-00150" summary="[test] 댓글 작성 - 로그인 세션 유효 개발">
+      <option name="closed" value="true" />
+      <created>1705383246268</created>
+      <option name="number" value="00150" />
+      <option name="presentableId" value="LOCAL-00150" />
+      <option name="project" value="LOCAL" />
+      <updated>1705383246268</updated>
+    </task>
+    <task id="LOCAL-00151" summary="[test] 댓글 작성 - 로그인 세션 유효 X 개발">
+      <option name="closed" value="true" />
+      <created>1705383847146</created>
+      <option name="number" value="00151" />
+      <option name="presentableId" value="LOCAL-00151" />
+      <option name="project" value="LOCAL" />
+      <updated>1705383847146</updated>
+    </task>
+    <task id="LOCAL-00152" summary="[test] 댓글 삭제 개발 - 추후에 변경">
+      <option name="closed" value="true" />
+      <created>1705384522737</created>
+      <option name="number" value="00152" />
+      <option name="presentableId" value="LOCAL-00152" />
+      <option name="project" value="LOCAL" />
+      <updated>1705384522737</updated>
+    </task>
+    <task id="LOCAL-00153" summary="[refactor] 게시글 좋아요 메서드의 로그인 세션 처리 부분을 어노테이션으로 변경">
+      <option name="closed" value="true" />
+      <created>1705385000829</created>
+      <option name="number" value="00153" />
+      <option name="presentableId" value="LOCAL-00153" />
+      <option name="project" value="LOCAL" />
+      <updated>1705385000829</updated>
+    </task>
+    <task id="LOCAL-00154" summary="[refactor] UtilsTemplate를 생성해서 각 도메인에 대한 Test Template에 공통으로 들어가는 로직을 모아둠">
+      <option name="closed" value="true" />
+      <created>1705385286702</created>
+      <option name="number" value="00154" />
+      <option name="presentableId" value="LOCAL-00154" />
+      <option name="project" value="LOCAL" />
+      <updated>1705385286702</updated>
+    </task>
+    <task id="LOCAL-00155" summary="[refactor] 회원 삭제 로직에 로그인 검증을 추가, 그에 따라서 테스트 코드도 수정">
+      <option name="closed" value="true" />
+      <created>1705387212310</created>
+      <option name="number" value="00155" />
+      <option name="presentableId" value="LOCAL-00155" />
+      <option name="project" value="LOCAL" />
+      <updated>1705387212310</updated>
+    </task>
+    <task id="LOCAL-00156" summary="[rename] 회원 삭제 이름 변경">
+      <option name="closed" value="true" />
+      <created>1705387474063</created>
+      <option name="number" value="00156" />
+      <option name="presentableId" value="LOCAL-00156" />
+      <option name="project" value="LOCAL" />
+      <updated>1705387474063</updated>
+    </task>
+    <task id="LOCAL-00157" summary="[test] 게시글 삭제 테스트 개발">
+      <option name="closed" value="true" />
+      <created>1705388278593</created>
+      <option name="number" value="00157" />
+      <option name="presentableId" value="LOCAL-00157" />
+      <option name="project" value="LOCAL" />
+      <updated>1705388278593</updated>
+    </task>
+    <task id="LOCAL-00158" summary="[fix] LikeApiController에 기본 주소 설정 오류 수정">
+      <option name="closed" value="true" />
+      <created>1705389174467</created>
+      <option name="number" value="00158" />
+      <option name="presentableId" value="LOCAL-00158" />
+      <option name="project" value="LOCAL" />
+      <updated>1705389174467</updated>
+    </task>
+    <task id="LOCAL-00159" summary="[fix] 게시글 or 댓글 정보가 없을때 발생하는 예외 코드를 NoSuchException으로 변경">
+      <option name="closed" value="true" />
+      <created>1705390120787</created>
+      <option name="number" value="00159" />
+      <option name="presentableId" value="LOCAL-00159" />
+      <option name="project" value="LOCAL" />
+      <updated>1705390120787</updated>
+    </task>
+    <task id="LOCAL-00160" summary="[test] 댓글 삭제 테스트 개발">
+      <option name="closed" value="true" />
+      <created>1705390137850</created>
+      <option name="number" value="00160" />
+      <option name="presentableId" value="LOCAL-00160" />
+      <option name="project" value="LOCAL" />
+      <updated>1705390137850</updated>
+    </task>
+    <task id="LOCAL-00161" summary="[test] 게시글 좋아요 통합 테스트 개발">
+      <option name="closed" value="true" />
+      <created>1705390152131</created>
+      <option name="number" value="00161" />
+      <option name="presentableId" value="LOCAL-00161" />
+      <option name="project" value="LOCAL" />
+      <updated>1705390152131</updated>
+    </task>
+    <task id="LOCAL-00162" summary="[test] 회원 테스트 final 속성 추가, @Before을 사용해서 setUp 과정 간략화">
+      <option name="closed" value="true" />
+      <created>1705564542461</created>
+      <option name="number" value="00162" />
+      <option name="presentableId" value="LOCAL-00162" />
+      <option name="project" value="LOCAL" />
+      <updated>1705564542462</updated>
+    </task>
+    <task id="LOCAL-00163" summary="[refactor] 회원 삭제 테스트 리팩토링">
+      <option name="closed" value="true" />
+      <created>1705564876625</created>
+      <option name="number" value="00163" />
+      <option name="presentableId" value="LOCAL-00163" />
+      <option name="project" value="LOCAL" />
+      <updated>1705564876625</updated>
+    </task>
+    <task id="LOCAL-00164" summary="[refactor] 회원가입 리팩토링">
+      <option name="closed" value="true" />
+      <created>1705565187033</created>
+      <option name="number" value="00164" />
+      <option name="presentableId" value="LOCAL-00164" />
+      <option name="project" value="LOCAL" />
+      <updated>1705565187033</updated>
+    </task>
+    <task id="LOCAL-00165" summary="[refactor] @Before -&gt; @BeforeEach로 변경">
+      <option name="closed" value="true" />
+      <created>1705565997219</created>
+      <option name="number" value="00165" />
+      <option name="presentableId" value="LOCAL-00165" />
+      <option name="project" value="LOCAL" />
+      <updated>1705565997219</updated>
+    </task>
+    <task id="LOCAL-00166" summary="[refactor] final 속성 추가">
+      <option name="closed" value="true" />
+      <created>1705566113472</created>
+      <option name="number" value="00166" />
+      <option name="presentableId" value="LOCAL-00166" />
+      <option name="project" value="LOCAL" />
+      <updated>1705566113472</updated>
+    </task>
+    <task id="LOCAL-00167" summary="[refactor] Template 추가">
+      <option name="closed" value="true" />
+      <created>1705566307228</created>
+      <option name="number" value="00167" />
+      <option name="presentableId" value="LOCAL-00167" />
+      <option name="project" value="LOCAL" />
+      <updated>1705566307228</updated>
+    </task>
+    <task id="LOCAL-00168" summary="[refactor] 로그아웃 테스트 리팩토링">
+      <option name="closed" value="true" />
+      <created>1705566430834</created>
+      <option name="number" value="00168" />
+      <option name="presentableId" value="LOCAL-00168" />
+      <option name="project" value="LOCAL" />
+      <updated>1705566430834</updated>
+    </task>
+    <task id="LOCAL-00169" summary="[refactor] 세션을 획득하는 로직을 UtilsTemplate으로 이동">
+      <option name="closed" value="true" />
+      <created>1705566447970</created>
+      <option name="number" value="00169" />
+      <option name="presentableId" value="LOCAL-00169" />
+      <option name="project" value="LOCAL" />
+      <updated>1705566447970</updated>
+    </task>
+    <task id="LOCAL-00170" summary="[refactor] 게시글 작성 테스트 리팩토링">
+      <option name="closed" value="true" />
+      <created>1705567348517</created>
+      <option name="number" value="00170" />
+      <option name="presentableId" value="LOCAL-00170" />
+      <option name="project" value="LOCAL" />
+      <updated>1705567348517</updated>
+    </task>
+    <task id="LOCAL-00171" summary="[refactor] 게시글 상세 테스트 리팩토링">
+      <option name="closed" value="true" />
+      <created>1705567447681</created>
+      <option name="number" value="00171" />
+      <option name="presentableId" value="LOCAL-00171" />
+      <option name="project" value="LOCAL" />
+      <updated>1705567447681</updated>
+    </task>
+    <task id="LOCAL-00172" summary="[refactor] 게시글 수정 테스트 리팩토링">
+      <option name="closed" value="true" />
+      <created>1705567861989</created>
+      <option name="number" value="00172" />
+      <option name="presentableId" value="LOCAL-00172" />
+      <option name="project" value="LOCAL" />
+      <updated>1705567861989</updated>
+    </task>
+    <task id="LOCAL-00173" summary="[refactor] 게시글 삭제 테스트 개발">
+      <option name="closed" value="true" />
+      <created>1705568269827</created>
+      <option name="number" value="00173" />
+      <option name="presentableId" value="LOCAL-00173" />
+      <option name="project" value="LOCAL" />
+      <updated>1705568269827</updated>
+    </task>
+    <task id="LOCAL-00174" summary="[refactor] 댓글 테스트 리팩토링">
+      <option name="closed" value="true" />
+      <created>1705579190804</created>
+      <option name="number" value="00174" />
+      <option name="presentableId" value="LOCAL-00174" />
+      <option name="project" value="LOCAL" />
+      <updated>1705579190805</updated>
+    </task>
+    <task id="LOCAL-00175" summary="[refactor] 게시글 좋아요 테스트 리팩토링">
+      <option name="closed" value="true" />
+      <created>1705579343969</created>
+      <option name="number" value="00175" />
+      <option name="presentableId" value="LOCAL-00175" />
+      <option name="project" value="LOCAL" />
+      <updated>1705579343969</updated>
+    </task>
+    <task id="LOCAL-00176" summary="[rename] 회원가입, 로그인 컨트롤러 로직을 분리">
+      <option name="closed" value="true" />
+      <created>1705646320133</created>
+      <option name="number" value="00176" />
+      <option name="presentableId" value="LOCAL-00176" />
+      <option name="project" value="LOCAL" />
+      <updated>1705646320133</updated>
+    </task>
+    <task id="LOCAL-00177" summary="[rename] 회원가입, 로그인 컨트롤러 테스트 이름 변경">
+      <option name="closed" value="true" />
+      <created>1705646331781</created>
+      <option name="number" value="00177" />
+      <option name="presentableId" value="LOCAL-00177" />
+      <option name="project" value="LOCAL" />
+      <updated>1705646331781</updated>
+    </task>
+    <task id="LOCAL-00178" summary="[refactor] AuthApi 클래스의 파라미터와 인스턴스에 불변성 추가">
+      <option name="closed" value="true" />
+      <created>1705646777354</created>
+      <option name="number" value="00178" />
+      <option name="presentableId" value="LOCAL-00178" />
+      <option name="project" value="LOCAL" />
+      <updated>1705646777354</updated>
+    </task>
+    <task id="LOCAL-00179" summary="[refactor] MemberApiController 클래스의 파라미터와 인스턴스에 불변성 추가">
+      <option name="closed" value="true" />
+      <created>1705672630559</created>
+      <option name="number" value="00179" />
+      <option name="presentableId" value="LOCAL-00179" />
+      <option name="project" value="LOCAL" />
+      <updated>1705672630559</updated>
+    </task>
+    <task id="LOCAL-00180" summary="[refactor] MemberApiController 클래스의 파라미터와 인스턴스에 불변성 추가, 인스턴스 이름을 직관적으로 변경">
+      <option name="closed" value="true" />
+      <created>1705728650127</created>
+      <option name="number" value="00180" />
+      <option name="presentableId" value="LOCAL-00180" />
+      <option name="project" value="LOCAL" />
+      <updated>1705728650127</updated>
+    </task>
+    <task id="LOCAL-00181" summary="[refactor] BoardApiController에 final 속성을 추가해서 불변성 부여">
+      <option name="closed" value="true" />
+      <created>1705730125619</created>
+      <option name="number" value="00181" />
+      <option name="presentableId" value="LOCAL-00181" />
+      <option name="project" value="LOCAL" />
+      <updated>1705730125619</updated>
+    </task>
+    <task id="LOCAL-00182" summary="[refactor] CommentApiController에 final 속성을 추가해서 불변성 부">
+      <option name="closed" value="true" />
+      <created>1705730706260</created>
+      <option name="number" value="00182" />
+      <option name="presentableId" value="LOCAL-00182" />
+      <option name="project" value="LOCAL" />
+      <updated>1705730706260</updated>
+    </task>
+    <task id="LOCAL-00183" summary="[refactor] LikeApiController에 final 속성을 추가해서 불변성 부">
+      <option name="closed" value="true" />
+      <created>1705730715561</created>
+      <option name="number" value="00183" />
+      <option name="presentableId" value="LOCAL-00183" />
+      <option name="project" value="LOCAL" />
+      <updated>1705730715561</updated>
+    </task>
+    <task id="LOCAL-00184" summary="[refactor] 최상위 BusinessException을 상속 받는 InvalidValueException, EntityNotFoundException 을 생성">
+      <option name="closed" value="true" />
+      <created>1705732960937</created>
+      <option name="number" value="00184" />
+      <option name="presentableId" value="LOCAL-00184" />
+      <option name="project" value="LOCAL" />
+      <updated>1705732960937</updated>
+    </task>
+    <task id="LOCAL-00185" summary="[refactor] ErrorCode에 에러를 추가하고 ErrorResponse 규격을 새로 생성, 그에 맞춰서 ControllerAdvice도 수정">
+      <option name="closed" value="true" />
+      <created>1705733791860</created>
+      <option name="number" value="00185" />
+      <option name="presentableId" value="LOCAL-00185" />
+      <option name="project" value="LOCAL" />
+      <updated>1705733791860</updated>
+    </task>
+    <task id="LOCAL-00186" summary="[rename] 파일 구조 변경">
+      <option name="closed" value="true" />
+      <created>1705734456126</created>
+      <option name="number" value="00186" />
+      <option name="presentableId" value="LOCAL-00186" />
+      <option name="project" value="LOCAL" />
+      <updated>1705734456126</updated>
+    </task>
+    <task id="LOCAL-00187" summary="[refactor] 회원가입, 로그인 로직의 예외처리 수정">
+      <option name="closed" value="true" />
+      <created>1705741861575</created>
+      <option name="number" value="00187" />
+      <option name="presentableId" value="LOCAL-00187" />
+      <option name="project" value="LOCAL" />
+      <updated>1705741861575</updated>
+    </task>
+    <task id="LOCAL-00188" summary="[feat] EntityNotFoundException을 상속한 MemberNotFoundException 생성">
+      <option name="closed" value="true" />
+      <created>1705742267327</created>
+      <option name="number" value="00188" />
+      <option name="presentableId" value="LOCAL-00188" />
+      <option name="project" value="LOCAL" />
+      <updated>1705742267327</updated>
+    </task>
+    <task id="LOCAL-00189" summary="[refactor] 에러 코드 속성 수정">
+      <option name="closed" value="true" />
+      <created>1705742285439</created>
+      <option name="number" value="00189" />
+      <option name="presentableId" value="LOCAL-00189" />
+      <option name="project" value="LOCAL" />
+      <updated>1705742285439</updated>
+    </task>
+    <task id="LOCAL-00190" summary="[refactor] 회원 조회시 예외처리 수정">
+      <option name="closed" value="true" />
+      <created>1705742299257</created>
+      <option name="number" value="00190" />
+      <option name="presentableId" value="LOCAL-00190" />
+      <option name="project" value="LOCAL" />
+      <updated>1705742299257</updated>
+    </task>
+    <task id="LOCAL-00191" summary="[refactor] 회원 예외처리 수정">
+      <option name="closed" value="true" />
+      <created>1705750289344</created>
+      <option name="number" value="00191" />
+      <option name="presentableId" value="LOCAL-00191" />
+      <option name="project" value="LOCAL" />
+      <updated>1705750289344</updated>
+    </task>
+    <task id="LOCAL-00192" summary="[refactor] 회원 예외처리 수정과 테스트 코드 수정 완료">
+      <option name="closed" value="true" />
+      <created>1705751760231</created>
+      <option name="number" value="00192" />
+      <option name="presentableId" value="LOCAL-00192" />
+      <option name="project" value="LOCAL" />
+      <updated>1705751760232</updated>
+    </task>
+    <task id="LOCAL-00193" summary="[refactor] 게시글 예외처리 수정, 테스트 코드 수정 완료">
+      <option name="closed" value="true" />
+      <created>1705752715281</created>
+      <option name="number" value="00193" />
+      <option name="presentableId" value="LOCAL-00193" />
+      <option name="project" value="LOCAL" />
+      <updated>1705752715281</updated>
+    </task>
+    <task id="LOCAL-00194" summary="[remove] 사용하지 않는 파일 삭제">
+      <option name="closed" value="true" />
+      <created>1705754252357</created>
+      <option name="number" value="00194" />
+      <option name="presentableId" value="LOCAL-00194" />
+      <option name="project" value="LOCAL" />
+      <updated>1705754252357</updated>
+    </task>
+    <task id="LOCAL-00195" summary=" .">
+      <option name="closed" value="true" />
+      <created>1705939208962</created>
+      <option name="number" value="00195" />
+      <option name="presentableId" value="LOCAL-00195" />
+      <option name="project" value="LOCAL" />
+      <updated>1705939208963</updated>
+    </task>
+    <task id="LOCAL-00196" summary=" .">
+      <option name="closed" value="true" />
+      <created>1705939279084</created>
+      <option name="number" value="00196" />
+      <option name="presentableId" value="LOCAL-00196" />
+      <option name="project" value="LOCAL" />
+      <updated>1705939279084</updated>
+    </task>
+    <task id="LOCAL-00197" summary=" ...">
+      <option name="closed" value="true" />
+      <created>1705943017197</created>
+      <option name="number" value="00197" />
+      <option name="presentableId" value="LOCAL-00197" />
+      <option name="project" value="LOCAL" />
+      <updated>1705943017198</updated>
+    </task>
+    <task id="LOCAL-00198" summary=" ...">
+      <option name="closed" value="true" />
+      <created>1705943033372</created>
+      <option name="number" value="00198" />
+      <option name="presentableId" value="LOCAL-00198" />
+      <option name="project" value="LOCAL" />
+      <updated>1705943033372</updated>
+    </task>
+    <option name="localTasksCounter" value="199" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="[refactor] 댓글 테스트 리팩토링" />
+    <MESSAGE value="[refactor] 게시글 좋아요 테스트 리팩토링" />
+    <MESSAGE value="[rename] 회원가입, 로그인 컨트롤러 로직을 분리" />
+    <MESSAGE value="[rename] 회원가입, 로그인 컨트롤러 테스트 이름 변경" />
+    <MESSAGE value="[refactor] AuthApi 클래스의 파라미터와 인스턴스에 불변성 추가" />
+    <MESSAGE value="[refactor] MemberApiController 클래스의 파라미터와 인스턴스에 불변성 추가" />
+    <MESSAGE value="[refactor] MemberApiController 클래스의 파라미터와 인스턴스에 불변성 추가, 인스턴스 이름을 직관적으로 변경" />
+    <MESSAGE value="[refactor] BoardApiController에 final 속성을 추가해서 불변성 부여" />
+    <MESSAGE value="[refactor] CommentApiController에 final 속성을 추가해서 불변성 부" />
+    <MESSAGE value="[refactor] LikeApiController에 final 속성을 추가해서 불변성 부" />
+    <MESSAGE value="[refactor] 최상위 BusinessException을 상속 받는 InvalidValueException, EntityNotFoundException 을 생성" />
+    <MESSAGE value="[refactor] ErrorCode에 에러를 추가하고 ErrorResponse 규격을 새로 생성, 그에 맞춰서 ControllerAdvice도 수정" />
+    <MESSAGE value="[rename] 파일 구조 변경" />
+    <MESSAGE value="[refactor] 회원가입, 로그인 로직의 예외처리 수정" />
+    <MESSAGE value="[feat] EntityNotFoundException을 상속한 MemberNotFoundException 생성" />
+    <MESSAGE value="[refactor] 에러 코드 속성 수정" />
+    <MESSAGE value="[refactor] 회원 조회시 예외처리 수정" />
+    <MESSAGE value="[refactor] 회원 예외처리 수정" />
+    <MESSAGE value="[refactor] 회원 예외처리 수정과 테스트 코드 수정 완료" />
+    <MESSAGE value="[refactor] 게시글 예외처리 수정, 테스트 코드 수정 완료" />
+    <MESSAGE value="[remove] 사용하지 않는 파일 삭제" />
+    <MESSAGE value=" .ㅇㅈㅁㅇ" />
+    <MESSAGE value="...." />
+    <MESSAGE value=" ." />
+    <MESSAGE value=" ..." />
+    <option name="LAST_COMMIT_MESSAGE" value=" ..." />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Board$BoardApplication__1_.ic" NAME="BoardApplication (1) Coverage Results" MODIFIED="1700665606356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>springJpaBoard.Board.*</FILTER>
+    </SUITE>
+  </component>
+</project>

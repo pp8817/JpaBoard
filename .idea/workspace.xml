@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ac5f0aa3-7142-4c5a-b0e3-d714a33af614" name="Changes" comment=" 파일 수정">
+      <change beforePath="$PROJECT_DIR$/src/main/java/springJpaBoard/Board/domain/like/api/LikeApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springJpaBoard/Board/domain/like/api/LikeApiController.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="TaskManager">
+    <task id="LOCAL-00001" summary=" 파일 수정">
+      <option name="closed" value="true" />
+      <created>1705945271057</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1705945271057</updated>
+    </task>
+    <task id="LOCAL-00002" summary=" 파일 수정">
+      <option name="closed" value="true" />
+      <created>1705945276293</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1705945276293</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value=" 파일 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value=" 파일 수정" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Board$BoardApplication__1_.ic" NAME="BoardApplication (1) Coverage Results" MODIFIED="1700665606356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>springJpaBoard.Board.*</FILTER>
+    </SUITE>
+  </component>
+</project>
