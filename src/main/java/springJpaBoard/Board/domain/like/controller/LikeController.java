@@ -16,7 +16,6 @@ import springJpaBoard.Board.domain.like.service.LikeService;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/likes/")
 public class LikeController {
     private final LikeService likeService;
     private final BoardService boardService;

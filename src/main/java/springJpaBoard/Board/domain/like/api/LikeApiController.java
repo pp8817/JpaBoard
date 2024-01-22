@@ -14,7 +14,6 @@ import springJpaBoard.Board.domain.like.service.LikeService;
 import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.global.argumenresolver.Login;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/likes")
 @RequiredArgsConstructor
