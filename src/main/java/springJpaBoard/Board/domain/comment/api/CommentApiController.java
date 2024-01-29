@@ -38,10 +38,6 @@ public class CommentApiController {
     @PostMapping
     public ResponseEntity saveComment(@RequestBody final CreateCommentRequest commentRequestDTO, BindingResult result, @Login final Member loginMember) {
 
-        if (result.hasErrors()) {
-            throw new IllegalStateException("양식 불일치 오류");
-        }
-
         final CommentResponse commentDto = commentService.save(commentRequestDTO, loginMember.getId());
 
         final Message message = new Message(StatusEnum.OK, "댓글 작성 성공", commentDto);

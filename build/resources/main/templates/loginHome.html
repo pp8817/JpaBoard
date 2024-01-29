@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div class="jumbotron"> <h1>HELLO BOARD</h1>
+        <h4 class="mb-3"th:text="|로그인:${member.name}|">로그인 사용자 이름</h4>
+        <p class="lead" th:text="#{label.main.member}">회원 기능</p>
+        <p>
+            <a class="btn btn-lg btn-secondary" href="/members" th:text="#{button.member.list}">회원 목록</a>
+            <a class="btn btn-lg btn-secondary" href="/members/myPosts" th:text="#{button.member.myPost}">내 게시물</a>
+        </p>
+        <p class="lead" th:text="#{label.main.board}">게시판 기능</p>
+            <a class="btn btn-lg btn-info" href="/boards/write" th:text="#{button.board.create}">게시글 작성 </a>
+            <a class="btn btn-lg btn-info" href="/boards" th:text="#{button.board.list}">게시글 목록</a>
+        </p>
+    </div>
+    <div class="col">
+        <form th:action="@{members/logout}" method="post">
+            <button class="w-100 btn btn-dark btn-lg" type="submit" th:text="#{button.member.logout}">
+                로그아웃
+            </button>
+        </form>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>

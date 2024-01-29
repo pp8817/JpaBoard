@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+  <form role="form" th:action="@{/boards/{id}/edit(id=${boardForm.id})}"  method="post" th:object="${boardForm}">
+
+    <div class="form-group">
+      <label th:for="title" th:text="#{label.board.title}">제목</label>
+      <input type="text" th:field="*{title}" class="form-control"
+             th:class="${#fields.hasErrors('title')}? 'form-control fieldError' : 'form-control'">
+      <p th:if="${#fields.hasErrors('title')}"
+         th:errors="*{title}">Incorrect date</p>
+    </div>
+
+    <div class="form-group">
+      <label th:for="writer" th:text="#{label.board.writer}">작성자</label>
+      <input type="text" th:field="*{writer}" class="form-control"
+             th:class="${#fields.hasErrors('writer')}? 'form-control fieldError' : 'form-control'" disabled>
+      <p th:if="${#fields.hasErrors('writer')}"
+         th:errors="*{writer}">Incorrect date</p>
+    </div>
+
+    <div class="form-group">
+      <label th:for="content" th:text="#{label.board.content}">내용</label>
+      <textarea type="text" rows="8" cols="50" th:field="*{content}" class="align-text-bottom" placeholder="내용을 입력하세요" th:class="${#fields.hasErrors('content')}? 'form-control fieldError' : 'form-control'"></textarea>
+      <p th:if="${#fields.hasErrors('content')}"
+         th:errors="*{content}">Incorrect date</p>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary" th:text="#{button.submit}">Submit</button>
+  </form>
+  <br/>
+  <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>
