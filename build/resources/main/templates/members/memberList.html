@@ -1,0 +1,117 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        list-style: none;
+        padding: 0;
+    }
+
+    .pagination a {
+        color: gray;
+        text-decoration: none;
+        margin: 0 5px;
+        font-size: 14px;
+    }
+
+    .pagination .current-page {
+        font-weight: bold;
+        font-size: 16px;
+        text-decoration: underline;
+        color: black;
+    }
+
+</style>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div>
+
+        <div>
+            <form th:object="${memberSearch}" class="form-inline">
+                <div class="form-group mb-2">
+                    <input type="text" th:field="*{memberName}" class="form-control" placeholder="회원 이름"/>
+                </div>
+                <div class="form-group mx-sm-1 mb-2">
+                    <select th:field="*{memberGender}" class="form-control">
+                        <option value="" th:text="#{label.member.gender}">성별</option>
+<!--                        <option-->
+<!--                                th:value="남성"-->
+<!--                                th:text="#{option.gender.man}">option-->
+<!--                        </option>-->
+
+<!--                        <option-->
+<!--                                th:value="여성"-->
+<!--                                th:text="#{option.gender.woman}">option-->
+<!--                        </option>-->
+
+<!--                        <option-->
+<!--                                th:value="나머지"-->
+<!--                                th:text="#{option.gender.ex}">option-->
+<!--                        </option>-->
+                        <option th:each="gender : ${T(springJpaBoard.Board.domain.status.GenderStatus).values()}"
+                                th:value="${gender}"
+                                th:text="${gender}">option
+                        </option>
+                    </select>
+                </div>
+                <button type="submit" th:text="#{button.search}" class="btn btn-primary mb-2">검색</button>
+            </form>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th th:text="#{label.member.name}">이름</th>
+                <th th:text="#{label.member.gender}">성별</th>
+                <th th:text="#{label.member.city}">도시</th>
+                <th th:text="#{label.member.street}">주소</th>
+                <th th:text="#{label.member.zipcode}">우편 번호</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="member : ${members}">
+                <td th:text="${member.id}"></td>
+                <td th:text="${member.name}"></td>
+                <th th:text="${member.gender}"></th>
+                <!-- '?'는 ? 앞의 값이 NUll이라면 실행하지 않도록 도와준다.   -->
+                <td th:text="${member.address?.city}"></td>
+                <td th:text="${member.address?.street}"></td>
+                <td th:text="${member.address?.zipcode}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- 페이징 부분 -->
+        <!-- 페이지네이션 부분 수정 -->
+        <div class="pagination">
+            <th:block th:if="${startPage > 1}">
+                <!-- 이전 페이지로 이동하는 화살표 -->
+                <a th:href="@{/members(page=${startPage - 2}, memberName=${memberSearch.memberName}, memberGender=${memberSearch.memberGender})}" class="page-link">&lt;</a>
+            </th:block>
+
+            <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                <!-- 현재 페이지가 아니라면 -->
+                <a th:if="${page != nowPage}" th:href="@{/members(page=${page - 1}, memberName=${memberSearch.memberName}, memberGender=${memberSearch.memberGender})}" th:text="${page}" class="page-link"></a>
+                <!-- 현재 페이지라면 강조 표시 -->
+                <strong th:if="${page == nowPage}" th:text="${page}" class="current-page"></strong>
+            </th:block>
+
+            <th:block th:if="${endPage < totalPages}">
+                <!-- 다음 페이지로 이동하는 화살표 -->
+                <a th:href="@{/members(page=${endPage}, memberName=${memberSearch.memberName}, memberGender=${memberSearch.memberGender})}" class="page-link">&gt;</a>
+            </th:block>
+        </div>
+
+
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>
