@@ -63,10 +63,10 @@ public class CommentService {
     @Transactional
     public void delete(Long commentId, Long bno) {
         if (commentRepository.findById(commentId).isPresent()) {
-
+            commentRepository.deleteById(commentId);
+            Board board = boardService.findOne(bno);
+            board.decreaseComment();
         }
-        commentRepository.deleteById(commentId);
-        Board board = boardService.findOne(bno);
-        board.decreaseComment();
+        throw new CommentNotFoundException(commentId);
     }
 }
