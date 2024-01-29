@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springJpaBoard.Board.domain.board.model.Board;
+import springJpaBoard.Board.domain.comment.exception.CommentNotFoundException;
 import springJpaBoard.Board.domain.comment.model.Comment;
 import springJpaBoard.Board.domain.board.service.BoardService;
 import springJpaBoard.Board.domain.member.model.Member;
@@ -46,14 +47,8 @@ public class CommentService {
         return CommentResponse.of(comment);
     }
 
-    public Comment findOne(Long id) {
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("댓글 정보가 없습니다."));
-
-        if (comment == null) {
-            throw new NoSuchElementException();
-        }
-
-        return comment;
+    public Comment findOne(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException(commentId));
     }
     public Page<Comment> findAll(Pageable pageable) {
         return commentRepository.findAll(pageable);
@@ -65,9 +60,12 @@ public class CommentService {
     }
 
     @Transactional
-    public void delete(Long id, Long bno) {
-        commentRepository.deleteById(id);
-        Board board = boardService.findOne(bno);
-        board.decreaseComment();
+    public void delete(Long commentId, Long bno) {
+        if (commentRepository.findById(commentId).isPresent()) {
+            commentRepository.deleteById(commentId);
+            Board board = boardService.findOne(bno);
+            board.decreaseComment();
+        }
+        throw new CommentNotFoundException(commentId);
     }
 }
