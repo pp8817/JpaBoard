@@ -17,10 +17,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import springJpaBoard.Board.domain.board.model.Board;
 import springJpaBoard.Board.domain.board.service.BoardService;
 import springJpaBoard.Board.domain.comment.api.CommentApiController;
+import springJpaBoard.Board.domain.comment.exception.CommentNotFoundException;
 import springJpaBoard.Board.domain.comment.model.Comment;
 import springJpaBoard.Board.domain.comment.service.CommentService;
 import springJpaBoard.Board.domain.member.model.Member;
 import springJpaBoard.Board.domain.member.service.MemberService;
+import springJpaBoard.Board.global.Error.exception.ErrorCode;
 
 import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
@@ -85,7 +87,6 @@ public class CommentApiControllerTest {
                 .willReturn(commentResponse);
 
         final MockHttpSession session = getSession(member);
-
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/comments")
@@ -166,7 +167,7 @@ public class CommentApiControllerTest {
     public void 댓글_삭제_댓글_정보_X() throws Exception {
         //given
         final Long commentId = 1L;
-        doThrow(new NoSuchElementException("댓글을 찾을 수 없습니다.")).when(commentService).delete(commentId, comment.getBno());
+        doThrow(new CommentNotFoundException(commentId)).when(commentService).delete(commentId, comment.getBno());
 
         given(commentService.findOne(commentId))
                 .willReturn(comment);
@@ -175,12 +176,16 @@ public class CommentApiControllerTest {
 
         //when
 
-        mockMvc.perform(delete("/api/comments/delete/{commentId}", 1L)
-                        .contentType(contentType)
-                        .session(session))
-                .andExpect(status().is5xxServerError());
+        ResultActions actions = mockMvc.perform(delete("/api/comments/delete/{commentId}", 1L)
+                .contentType(contentType)
+                .session(session));
 
         //then
+        actions
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(ErrorCode.ENTITY_NOT_FOUND.getMessage()))
+                .andExpect(jsonPath("$.status").value(ErrorCode.ENTITY_NOT_FOUND.getStatus()))
+                .andExpect(jsonPath("$.code").value(ErrorCode.ENTITY_NOT_FOUND.getCode()));
         verify(commentService, times(1)).delete(eq(commentId), eq(comment.getBno()));
     }
 }
