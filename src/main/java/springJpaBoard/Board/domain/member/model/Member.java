@@ -58,22 +58,6 @@ public class Member {
         this.gender = gender;
         this.address = address;
     }
-    /* TODO 위 방법 또는 아래 방법 중 고민 */
-//    public static Member of(MemberRequestDTO memberRequestDTO) {
-//        Address address = Address.builder()
-//                .city(memberRequestDTO.getCity())
-//                .street(memberRequestDTO.getStreet())
-//                .zipcode(memberRequestDTO.getZipcode())
-//                .build();
-//
-//        return Member.builder()
-//                .name(memberRequestDTO.getName())
-//                .gender(memberRequestDTO.getGender())
-//                .loginId(memberRequestDTO.getLoginId())
-//                .password(memberRequestDTO.getPassword())
-//                .address(address)
-//                .build();
-//    }
 
     /*회원 수정*/
     @Builder
