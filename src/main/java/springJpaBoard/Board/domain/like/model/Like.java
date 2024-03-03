@@ -13,7 +13,6 @@ import static javax.persistence.FetchType.LAZY;
 @Entity(name = "likes")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Like {
 
     @Id
@@ -27,7 +26,6 @@ public class Like {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id")
-
     private Board board;
 
     public Like(Member member, Board board) {

@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac5f0aa3-7142-4c5a-b0e3-d714a33af614" name="Changes" comment="[refactor] CommentService 코드 예외 처리 수정">
-      <change beforePath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+    <list default="true" id="ac5f0aa3-7142-4c5a-b0e3-d714a33af614" name="Changes" comment="[refactor] Member">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springJpaBoard/Board/domain/like/model/Like.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springJpaBoard/Board/domain/like/model/Like.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/springJpaBoard/Board/user/controller/AuthApiTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/springJpaBoard/Board/user/controller/AuthApiTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,36 +66,44 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2bJu9EcPalVhvVdNw1B9vMCs049" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;226160abf295f1e4df3fa7af26b90864&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/sangmin8817/Desktop/DEV/Board",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "vcs.Git",
+    "spring.configuration.checksum": "226160abf295f1e4df3fa7af26b90864",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
-      &quot;directory&quot;,
-      &quot;module&quot;,
-      &quot;repository&quot;
+  "keyToStringList": {
+    "GitStage.ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="springJpaBoard.Board.domain.comment.exception" />
@@ -269,6 +274,41 @@
       <workItem from="1706682258104" duration="27000" />
       <workItem from="1706853112061" duration="619000" />
       <workItem from="1706945000096" duration="106000" />
+      <workItem from="1706945572322" duration="42000" />
+      <workItem from="1707048725145" duration="145000" />
+      <workItem from="1707048896424" duration="11000" />
+      <workItem from="1707048942153" duration="18000" />
+      <workItem from="1707049011384" duration="36000" />
+      <workItem from="1707049121686" duration="20000" />
+      <workItem from="1707051662537" duration="12000" />
+      <workItem from="1707051677304" duration="30000" />
+      <workItem from="1707052138759" duration="24000" />
+      <workItem from="1707052224814" duration="58000" />
+      <workItem from="1707052398017" duration="134000" />
+      <workItem from="1707052990373" duration="52000" />
+      <workItem from="1707053044636" duration="11000" />
+      <workItem from="1707117941553" duration="51000" />
+      <workItem from="1707118384868" duration="12000" />
+      <workItem from="1707118586061" duration="7000" />
+      <workItem from="1707118731113" duration="36000" />
+      <workItem from="1707119179542" duration="16000" />
+      <workItem from="1707119524598" duration="22000" />
+      <workItem from="1707119798272" duration="35000" />
+      <workItem from="1707122524663" duration="20000" />
+      <workItem from="1707222312547" duration="87000" />
+      <workItem from="1707223465790" duration="24000" />
+      <workItem from="1707223717151" duration="27000" />
+      <workItem from="1707455346637" duration="52000" />
+      <workItem from="1707455584059" duration="8000" />
+      <workItem from="1707455631924" duration="1000" />
+      <workItem from="1707495855449" duration="25000" />
+      <workItem from="1707543827167" duration="210000" />
+      <workItem from="1707630241978" duration="73000" />
+      <workItem from="1707635831089" duration="73000" />
+      <workItem from="1707636095693" duration="6000" />
+      <workItem from="1707899689866" duration="1215000" />
+      <workItem from="1707902636605" duration="16000" />
+      <workItem from="1709460874627" duration="18000" />
     </task>
     <task id="LOCAL-00003" summary=" 파일 수정">
       <option name="closed" value="true" />
@@ -358,7 +398,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706521174514</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="[refactor] Member">
+      <option name="closed" value="true" />
+      <created>1706945604540</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1706945604540</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -382,7 +430,8 @@
     <MESSAGE value="Comment 엔티티 클래스에 대한 예외 클래스 생성" />
     <MESSAGE value="[refactor] Comment 코드 예외 처리 수정" />
     <MESSAGE value="[refactor] CommentService 코드 예외 처리 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="[refactor] CommentService 코드 예외 처리 수정" />
+    <MESSAGE value="[refactor] Member" />
+    <option name="LAST_COMMIT_MESSAGE" value="[refactor] Member" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Board$BoardApplication__1_.ic" NAME="BoardApplication (1) Coverage Results" MODIFIED="1700665606356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">

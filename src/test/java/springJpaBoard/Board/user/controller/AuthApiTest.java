@@ -30,6 +30,7 @@ import static springJpaBoard.Board.domain.member.dto.AuthDto.LoginRequest;
 import static springJpaBoard.Board.domain.member.dto.MemberDto.CreateMemberRequest;
 import static springJpaBoard.Board.user.UserTemplate.getCreateMemberRequest;
 
+
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(AuthApi.class)
 @DisplayName("회원가입, 로그인 테스트")
